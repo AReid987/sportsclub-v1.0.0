@@ -74,7 +74,10 @@ export default function Home() {
           <div
             style={{
               marginBottom: '20px',
-              background: 'rgba(255,255,255,0.1)',
+              background: `linear-gradient(145deg,
+                rgba(255,255,255,0.1),
+                rgba(255,255,255,0.05),
+                rgba(255,255,255,0.1))`,
               backdropFilter: 'blur(10px)',
               border: '1px solid rgba(255,255,255,0.2)',
               padding: '8px 16px',
@@ -82,10 +85,6 @@ export default function Home() {
               display: 'inline-block',
               boxShadow:
                 '0 4px 15px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)',
-              background: `linear-gradient(145deg,
-                rgba(255,255,255,0.1),
-                rgba(255,255,255,0.05),
-                rgba(255,255,255,0.1))`,
               fontWeight: '600',
               textShadow: '0 1px 2px rgba(0,0,0,0.3)',
               color: 'rgba(255,255,255,0.95)',
