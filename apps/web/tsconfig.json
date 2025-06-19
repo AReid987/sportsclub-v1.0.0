@@ -1,6 +1,7 @@
 {
   "extends": "@sportsclub/typescript-config/nextjs.json",
   "compilerOptions": {
+    "module": "NodeNext",
     "plugins": [
       {
         "name": "next"
@@ -11,6 +12,7 @@
     "**/*.ts",
     "**/*.tsx",
     "next-env.d.ts",
+    "types/**/*.d.ts",
     "next.config.js",
     ".next/types/**/*.ts"
   ],
