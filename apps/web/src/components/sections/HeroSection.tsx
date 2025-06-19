@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Play, TrendingUp, Target } from 'lucide-react';
-import { Button } from '@/components/ui/Button.tsx';
+import { Button } from '@/components/ui/Button.js';
 
 export function HeroSection() {
   return (

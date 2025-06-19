@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Star, Quote, TrendingUp, Users } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/Card.tsx';
+import { Card, CardContent } from '@/components/ui/Card.js';
 
 const testimonials = [
   {

@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, MessageCircle, Zap, Shield } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/Card.tsx';
+import { Card, CardContent } from '@/components/ui/Card.js';
 
 const communityFeatures = [
   {
