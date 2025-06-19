@@ -90,8 +90,26 @@ export default function Home() {
               lineHeight: '1.1',
             }}
           >
-            Play Smart. <span style={{ color: '#FFE066' }}>Win Big.</span>
+            <span
+              style={{
+                background: `linear-gradient(135deg, ${colors.white}, #FFE066)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Sportsclub
+            </span>
           </h1>
+          <h2
+            style={{
+              fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+              fontWeight: '600',
+              marginBottom: '20px',
+              lineHeight: '1.2',
+            }}
+          >
+            Play Smart. <span style={{ color: '#FFE066' }}>Win Big.</span>
+          </h2>
           <p
             style={{
               fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
