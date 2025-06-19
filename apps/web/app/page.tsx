@@ -300,15 +300,11 @@ export default function Home() {
             style={{
               display: 'grid',
               gridTemplateColumns:
-                window.innerWidth > 768
-                  ? 'repeat(2, 1fr)'
-                  : window.innerWidth > 480
-                  ? 'repeat(auto-fit, minmax(250px, 1fr))'
-                  : '1fr',
+                'repeat(auto-fit, minmax(min(250px, 100%), 1fr))',
               gap: 'clamp(15px, 3vw, 30px)',
               marginTop: '40px',
               width: '100%',
-              maxWidth: '1000px',
+              maxWidth: '900px',
               margin: '40px auto 0',
             }}
           >
