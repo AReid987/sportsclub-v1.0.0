@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Brain, Shield, TrendingUp } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/Card';
+import { Card, CardContent } from '@/components/ui/Card.tsx';
 
 const problems = [
   {

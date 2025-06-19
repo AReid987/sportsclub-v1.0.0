@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Brain, MessageSquare, BarChart3, BookOpen } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/Card';
+import { Card, CardContent } from '@/components/ui/Card.tsx';
 
 const features = [
   {

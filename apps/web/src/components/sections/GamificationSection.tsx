@@ -3,8 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Coins, Zap, Calendar, Star, Target } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
+import { Card, CardContent } from '@/components/ui/Card.tsx';
+import { Button } from '@/components/ui/Button.tsx';
 
 const rewards = [
   {

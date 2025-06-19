@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Star, Quote, TrendingUp, Users } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/Card';
+import { Card, CardContent } from '@/components/ui/Card.tsx';
 
 const testimonials = [
   {
@@ -206,7 +206,7 @@ export function TestimonialsSection() {
             </div>
             <div className="text-center mt-6 pt-4 border-t">
               <p className="text-sm text-neutral-600">
-                Anonymous leaderboard • Privacy protected
+                Anonymous leaderboard ��� Privacy protected
               </p>
             </div>
           </Card>
