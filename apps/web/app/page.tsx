@@ -74,13 +74,36 @@ export default function Home() {
           <div
             style={{
               marginBottom: '20px',
-              background: 'rgba(255,255,255,0.2)',
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255,255,255,0.2)',
               padding: '8px 16px',
               borderRadius: '25px',
               display: 'inline-block',
+              boxShadow:
+                '0 4px 15px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)',
+              background: `linear-gradient(145deg,
+                rgba(255,255,255,0.1),
+                rgba(255,255,255,0.05),
+                rgba(255,255,255,0.1))`,
+              fontWeight: '600',
+              textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+              color: 'rgba(255,255,255,0.95)',
             }}
           >
-            🏆 Join 50,000+ Smart Sports Players
+            <span
+              style={{
+                background:
+                  'linear-gradient(45deg, #FFD700, #FFA500, #FFD700, #FFED4E)',
+                backgroundSize: '200% 200%',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                animation: 'shimmer 2s linear infinite',
+                fontWeight: '700',
+              }}
+            >
+              🏆 Join 50,000+ Smart Sports Players
+            </span>
           </div>
           <h1
             style={{
@@ -92,9 +115,22 @@ export default function Home() {
           >
             <span
               style={{
-                background: `linear-gradient(135deg, ${colors.white}, #FFE066)`,
+                background: `linear-gradient(145deg,
+                  #C0C0C0,
+                  #E5E5E5,
+                  #A0A0A0,
+                  #D3D3D3,
+                  #808080,
+                  #F5F5F5,
+                  #969696)`,
+                backgroundSize: '200% 200%',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
+                animation: 'metalShine 3s ease-in-out infinite',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                filter: 'drop-shadow(0 0 10px rgba(192,192,192,0.3))',
+                fontWeight: '900',
+                letterSpacing: '0.02em',
               }}
             >
               Sportsclub
@@ -132,17 +168,76 @@ export default function Home() {
             }}
           >
             <button
-              style={styles.button}
+              style={{
+                background: `linear-gradient(145deg,
+                  rgba(255,255,255,0.15),
+                  rgba(255,255,255,0.05),
+                  rgba(255,255,255,0.1))`,
+                backdropFilter: 'blur(15px)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                borderRadius: '50px',
+                padding: '16px 32px',
+                fontSize: '18px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                boxShadow: `
+                  0 8px 32px rgba(0,0,0,0.3),
+                  inset 0 1px 0 rgba(255,255,255,0.4),
+                  inset 0 -1px 0 rgba(0,0,0,0.1)
+                `,
+                position: 'relative',
+                overflow: 'hidden',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
               onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'scale(1.05)';
-                e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.2)';
+                e.currentTarget.style.transform =
+                  'scale(1.05) translateY(-2px)';
+                e.currentTarget.style.boxShadow = `
+                  0 12px 40px rgba(0,0,0,0.4),
+                  inset 0 1px 0 rgba(255,255,255,0.5),
+                  inset 0 -1px 0 rgba(0,0,0,0.1)
+                `;
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+                e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                e.currentTarget.style.boxShadow = `
+                  0 8px 32px rgba(0,0,0,0.3),
+                  inset 0 1px 0 rgba(255,255,255,0.4),
+                  inset 0 -1px 0 rgba(0,0,0,0.1)
+                `;
               }}
             >
-              🎯 Join Sportsclub Now
+              <span
+                style={{
+                  background:
+                    'linear-gradient(45deg, #FFD700, #FFA500, #FFD700, #FFED4E, #FF6B35)',
+                  backgroundSize: '300% 300%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  animation: 'shimmer 2s linear infinite',
+                  textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+                  position: 'relative',
+                  zIndex: 2,
+                }}
+              >
+                🎯 Join Sportsclub Now
+              </span>
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: '-100%',
+                  width: '100%',
+                  height: '100%',
+                  background:
+                    'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+                  animation: 'slideShimmer 3s infinite',
+                  zIndex: 1,
+                }}
+              />
             </button>
             <div
               style={{
