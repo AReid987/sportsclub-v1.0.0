@@ -58,9 +58,10 @@ const styles = {
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '30px',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '20px',
     marginTop: '40px',
+    width: '100%',
   },
 };
 
@@ -295,7 +296,15 @@ export default function Home() {
             </p>
           </div>
 
-          <div style={styles.grid}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: 'clamp(15px, 3vw, 30px)',
+              marginTop: '40px',
+              width: '100%',
+            }}
+          >
             {[
               {
                 step: '01',
@@ -322,30 +331,54 @@ export default function Home() {
                 desc: 'Top performers earn real cash prizes, exclusive rewards, and recognition. Your skills directly translate to rewards.',
               },
             ].map((item, index) => (
-              <div key={index} style={{ ...styles.card, textAlign: 'center' }}>
-                <div
+              <div
+                key={index}
+                style={{
+                  ...styles.card,
+                  textAlign: 'center',
+                  width: '100%',
+                  minHeight: '300px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                      marginBottom: '20px',
+                      color: colors.neutral[800],
+                    }}
+                  >
+                    {item.step}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 'clamp(3rem, 6vw, 4rem)',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    {item.icon}
+                  </div>
+                  <h3
+                    style={{
+                      fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)',
+                      fontWeight: 'bold',
+                      marginBottom: '15px',
+                      color: colors.neutral[900],
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+                </div>
+                <p
                   style={{
-                    fontSize: '2rem',
-                    marginBottom: '20px',
                     color: colors.neutral[800],
+                    lineHeight: '1.6',
+                    fontSize: 'clamp(0.9rem, 2vw, 1rem)',
                   }}
                 >
-                  {item.step}
-                </div>
-                <div style={{ fontSize: '4rem', marginBottom: '20px' }}>
-                  {item.icon}
-                </div>
-                <h3
-                  style={{
-                    fontSize: '1.5rem',
-                    fontWeight: 'bold',
-                    marginBottom: '15px',
-                    color: colors.neutral[900],
-                  }}
-                >
-                  {item.title}
-                </h3>
-                <p style={{ color: colors.neutral[800], lineHeight: '1.6' }}>
                   {item.desc}
                 </p>
               </div>
