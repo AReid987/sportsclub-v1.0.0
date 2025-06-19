@@ -409,18 +409,11 @@ export default function Home() {
 
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gridTemplateRows: 'repeat(2, 1fr)',
               gap: 'clamp(20px, 4vw, 40px)',
               marginTop: '40px',
               width: '100%',
               maxWidth: '900px',
               margin: '40px auto 0',
-              '@media (max-width: 768px)': {
-                gridTemplateColumns: '1fr',
-                gridTemplateRows: 'repeat(4, 1fr)',
-              },
             }}
             className="how-it-works-grid"
           >
