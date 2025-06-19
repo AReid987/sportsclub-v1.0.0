@@ -1,10 +1,35 @@
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-orange-500 flex items-center justify-center">
-      <div className="text-center text-white">
-        <h1 className="text-6xl font-bold mb-4">Sportsclub</h1>
-        <p className="text-2xl mb-8">Play Smart. Win Big.</p>
-        <button className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:scale-105 transition-transform">
+    <div
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(to bottom right, #2563eb, #ea580c)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ textAlign: 'center', color: 'white' }}>
+        <h1
+          style={{ fontSize: '4rem', fontWeight: 'bold', marginBottom: '1rem' }}
+        >
+          Sportsclub
+        </h1>
+        <p style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>
+          Play Smart. Win Big.
+        </p>
+        <button
+          style={{
+            background: 'white',
+            color: '#2563eb',
+            padding: '1rem 2rem',
+            borderRadius: '2rem',
+            fontWeight: '600',
+            fontSize: '1.125rem',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
           Get Started
         </button>
       </div>
