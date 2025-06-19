@@ -124,10 +124,13 @@ export default function Home() {
                   #969696)`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-                filter: 'drop-shadow(0 0 10px rgba(192,192,192,0.3))',
                 fontWeight: '900',
                 letterSpacing: '0.02em',
+                textRendering: 'optimizeLegibility',
+                WebkitFontSmoothing: 'antialiased',
+                MozOsxFontSmoothing: 'grayscale',
+                backfaceVisibility: 'hidden',
+                transform: 'translateZ(0)',
               }}
             >
               Sportsclub
