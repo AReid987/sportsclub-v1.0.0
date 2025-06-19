@@ -1,12 +1,8 @@
-run installpre-commit:
+pre-commit:
   parallel: true
-  commands:
-    eslint:
-      run: yarn lint
-      glob: "*.{js,jsx,ts,tsx}"
-    prettier:
-      run: yarn prettier --write
-      glob: "*.{json,css,md}"
-    commitlint:
-      run: npx --no-install commitlint --edit ${1}
-      files: $1
+  lint-staged:
+    run: pnpm dlx lint-staged
+prepare-commit-msg:
+  cz-git:
+    interactive: true
+    run: exec < /dev/tty && npx cz --hook || true
