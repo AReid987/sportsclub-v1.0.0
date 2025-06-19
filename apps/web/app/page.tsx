@@ -303,6 +303,8 @@ export default function Home() {
               gap: 'clamp(15px, 3vw, 30px)',
               marginTop: '40px',
               width: '100%',
+              maxWidth: '800px',
+              margin: '40px auto 0',
             }}
           >
             {[
