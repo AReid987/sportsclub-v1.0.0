@@ -299,11 +299,16 @@ export default function Home() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gridTemplateColumns:
+                window.innerWidth > 768
+                  ? 'repeat(2, 1fr)'
+                  : window.innerWidth > 480
+                  ? 'repeat(auto-fit, minmax(250px, 1fr))'
+                  : '1fr',
               gap: 'clamp(15px, 3vw, 30px)',
               marginTop: '40px',
               width: '100%',
-              maxWidth: '800px',
+              maxWidth: '1000px',
               margin: '40px auto 0',
             }}
           >
