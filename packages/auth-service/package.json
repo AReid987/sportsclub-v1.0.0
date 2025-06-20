@@ -1,0 +1,10 @@
+{
+  "name": "@sportsclub/auth-service",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Authentication and User Service (FastAPI)",
+  "scripts": {
+    "dev": "echo \"TODO: Add command to run FastAPI dev server\"",
+    "lint": "echo \"TODO: Add linting command for auth-service\""
+  }
+}
