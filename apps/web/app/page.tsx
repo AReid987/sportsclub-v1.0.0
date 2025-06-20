@@ -410,10 +410,62 @@ export default function Home() {
 
           <div
             style={{
-              maxWidth: '900px',
+              maxWidth: '1000px',
               margin: '0 auto',
+              position: 'relative',
             }}
           >
+            {/* User's Rank - Sticky (when not in top 3 or actual position) */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '60px',
+                right: '20px',
+                zIndex: 10,
+                background: 'rgba(37, 99, 235, 0.9)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '12px',
+                padding: '12px 16px',
+                border: '1px solid rgba(37, 99, 235, 0.4)',
+                boxShadow: '0 8px 32px rgba(37, 99, 235, 0.3)',
+                animation: 'pulse 2s infinite',
+              }}
+            >
+              <div
+                style={{
+                  color: '#60A5FA',
+                  fontSize: '12px',
+                  fontWeight: '600',
+                  marginBottom: '4px',
+                }}
+              >
+                YOUR RANK
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <span style={{ fontSize: '16px' }}>🎯</span>
+                <div>
+                  <div
+                    style={{
+                      color: '#F1F5F9',
+                      fontWeight: '700',
+                      fontSize: '14px',
+                    }}
+                  >
+                    #47
+                  </div>
+                  <div style={{ color: '#CBD5E1', fontSize: '10px' }}>
+                    1,890 pts
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div
               style={{
                 background: 'rgba(15, 23, 42, 0.8)',
@@ -444,7 +496,11 @@ export default function Home() {
                     margin: 0,
                   }}
                 >
-                  December Leaderboard
+                  {new Date().toLocaleDateString('en-US', {
+                    month: 'long',
+                    year: 'numeric',
+                  })}{' '}
+                  Leaderboard
                 </h3>
                 <div
                   style={{
@@ -454,159 +510,363 @@ export default function Home() {
                     borderRadius: '12px',
                     fontSize: '12px',
                     fontWeight: '600',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
                   }}
                 >
+                  <div
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      background: '#10B981',
+                      borderRadius: '50%',
+                      animation: 'pulse 1s infinite',
+                    }}
+                  />
                   LIVE UPDATES
                 </div>
               </div>
 
+              {/* Winners Podium - Top 3 */}
               <div
                 style={{
                   display: 'grid',
-                  gap: '12px',
+                  gridTemplateColumns: '1fr 1fr 1fr',
+                  gap: '20px',
+                  marginBottom: '40px',
+                  padding: '20px',
+                  background: 'rgba(251, 191, 36, 0.05)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(251, 191, 36, 0.1)',
+                }}
+              >
+                {/* 2nd Place */}
+                <div
+                  style={{
+                    textAlign: 'center',
+                    transform: 'translateY(20px)',
+                    animation: 'slideUpBounce 1s ease-out 0.2s both',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '60px',
+                      height: '80px',
+                      background: 'linear-gradient(135deg, #C0C0C0, #E5E5E5)',
+                      borderRadius: '8px 8px 0 0',
+                      margin: '0 auto 12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '24px',
+                      fontWeight: '700',
+                      color: '#374151',
+                    }}
+                  >
+                    2
+                  </div>
+                  <div style={{ fontSize: '20px', marginBottom: '8px' }}>
+                    👑
+                  </div>
+                  <div
+                    style={{
+                      color: '#F1F5F9',
+                      fontWeight: '600',
+                      fontSize: '14px',
+                    }}
+                  >
+                    PredictionKing
+                  </div>
+                  <div
+                    style={{
+                      color: '#F59E0B',
+                      fontWeight: '700',
+                      fontSize: '16px',
+                    }}
+                  >
+                    2,380 pts
+                  </div>
+                  <div
+                    style={{
+                      color: '#10B981',
+                      fontSize: '12px',
+                      marginTop: '4px',
+                    }}
+                  >
+                    +89 today
+                  </div>
+                </div>
+
+                {/* 1st Place */}
+                <div
+                  style={{
+                    textAlign: 'center',
+                    animation: 'slideUpBounce 1s ease-out both',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '60px',
+                      height: '100px',
+                      background: 'linear-gradient(135deg, #FFD700, #FFA500)',
+                      borderRadius: '8px 8px 0 0',
+                      margin: '0 auto 12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '24px',
+                      fontWeight: '700',
+                      color: '#92400E',
+                      boxShadow: '0 0 20px rgba(255, 215, 0, 0.4)',
+                    }}
+                  >
+                    1
+                  </div>
+                  <div style={{ fontSize: '24px', marginBottom: '8px' }}>
+                    🔥
+                  </div>
+                  <div
+                    style={{
+                      color: '#F1F5F9',
+                      fontWeight: '600',
+                      fontSize: '14px',
+                    }}
+                  >
+                    DataMaster_Pro
+                  </div>
+                  <div
+                    style={{
+                      color: '#F59E0B',
+                      fontWeight: '700',
+                      fontSize: '18px',
+                    }}
+                  >
+                    2,450 pts
+                  </div>
+                  <div
+                    style={{
+                      color: '#10B981',
+                      fontSize: '12px',
+                      marginTop: '4px',
+                    }}
+                  >
+                    +125 today
+                  </div>
+                </div>
+
+                {/* 3rd Place */}
+                <div
+                  style={{
+                    textAlign: 'center',
+                    transform: 'translateY(40px)',
+                    animation: 'slideUpBounce 1s ease-out 0.4s both',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      background: 'linear-gradient(135deg, #CD7F32, #B8860B)',
+                      borderRadius: '8px 8px 0 0',
+                      margin: '0 auto 12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '24px',
+                      fontWeight: '700',
+                      color: '#374151',
+                    }}
+                  >
+                    3
+                  </div>
+                  <div style={{ fontSize: '20px', marginBottom: '8px' }}>
+                    🧠
+                  </div>
+                  <div
+                    style={{
+                      color: '#F1F5F9',
+                      fontWeight: '600',
+                      fontSize: '14px',
+                    }}
+                  >
+                    StatsGuru99
+                  </div>
+                  <div
+                    style={{
+                      color: '#F59E0B',
+                      fontWeight: '700',
+                      fontSize: '16px',
+                    }}
+                  >
+                    2,340 pts
+                  </div>
+                  <div
+                    style={{
+                      color: '#10B981',
+                      fontSize: '12px',
+                      marginTop: '4px',
+                    }}
+                  >
+                    +67 today
+                  </div>
+                </div>
+              </div>
+
+              {/* Rest of Leaderboard */}
+              <div
+                style={{
+                  display: 'grid',
+                  gap: '8px',
                 }}
               >
                 {[
-                  {
-                    rank: 1,
-                    name: 'DataMaster_Pro',
-                    score: 2450,
-                    change: '+125',
-                    trend: 'up',
-                    avatar: '🔥',
-                  },
-                  {
-                    rank: 2,
-                    name: 'PredictionKing',
-                    score: 2380,
-                    change: '+89',
-                    trend: 'up',
-                    avatar: '👑',
-                  },
-                  {
-                    rank: 3,
-                    name: 'StatsGuru99',
-                    score: 2340,
-                    change: '+67',
-                    trend: 'up',
-                    avatar: '🧠',
-                  },
                   {
                     rank: 4,
                     name: 'SportsSage',
                     score: 2290,
                     change: '+45',
-                    trend: 'up',
+                    safe: 850,
+                    risk: 150,
+                    total: 1000,
                     avatar: '⚡',
                   },
                   {
                     rank: 5,
-                    name: 'You',
-                    score: 1890,
-                    change: '+156',
-                    trend: 'up',
-                    avatar: '🎯',
-                    highlight: true,
-                  },
-                  {
-                    rank: 6,
                     name: 'AIPredictor',
-                    score: 1845,
+                    score: 2245,
                     change: '+23',
-                    trend: 'up',
+                    safe: 780,
+                    risk: 220,
+                    total: 1000,
                     avatar: '🤖',
                   },
                   {
-                    rank: 7,
+                    rank: 6,
                     name: 'ScoreWizard',
-                    score: 1790,
+                    score: 2190,
                     change: '+67',
-                    trend: 'up',
+                    safe: 650,
+                    risk: 350,
+                    total: 1000,
                     avatar: '🧙‍♂️',
                   },
                   {
-                    rank: 8,
+                    rank: 7,
                     name: 'BetMaster88',
-                    score: 1756,
+                    score: 2156,
                     change: '+34',
-                    trend: 'up',
+                    safe: 720,
+                    risk: 280,
+                    total: 1000,
                     avatar: '💰',
+                  },
+                  {
+                    rank: 8,
+                    name: 'PicksProdigy',
+                    score: 2098,
+                    change: '+78',
+                    safe: 600,
+                    risk: 400,
+                    total: 1000,
+                    avatar: '🌟',
                   },
                 ].map((player, index) => (
                   <div
                     key={index}
                     style={{
                       display: 'grid',
-                      gridTemplateColumns: 'auto auto 1fr auto auto',
+                      gridTemplateColumns: 'auto auto 1fr auto',
                       alignItems: 'center',
-                      padding: 'clamp(12px, 3vw, 16px)',
+                      padding: '12px 16px',
                       borderRadius: '12px',
-                      background: player.highlight
-                        ? 'rgba(37, 99, 235, 0.15)'
-                        : 'rgba(51, 65, 85, 0.3)',
-                      border: player.highlight
-                        ? '1px solid rgba(37, 99, 235, 0.4)'
-                        : '1px solid transparent',
+                      background: 'rgba(51, 65, 85, 0.3)',
+                      border: '1px solid transparent',
                       transition: 'all 0.3s ease',
-                      animation: player.highlight
-                        ? 'pulse 2s infinite'
-                        : 'none',
-                      gap: 'clamp(8px, 2vw, 16px)',
+                      gap: '12px',
+                      animation: `slideInFromRight 0.8s ease-out ${
+                        0.6 + index * 0.1
+                      }s both`,
                     }}
                   >
                     <span
                       style={{
-                        fontSize: 'clamp(14px, 2.5vw, 16px)',
+                        fontSize: '14px',
                         fontWeight: '700',
-                        color: player.rank <= 3 ? '#F59E0B' : '#64748B',
-                        minWidth: 'clamp(20px, 4vw, 30px)',
+                        color: '#64748B',
+                        minWidth: '24px',
                       }}
                     >
                       #{player.rank}
                     </span>
 
-                    <span style={{ fontSize: 'clamp(18px, 3vw, 22px)' }}>
-                      {player.avatar}
-                    </span>
-
-                    <div>
-                      <div
-                        style={{
-                          color: player.highlight ? '#60A5FA' : '#F1F5F9',
-                          fontWeight: '600',
-                          fontSize: 'clamp(14px, 2.5vw, 16px)',
-                        }}
-                      >
-                        {player.name}
-                      </div>
-                      <div
-                        style={{
-                          color: '#94A3B8',
-                          fontSize: 'clamp(12px, 2vw, 14px)',
-                        }}
-                      >
-                        {player.score.toLocaleString()} pts
-                      </div>
-                    </div>
+                    <span style={{ fontSize: '20px' }}>{player.avatar}</span>
 
                     <div
                       style={{
-                        color: '#10B981',
-                        fontSize: 'clamp(12px, 2vw, 14px)',
-                        fontWeight: '600',
-                        padding: '4px 8px',
-                        background: 'rgba(16, 185, 129, 0.1)',
-                        borderRadius: '8px',
-                        textAlign: 'center',
+                        display: 'grid',
+                        gridTemplateColumns: '1fr auto',
+                        alignItems: 'center',
+                        gap: '16px',
                       }}
                     >
-                      {player.change}
+                      <div>
+                        <div
+                          style={{
+                            color: '#F1F5F9',
+                            fontWeight: '600',
+                            fontSize: '14px',
+                            marginBottom: '2px',
+                          }}
+                        >
+                          {player.name}
+                        </div>
+                        <div
+                          style={{
+                            color: '#94A3B8',
+                            fontSize: '12px',
+                            display: 'flex',
+                            gap: '12px',
+                          }}
+                        >
+                          <span>Safe: {player.safe}</span>
+                          <span>Risk: {player.risk}</span>
+                          <span>Total: {player.total}</span>
+                        </div>
+                      </div>
+
+                      <div
+                        style={{
+                          textAlign: 'right',
+                        }}
+                      >
+                        <div
+                          style={{
+                            color: '#F59E0B',
+                            fontWeight: '700',
+                            fontSize: '14px',
+                          }}
+                        >
+                          {player.score.toLocaleString()} pts
+                        </div>
+                        <div
+                          style={{
+                            color: '#10B981',
+                            fontSize: '11px',
+                            fontWeight: '600',
+                          }}
+                        >
+                          {player.change} today
+                        </div>
+                      </div>
                     </div>
 
                     <div
                       style={{
                         color: '#10B981',
-                        fontSize: 'clamp(12px, 2vw, 14px)',
+                        fontSize: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
                       }}
                     >
                       ↗️
@@ -675,7 +935,18 @@ export default function Home() {
                       marginBottom: '4px',
                     }}
                   >
-                    18 Days
+                    {(() => {
+                      const now = new Date();
+                      const nextMonth = new Date(
+                        now.getFullYear(),
+                        now.getMonth() + 1,
+                        1,
+                      );
+                      const diff = nextMonth.getTime() - now.getTime();
+                      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                      return days;
+                    })()}{' '}
+                    Days
                   </div>
                   <div
                     style={{
