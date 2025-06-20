@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "auth-service"
+version = "0.1.0"
+description = "Authentication and User Service for Sportsclub"
+authors = ["Your Name <you@example.com>"] # Placeholder
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+# Add FastAPI and other dependencies here later
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
