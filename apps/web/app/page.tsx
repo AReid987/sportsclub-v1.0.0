@@ -176,7 +176,7 @@ export default function Home() {
               <button
                 style={{
                   background: 'linear-gradient(135deg, #2563EB, #3B82F6)',
-                  border: 'none',
+                  border: '2px solid transparent',
                   borderRadius: '50px',
                   padding: '16px 32px',
                   fontSize: '18px',
@@ -187,7 +187,9 @@ export default function Home() {
                   color: colors.white,
                   position: 'relative',
                   overflow: 'hidden',
+                  backgroundClip: 'padding-box',
                 }}
+                className="star-border-button"
                 onMouseOver={(e) => {
                   e.currentTarget.style.transform =
                     'scale(1.05) translateY(-2px)';
@@ -200,7 +202,9 @@ export default function Home() {
                     '0 8px 32px rgba(37, 99, 235, 0.4)';
                 }}
               >
-                🎯 Join Sportsclub Now
+                <span style={{ position: 'relative', zIndex: 2 }}>
+                  🎯 Join Sportsclub Now
+                </span>
               </button>
             </div>
 
@@ -212,6 +216,7 @@ export default function Home() {
                 gap: '24px',
                 fontSize: '14px',
                 color: '#94A3B8',
+                marginBottom: '32px',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -249,6 +254,116 @@ export default function Home() {
                   }}
                 />
                 Real cash prizes
+              </div>
+            </div>
+
+            {/* Live Countdown Timer */}
+            <div
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(251, 191, 36, 0.3)',
+                borderRadius: '16px',
+                padding: '20px',
+                textAlign: 'center',
+                maxWidth: '400px',
+                margin: '0 auto',
+              }}
+            >
+              <div
+                style={{
+                  color: '#FEF3C7',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  marginBottom: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                }}
+              >
+                ⏰ Next Prize Payout
+              </div>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: '12px',
+                  marginBottom: '8px',
+                }}
+              >
+                {['Days', 'Hours', 'Minutes', 'Seconds'].map((unit, index) => {
+                  const now = new Date();
+                  const nextMonth = new Date(
+                    now.getFullYear(),
+                    now.getMonth() + 1,
+                    1,
+                  );
+                  const payout = new Date(
+                    nextMonth.getTime() - 5 * 60 * 60 * 1000,
+                  ); // EST = UTC-5
+                  const diff = payout.getTime() - now.getTime();
+
+                  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                  const hours = Math.floor(
+                    (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+                  );
+                  const minutes = Math.floor(
+                    (diff % (1000 * 60 * 60)) / (1000 * 60),
+                  );
+                  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                  const values = [days, hours, minutes, seconds];
+
+                  return (
+                    <div
+                      key={unit}
+                      style={{
+                        background: 'rgba(251, 191, 36, 0.1)',
+                        borderRadius: '8px',
+                        padding: '8px 4px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          color: '#FCD34D',
+                          fontSize: '18px',
+                          fontWeight: '700',
+                          fontFamily: 'monospace',
+                        }}
+                      >
+                        {String(values[index]).padStart(2, '0')}
+                      </div>
+                      <div
+                        style={{
+                          color: '#FEF3C7',
+                          fontSize: '10px',
+                          fontWeight: '500',
+                        }}
+                      >
+                        {unit}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div
+                style={{
+                  color: '#94A3B8',
+                  fontSize: '12px',
+                }}
+              >
+                Until{' '}
+                {new Date(
+                  new Date().getFullYear(),
+                  new Date().getMonth() + 1,
+                  1,
+                ).toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}{' '}
+                12:00 AM EST
               </div>
             </div>
           </div>
