@@ -772,11 +772,11 @@ export default function Home() {
                   color: colors.neutral[900],
                 }}
               >
-                High-Risk Betting
+                High-Risk / Low Reward
               </h3>
               <p style={{ color: colors.neutral[800], lineHeight: '1.6' }}>
-                Traditional sports betting requires large stakes with
-                unpredictable outcomes.
+                Traditional sports picks require large stakes with unpredictable
+                outcomes.
               </p>
             </div>
           </div>
