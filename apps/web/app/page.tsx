@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Color palette
 const colors = {
@@ -284,69 +284,7 @@ export default function Home() {
               >
                 ⏰ Next Prize Payout
               </div>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(4, 1fr)',
-                  gap: '12px',
-                  marginBottom: '8px',
-                }}
-              >
-                {['Days', 'Hours', 'Minutes', 'Seconds'].map((unit, index) => {
-                  const now = new Date();
-                  const nextMonth = new Date(
-                    now.getFullYear(),
-                    now.getMonth() + 1,
-                    1,
-                  );
-                  const payout = new Date(
-                    nextMonth.getTime() - 5 * 60 * 60 * 1000,
-                  ); // EST = UTC-5
-                  const diff = payout.getTime() - now.getTime();
-
-                  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                  const hours = Math.floor(
-                    (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-                  );
-                  const minutes = Math.floor(
-                    (diff % (1000 * 60 * 60)) / (1000 * 60),
-                  );
-                  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                  const values = [days, hours, minutes, seconds];
-
-                  return (
-                    <div
-                      key={unit}
-                      style={{
-                        background: 'rgba(251, 191, 36, 0.1)',
-                        borderRadius: '8px',
-                        padding: '8px 4px',
-                      }}
-                    >
-                      <div
-                        style={{
-                          color: '#FCD34D',
-                          fontSize: '18px',
-                          fontWeight: '700',
-                          fontFamily: 'monospace',
-                        }}
-                      >
-                        {String(values[index]).padStart(2, '0')}
-                      </div>
-                      <div
-                        style={{
-                          color: '#FEF3C7',
-                          fontSize: '10px',
-                          fontWeight: '500',
-                        }}
-                      >
-                        {unit}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <CountdownTimer />
               <div
                 style={{
                   color: '#94A3B8',
