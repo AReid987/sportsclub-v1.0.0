@@ -479,51 +479,54 @@ export default function Home() {
               position: 'relative',
             }}
           >
-            {/* User's Rank - Sticky (when not in top 3 or actual position) */}
+            {/* User's Rank - Relocated to bottom-left */}
             <div
               style={{
                 position: 'absolute',
-                top: '60px',
-                right: '20px',
+                bottom: '20px',
+                left: '20px',
                 zIndex: 10,
                 background: 'rgba(37, 99, 235, 0.9)',
                 backdropFilter: 'blur(10px)',
-                borderRadius: '12px',
-                padding: '12px 16px',
+                borderRadius: '16px',
+                padding: '16px 20px',
                 border: '1px solid rgba(37, 99, 235, 0.4)',
                 boxShadow: '0 8px 32px rgba(37, 99, 235, 0.3)',
                 animation: 'pulse 2s infinite',
+                minWidth: '140px',
               }}
             >
               <div
                 style={{
                   color: '#60A5FA',
-                  fontSize: '12px',
+                  fontSize: '11px',
                   fontWeight: '600',
-                  marginBottom: '4px',
+                  marginBottom: '6px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
                 }}
               >
-                YOUR RANK
+                Your Rank
               </div>
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
+                  gap: '10px',
                 }}
               >
-                <span style={{ fontSize: '16px' }}>🎯</span>
+                <span style={{ fontSize: '18px' }}>🎯</span>
                 <div>
                   <div
                     style={{
                       color: '#F1F5F9',
-                      fontWeight: '700',
-                      fontSize: '14px',
+                      fontWeight: '800',
+                      fontSize: '16px',
                     }}
                   >
                     #47
                   </div>
-                  <div style={{ color: '#CBD5E1', fontSize: '10px' }}>
+                  <div style={{ color: '#CBD5E1', fontSize: '11px' }}>
                     1,890 coins
                   </div>
                 </div>
@@ -588,257 +591,415 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Winners Podium - Top 3 */}
+              {/* Top 3 Players - Card Layout */}
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: '1fr 1fr 1fr',
-                  gap: '20px',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                  gap: '24px',
                   marginBottom: '40px',
-                  padding: '20px',
-                  background: 'rgba(251, 191, 36, 0.05)',
-                  borderRadius: '16px',
-                  border: '1px solid rgba(251, 191, 36, 0.1)',
                 }}
               >
-                {/* 2nd Place */}
+                {/* 1st Place Card */}
                 <div
                   style={{
+                    background: 'rgba(15, 23, 42, 0.95)',
+                    borderRadius: '20px',
+                    padding: '24px',
+                    border: '2px solid rgba(255, 215, 0, 0.3)',
+                    boxShadow: '0 20px 60px rgba(255, 215, 0, 0.15)',
+                    position: 'relative',
+                    animation: 'slideUpBounce 1s ease-out both',
                     textAlign: 'center',
-                    transform: 'translateY(20px)',
-                    animation: 'slideUpBounce 1s ease-out 0.2s both',
                   }}
                 >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '-12px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'linear-gradient(135deg, #FFD700, #FFA500)',
+                      color: '#92400E',
+                      fontWeight: '900',
+                      fontSize: '14px',
+                      padding: '6px 20px',
+                      borderRadius: '20px',
+                      boxShadow: '0 4px 20px rgba(255, 215, 0, 0.4)',
+                    }}
+                  >
+                    🏆 #1
+                  </div>
+
                   <div
                     style={{
                       width: '80px',
-                      height: '90px',
-                      background: 'linear-gradient(135deg, #C0C0C0, #E6E6FA)',
-                      borderRadius: '12px 12px 0 0',
-                      margin: '0 auto 16px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '28px',
-                      fontWeight: '700',
-                      color: '#374151',
-                      boxShadow: '0 8px 25px rgba(192, 192, 192, 0.3)',
-                    }}
-                  >
-                    2
-                  </div>
-                  <div style={{ fontSize: '24px', marginBottom: '12px' }}>
-                    ⚡
-                  </div>
-                  <div
-                    style={{
-                      color: '#F1F5F9',
-                      fontWeight: '700',
-                      fontSize: '16px',
-                      marginBottom: '8px',
-                    }}
-                  >
-                    QuickPick_Elite
-                  </div>
-                  <div
-                    style={{
-                      color: '#60A5FA',
-                      fontWeight: '800',
-                      fontSize: '20px',
-                      marginBottom: '6px',
-                    }}
-                  >
-                    2,398 coins
-                  </div>
-                  <div
-                    style={{
-                      color: '#10B981',
-                      fontSize: '14px',
-                      fontWeight: '600',
-                      marginBottom: '8px',
-                    }}
-                  >
-                    +89 today
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '2px',
-                      fontSize: '11px',
-                      color: '#94A3B8',
-                    }}
-                  >
-                    <span>
-                      Safe: <span style={{ color: '#10B981' }}>1,280</span>
-                    </span>
-                    <span>
-                      Risk: <span style={{ color: '#F59E0B' }}>320</span>
-                    </span>
-                    <span>
-                      Total: <span style={{ color: '#60A5FA' }}>1,600</span>
-                    </span>
-                  </div>
-                </div>
-
-                {/* 1st Place */}
-                <div
-                  style={{
-                    textAlign: 'center',
-                    animation: 'slideUpBounce 1s ease-out both',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '90px',
-                      height: '110px',
+                      height: '80px',
+                      borderRadius: '50%',
                       background: 'linear-gradient(135deg, #FFD700, #FFA500)',
-                      borderRadius: '16px 16px 0 0',
-                      margin: '0 auto 20px',
+                      margin: '20px auto 16px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: '32px',
-                      fontWeight: '800',
-                      color: '#92400E',
-                      boxShadow: '0 12px 40px rgba(255, 215, 0, 0.5)',
-                      border: '2px solid rgba(255, 215, 0, 0.3)',
+                      border: '4px solid rgba(255, 215, 0, 0.3)',
                     }}
                   >
-                    1
-                  </div>
-                  <div style={{ fontSize: '28px', marginBottom: '16px' }}>
                     🔥
                   </div>
-                  <div
+
+                  <h4
                     style={{
                       color: '#F1F5F9',
-                      fontWeight: '800',
                       fontSize: '18px',
-                      marginBottom: '10px',
+                      fontWeight: '800',
+                      marginBottom: '8px',
+                      margin: 0,
                     }}
                   >
                     DataMaster_Pro
-                  </div>
+                  </h4>
+
                   <div
                     style={{
                       color: '#FCD34D',
-                      fontWeight: '900',
                       fontSize: '24px',
+                      fontWeight: '900',
                       marginBottom: '8px',
                       textShadow: '0 2px 4px rgba(0,0,0,0.3)',
                     }}
                   >
                     2,450 coins
                   </div>
+
                   <div
                     style={{
                       color: '#10B981',
-                      fontSize: '16px',
+                      fontSize: '14px',
                       fontWeight: '700',
-                      marginBottom: '12px',
+                      marginBottom: '16px',
+                      background: 'rgba(16, 185, 129, 0.1)',
+                      padding: '4px 12px',
+                      borderRadius: '8px',
+                      display: 'inline-block',
                     }}
                   >
                     +125 today
                   </div>
+
                   <div
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '3px',
-                      fontSize: '12px',
-                      color: '#CBD5E1',
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(3, 1fr)',
+                      gap: '8px',
+                      fontSize: '11px',
+                      marginTop: '16px',
                     }}
                   >
-                    <span>
-                      Safe: <span style={{ color: '#10B981' }}>1,800</span>
-                    </span>
-                    <span>
-                      Risk: <span style={{ color: '#F59E0B' }}>200</span>
-                    </span>
-                    <span>
-                      Total: <span style={{ color: '#60A5FA' }}>2,000</span>
-                    </span>
+                    <div
+                      style={{
+                        background: 'rgba(16, 185, 129, 0.1)',
+                        padding: '6px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <div style={{ color: '#10B981', fontWeight: '700' }}>
+                        1,800
+                      </div>
+                      <div style={{ color: '#94A3B8' }}>Safe</div>
+                    </div>
+                    <div
+                      style={{
+                        background: 'rgba(245, 158, 11, 0.1)',
+                        padding: '6px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <div style={{ color: '#F59E0B', fontWeight: '700' }}>
+                        200
+                      </div>
+                      <div style={{ color: '#94A3B8' }}>Risk</div>
+                    </div>
+                    <div
+                      style={{
+                        background: 'rgba(96, 165, 250, 0.1)',
+                        padding: '6px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <div style={{ color: '#60A5FA', fontWeight: '700' }}>
+                        2,000
+                      </div>
+                      <div style={{ color: '#94A3B8' }}>Total</div>
+                    </div>
                   </div>
                 </div>
 
-                {/* 3rd Place */}
+                {/* 2nd Place Card */}
                 <div
                   style={{
+                    background: 'rgba(15, 23, 42, 0.9)',
+                    borderRadius: '20px',
+                    padding: '24px',
+                    border: '2px solid rgba(192, 192, 192, 0.3)',
+                    boxShadow: '0 15px 40px rgba(192, 192, 192, 0.1)',
+                    position: 'relative',
+                    animation: 'slideUpBounce 1s ease-out 0.2s both',
                     textAlign: 'center',
-                    transform: 'translateY(40px)',
-                    animation: 'slideUpBounce 1s ease-out 0.4s both',
                   }}
                 >
                   <div
                     style={{
+                      position: 'absolute',
+                      top: '-12px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'linear-gradient(135deg, #C0C0C0, #E6E6FA)',
+                      color: '#374151',
+                      fontWeight: '900',
+                      fontSize: '14px',
+                      padding: '6px 20px',
+                      borderRadius: '20px',
+                      boxShadow: '0 4px 20px rgba(192, 192, 192, 0.3)',
+                    }}
+                  >
+                    🥈 #2
+                  </div>
+
+                  <div
+                    style={{
                       width: '70px',
                       height: '70px',
-                      background: 'linear-gradient(135deg, #CD7F32, #B8860B)',
-                      borderRadius: '10px 10px 0 0',
-                      margin: '0 auto 14px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #C0C0C0, #E6E6FA)',
+                      margin: '20px auto 16px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '24px',
-                      fontWeight: '700',
-                      color: '#1F2937',
-                      boxShadow: '0 6px 20px rgba(205, 127, 50, 0.25)',
+                      fontSize: '28px',
+                      border: '3px solid rgba(192, 192, 192, 0.3)',
                     }}
                   >
-                    3
+                    ⚡
                   </div>
-                  <div style={{ fontSize: '20px', marginBottom: '10px' }}>
-                    🧠
-                  </div>
-                  <div
+
+                  <h4
                     style={{
                       color: '#F1F5F9',
-                      fontWeight: '600',
-                      fontSize: '15px',
-                      marginBottom: '6px',
+                      fontSize: '16px',
+                      fontWeight: '700',
+                      marginBottom: '8px',
+                      margin: 0,
                     }}
                   >
-                    StatsGuru99
-                  </div>
+                    QuickPick_Elite
+                  </h4>
+
                   <div
                     style={{
                       color: '#60A5FA',
-                      fontWeight: '700',
-                      fontSize: '18px',
-                      marginBottom: '5px',
+                      fontSize: '20px',
+                      fontWeight: '800',
+                      marginBottom: '8px',
                     }}
                   >
-                    2,340 coins
+                    2,398 coins
                   </div>
+
                   <div
                     style={{
                       color: '#10B981',
                       fontSize: '13px',
                       fontWeight: '600',
-                      marginBottom: '6px',
+                      marginBottom: '16px',
+                      background: 'rgba(16, 185, 129, 0.1)',
+                      padding: '4px 12px',
+                      borderRadius: '8px',
+                      display: 'inline-block',
+                    }}
+                  >
+                    +89 today
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(3, 1fr)',
+                      gap: '6px',
+                      fontSize: '10px',
+                      marginTop: '16px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: 'rgba(16, 185, 129, 0.1)',
+                        padding: '6px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <div style={{ color: '#10B981', fontWeight: '700' }}>
+                        1,280
+                      </div>
+                      <div style={{ color: '#94A3B8' }}>Safe</div>
+                    </div>
+                    <div
+                      style={{
+                        background: 'rgba(245, 158, 11, 0.1)',
+                        padding: '6px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <div style={{ color: '#F59E0B', fontWeight: '700' }}>
+                        320
+                      </div>
+                      <div style={{ color: '#94A3B8' }}>Risk</div>
+                    </div>
+                    <div
+                      style={{
+                        background: 'rgba(96, 165, 250, 0.1)',
+                        padding: '6px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <div style={{ color: '#60A5FA', fontWeight: '700' }}>
+                        1,600
+                      </div>
+                      <div style={{ color: '#94A3B8' }}>Total</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3rd Place Card */}
+                <div
+                  style={{
+                    background: 'rgba(15, 23, 42, 0.85)',
+                    borderRadius: '20px',
+                    padding: '24px',
+                    border: '2px solid rgba(205, 127, 50, 0.3)',
+                    boxShadow: '0 15px 40px rgba(205, 127, 50, 0.1)',
+                    position: 'relative',
+                    animation: 'slideUpBounce 1s ease-out 0.4s both',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '-12px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'linear-gradient(135deg, #CD7F32, #B8860B)',
+                      color: '#1F2937',
+                      fontWeight: '900',
+                      fontSize: '14px',
+                      padding: '6px 20px',
+                      borderRadius: '20px',
+                      boxShadow: '0 4px 20px rgba(205, 127, 50, 0.3)',
+                    }}
+                  >
+                    🥉 #3
+                  </div>
+
+                  <div
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #CD7F32, #B8860B)',
+                      margin: '20px auto 16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '24px',
+                      border: '3px solid rgba(205, 127, 50, 0.3)',
+                    }}
+                  >
+                    🧠
+                  </div>
+
+                  <h4
+                    style={{
+                      color: '#F1F5F9',
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      marginBottom: '8px',
+                      margin: 0,
+                    }}
+                  >
+                    StatsGuru99
+                  </h4>
+
+                  <div
+                    style={{
+                      color: '#60A5FA',
+                      fontSize: '18px',
+                      fontWeight: '700',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    2,340 coins
+                  </div>
+
+                  <div
+                    style={{
+                      color: '#10B981',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      marginBottom: '16px',
+                      background: 'rgba(16, 185, 129, 0.1)',
+                      padding: '4px 12px',
+                      borderRadius: '8px',
+                      display: 'inline-block',
                     }}
                   >
                     +67 today
                   </div>
+
                   <div
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '1px',
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(3, 1fr)',
+                      gap: '6px',
                       fontSize: '10px',
-                      color: '#94A3B8',
+                      marginTop: '16px',
                     }}
                   >
-                    <span>
-                      Safe: <span style={{ color: '#10B981' }}>980</span>
-                    </span>
-                    <span>
-                      Risk: <span style={{ color: '#F59E0B' }}>220</span>
-                    </span>
-                    <span>
-                      Total: <span style={{ color: '#60A5FA' }}>1,200</span>
-                    </span>
+                    <div
+                      style={{
+                        background: 'rgba(16, 185, 129, 0.1)',
+                        padding: '6px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <div style={{ color: '#10B981', fontWeight: '700' }}>
+                        980
+                      </div>
+                      <div style={{ color: '#94A3B8' }}>Safe</div>
+                    </div>
+                    <div
+                      style={{
+                        background: 'rgba(245, 158, 11, 0.1)',
+                        padding: '6px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <div style={{ color: '#F59E0B', fontWeight: '700' }}>
+                        220
+                      </div>
+                      <div style={{ color: '#94A3B8' }}>Risk</div>
+                    </div>
+                    <div
+                      style={{
+                        background: 'rgba(96, 165, 250, 0.1)',
+                        padding: '6px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <div style={{ color: '#60A5FA', fontWeight: '700' }}>
+                        1,200
+                      </div>
+                      <div style={{ color: '#94A3B8' }}>Total</div>
+                    </div>
                   </div>
                 </div>
               </div>
