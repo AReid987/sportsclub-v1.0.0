@@ -27,9 +27,19 @@ export default function Sidebar() {
         height: '100vh',
         zIndex: 1000,
         overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <div style={{ padding: '20px' }}>
+      <div
+        style={{
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: isCollapsed ? 'center' : 'flex-start',
+          alignItems: isCollapsed ? 'center' : 'flex-start',
+        }}
+      >
         {/* Logo */}
         <div
           style={{
