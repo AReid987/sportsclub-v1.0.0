@@ -260,30 +260,19 @@ export default function Home() {
               <span className="chrome-glow-text">
                 Sportsclub
               </span>
+            </h1>
+
+            <h2
+              style={{
                 fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
                 fontWeight: '600',
-                marginBottom: '24px',
+                marginBottom: '40px',
                 lineHeight: '1.2',
                 color: '#F1F5F9',
               }}
             >
               Play Smart. <span style={{ color: '#60A5FA' }}>Win Big.</span>
             </h2>
-
-            <p
-              style={{
-                fontSize: 'clamp(1.1rem, 2.5vw, 1.3rem)',
-                marginBottom: '40px',
-                lineHeight: '1.6',
-                color: '#CBD5E1',
-                maxWidth: '600px',
-                margin: '0 auto 40px auto',
-              }}
-            >
-              Master skill-based sports predictions with AI-powered insights.
-              Compete on leaderboards, win real prizes, and join a community of
-              data-driven sports enthusiasts.
-            </p>
 
             <div style={{ marginBottom: '32px' }}>
               <button
