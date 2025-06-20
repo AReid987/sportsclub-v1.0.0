@@ -1293,7 +1293,7 @@ export default function Home() {
                   fontSize: '1.5rem',
                   fontWeight: 'bold',
                   marginBottom: '15px',
-                  color: colors.neutral[900],
+                  color: colors.neutral[100],
                 }}
               >
                 Information Overload
@@ -1315,7 +1315,7 @@ export default function Home() {
                   fontSize: '1.5rem',
                   fontWeight: 'bold',
                   marginBottom: '15px',
-                  color: colors.neutral[900],
+                  color: colors.neutral[100],
                 }}
               >
                 High-Risk / Low Reward
@@ -1338,7 +1338,7 @@ export default function Home() {
                 fontSize: 'clamp(2.5rem, 6vw, 4rem)',
                 fontWeight: 'bold',
                 marginBottom: '20px',
-                color: colors.neutral[900],
+                color: colors.neutral[100],
               }}
             >
               How It{' '}
@@ -1429,7 +1429,7 @@ export default function Home() {
                       fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)',
                       fontWeight: 'bold',
                       marginBottom: '15px',
-                      color: colors.neutral[900],
+                      color: colors.neutral[100],
                     }}
                   >
                     {item.title}
@@ -1486,7 +1486,7 @@ export default function Home() {
                   fontSize: 'clamp(2.5rem, 6vw, 4rem)',
                   fontWeight: 'bold',
                   marginBottom: '20px',
-                  color: colors.neutral[900],
+                  color: colors.neutral[100],
                 }}
               >
                 Master Your Game with{' '}
@@ -1553,7 +1553,7 @@ export default function Home() {
                           fontSize: '1.25rem',
                           fontWeight: 'bold',
                           marginBottom: '8px',
-                          color: colors.neutral[900],
+                          color: colors.neutral[100],
                         }}
                       >
                         {feature.title}
@@ -1595,7 +1595,7 @@ export default function Home() {
                   🧠
                 </div>
                 <span
-                  style={{ fontWeight: 'bold', color: colors.neutral[900] }}
+                  style={{ fontWeight: 'bold', color: colors.neutral[100] }}
                 >
                   AI Assistant
                 </span>
@@ -1683,7 +1683,7 @@ export default function Home() {
                 fontSize: 'clamp(2.5rem, 6vw, 4rem)',
                 fontWeight: 'bold',
                 marginBottom: '20px',
-                color: colors.neutral[900],
+                color: colors.neutral[100],
               }}
             >
               Connect, Discuss,{' '}
@@ -1740,7 +1740,7 @@ export default function Home() {
                     fontSize: '1.5rem',
                     fontWeight: 'bold',
                     marginBottom: '15px',
-                    color: colors.neutral[900],
+                    color: colors.neutral[100],
                   }}
                 >
                   {feature.title}
@@ -1796,7 +1796,7 @@ export default function Home() {
                 fontSize: 'clamp(2.5rem, 6vw, 4rem)',
                 fontWeight: 'bold',
                 marginBottom: '20px',
-                color: colors.neutral[900],
+                color: colors.neutral[100],
               }}
             >
               Trusted by{' '}
@@ -1865,7 +1865,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h4
-                      style={{ fontWeight: 'bold', color: colors.neutral[900] }}
+                      style={{ fontWeight: 'bold', color: colors.neutral[100] }}
                     >
                       {testimonial.name}
                     </h4>
