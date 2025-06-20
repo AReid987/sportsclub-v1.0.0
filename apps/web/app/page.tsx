@@ -76,6 +76,9 @@ export default function Home() {
             'linear-gradient(135deg, #1a1d29 0%, #2d3748 50%, #1a202c 100%)',
           position: 'relative',
           overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         {/* Subtle dot pattern background */}
@@ -93,362 +96,479 @@ export default function Home() {
         <div style={styles.container}>
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '60px',
-              alignItems: 'center',
-              minHeight: '100vh',
-              padding: '40px 0',
+              textAlign: 'center',
+              color: colors.white,
+              maxWidth: '800px',
+              margin: '0 auto',
             }}
           >
-            {/* Left Side - Content */}
-            <div style={{ color: colors.white }}>
-              <div
-                style={{
-                  marginBottom: '24px',
-                  background: 'rgba(45, 91, 255, 0.1)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(45, 91, 255, 0.3)',
-                  padding: '8px 16px',
-                  borderRadius: '20px',
-                  display: 'inline-block',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: '#60A5FA',
-                }}
-              >
-                🏆 Join 50,000+ Smart Sports Players
-              </div>
-
-              <h1
-                style={{
-                  fontSize: 'clamp(3rem, 8vw, 6rem)',
-                  fontWeight: '900',
-                  marginBottom: '20px',
-                  lineHeight: '1.1',
-                }}
-              >
-                <span
-                  style={{
-                    background:
-                      'linear-gradient(145deg, #E5E7EB, #F9FAFB, #D1D5DB)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    textShadow: '0 0 0 #374151',
-                    WebkitTextStroke: '1px rgba(55, 65, 81, 0.8)',
-                    letterSpacing: '0.02em',
-                    textRendering: 'optimizeLegibility',
-                    WebkitFontSmoothing: 'antialiased',
-                    filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))',
-                  }}
-                >
-                  Sportsclub
-                </span>
-              </h1>
-
-              <h2
-                style={{
-                  fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-                  fontWeight: '600',
-                  marginBottom: '24px',
-                  lineHeight: '1.2',
-                  color: '#F1F5F9',
-                }}
-              >
-                Play Smart. <span style={{ color: '#60A5FA' }}>Win Big.</span>
-              </h2>
-
-              <p
-                style={{
-                  fontSize: 'clamp(1.1rem, 2.5vw, 1.3rem)',
-                  marginBottom: '40px',
-                  lineHeight: '1.6',
-                  color: '#CBD5E1',
-                  maxWidth: '500px',
-                }}
-              >
-                Master skill-based sports predictions with AI-powered insights.
-                Compete on leaderboards, win real prizes, and join a community
-                of data-driven sports enthusiasts.
-              </p>
-
-              <div style={{ marginBottom: '32px' }}>
-                <button
-                  style={{
-                    background: 'linear-gradient(135deg, #2563EB, #3B82F6)',
-                    border: 'none',
-                    borderRadius: '50px',
-                    padding: '16px 32px',
-                    fontSize: '18px',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    boxShadow: '0 8px 32px rgba(37, 99, 235, 0.4)',
-                    color: colors.white,
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.transform =
-                      'scale(1.05) translateY(-2px)';
-                    e.currentTarget.style.boxShadow =
-                      '0 12px 40px rgba(37, 99, 235, 0.6)';
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                    e.currentTarget.style.boxShadow =
-                      '0 8px 32px rgba(37, 99, 235, 0.4)';
-                  }}
-                >
-                  🎯 Join Sportsclub Now
-                </button>
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '24px',
-                  fontSize: '14px',
-                  color: '#94A3B8',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span
-                    style={{
-                      width: '8px',
-                      height: '8px',
-                      background: '#10B981',
-                      borderRadius: '50%',
-                      marginRight: '8px',
-                    }}
-                  />
-                  Free trial included
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span
-                    style={{
-                      width: '8px',
-                      height: '8px',
-                      background: '#10B981',
-                      borderRadius: '50%',
-                      marginRight: '8px',
-                    }}
-                  />
-                  Cancel anytime
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span
-                    style={{
-                      width: '8px',
-                      height: '8px',
-                      background: '#10B981',
-                      borderRadius: '50%',
-                      marginRight: '8px',
-                    }}
-                  />
-                  Real cash prizes
-                </div>
-              </div>
+            <div
+              style={{
+                marginBottom: '24px',
+                background: 'rgba(45, 91, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(45, 91, 255, 0.3)',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                display: 'inline-block',
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#60A5FA',
+              }}
+            >
+              🏆 Join 50,000+ Smart Sports Players
             </div>
 
-            {/* Right Side - Animated Leaderboard */}
+            <h1
+              style={{
+                fontSize: 'clamp(3rem, 8vw, 6rem)',
+                fontWeight: '900',
+                marginBottom: '20px',
+                lineHeight: '1.1',
+              }}
+            >
+              <span
+                style={{
+                  background:
+                    'linear-gradient(145deg, #E5E7EB, #F9FAFB, #D1D5DB)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  textShadow: '0 0 0 #374151',
+                  WebkitTextStroke: '1px rgba(55, 65, 81, 0.8)',
+                  letterSpacing: '0.02em',
+                  textRendering: 'optimizeLegibility',
+                  WebkitFontSmoothing: 'antialiased',
+                  filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))',
+                }}
+              >
+                Sportsclub
+              </span>
+            </h1>
+
+            <h2
+              style={{
+                fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+                fontWeight: '600',
+                marginBottom: '24px',
+                lineHeight: '1.2',
+                color: '#F1F5F9',
+              }}
+            >
+              Play Smart. <span style={{ color: '#60A5FA' }}>Win Big.</span>
+            </h2>
+
+            <p
+              style={{
+                fontSize: 'clamp(1.1rem, 2.5vw, 1.3rem)',
+                marginBottom: '40px',
+                lineHeight: '1.6',
+                color: '#CBD5E1',
+                maxWidth: '600px',
+                margin: '0 auto 40px auto',
+              }}
+            >
+              Master skill-based sports predictions with AI-powered insights.
+              Compete on leaderboards, win real prizes, and join a community of
+              data-driven sports enthusiasts.
+            </p>
+
+            <div style={{ marginBottom: '32px' }}>
+              <button
+                style={{
+                  background: 'linear-gradient(135deg, #2563EB, #3B82F6)',
+                  border: 'none',
+                  borderRadius: '50px',
+                  padding: '16px 32px',
+                  fontSize: '18px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 8px 32px rgba(37, 99, 235, 0.4)',
+                  color: colors.white,
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform =
+                    'scale(1.05) translateY(-2px)';
+                  e.currentTarget.style.boxShadow =
+                    '0 12px 40px rgba(37, 99, 235, 0.6)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                  e.currentTarget.style.boxShadow =
+                    '0 8px 32px rgba(37, 99, 235, 0.4)';
+                }}
+              >
+                🎯 Join Sportsclub Now
+              </button>
+            </div>
+
             <div
               style={{
                 display: 'flex',
+                flexWrap: 'wrap',
                 justifyContent: 'center',
-                alignItems: 'center',
+                gap: '24px',
+                fontSize: '14px',
+                color: '#94A3B8',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    background: '#10B981',
+                    borderRadius: '50%',
+                    marginRight: '8px',
+                  }}
+                />
+                Free trial included
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    background: '#10B981',
+                    borderRadius: '50%',
+                    marginRight: '8px',
+                  }}
+                />
+                Cancel anytime
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    background: '#10B981',
+                    borderRadius: '50%',
+                    marginRight: '8px',
+                  }}
+                />
+                Real cash prizes
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Live Leaderboard Section */}
+      <section
+        style={{
+          background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+          padding: '80px 0',
+          position: 'relative',
+        }}
+      >
+        <div style={styles.container}>
+          <div
+            style={{
+              textAlign: 'center',
+              marginBottom: '48px',
+            }}
+          >
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 5vw, 3rem)',
+                fontWeight: '700',
+                color: '#F1F5F9',
+                marginBottom: '16px',
+              }}
+            >
+              🏆 Live Competition
+            </h2>
+            <p
+              style={{
+                fontSize: '1.1rem',
+                color: '#94A3B8',
+                maxWidth: '600px',
+                margin: '0 auto',
+              }}
+            >
+              See how you stack up against thousands of players competing for
+              real prizes
+            </p>
+          </div>
+
+          <div
+            style={{
+              maxWidth: '900px',
+              margin: '0 auto',
+            }}
+          >
+            <div
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(20px)',
+                borderRadius: '24px',
+                border: '1px solid rgba(51, 65, 85, 0.6)',
+                padding: 'clamp(20px, 4vw, 40px)',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
               }}
             >
               <div
                 style={{
-                  background: 'rgba(15, 23, 42, 0.8)',
-                  backdropFilter: 'blur(20px)',
-                  borderRadius: '24px',
-                  border: '1px solid rgba(51, 65, 85, 0.6)',
-                  padding: '32px',
-                  width: '400px',
-                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '32px',
+                  paddingBottom: '20px',
+                  borderBottom: '1px solid rgba(51, 65, 85, 0.6)',
+                  flexWrap: 'wrap',
+                  gap: '16px',
                 }}
               >
-                <div
+                <h3
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginBottom: '24px',
-                    paddingBottom: '16px',
-                    borderBottom: '1px solid rgba(51, 65, 85, 0.6)',
+                    color: '#F1F5F9',
+                    fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
+                    fontWeight: '700',
+                    margin: 0,
                   }}
                 >
-                  <h3
-                    style={{
-                      color: '#F1F5F9',
-                      fontSize: '20px',
-                      fontWeight: '700',
-                      margin: 0,
-                    }}
-                  >
-                    🏆 Live Leaderboard
-                  </h3>
-                  <div
-                    style={{
-                      background: 'rgba(16, 185, 129, 0.2)',
-                      color: '#10B981',
-                      padding: '4px 12px',
-                      borderRadius: '12px',
-                      fontSize: '12px',
-                      fontWeight: '600',
-                    }}
-                  >
-                    LIVE
-                  </div>
+                  December Leaderboard
+                </h3>
+                <div
+                  style={{
+                    background: 'rgba(16, 185, 129, 0.2)',
+                    color: '#10B981',
+                    padding: '6px 16px',
+                    borderRadius: '12px',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                  }}
+                >
+                  LIVE UPDATES
                 </div>
+              </div>
 
-                <div style={{ space: '16px 0' }}>
-                  {[
-                    {
-                      rank: 1,
-                      name: 'DataMaster_Pro',
-                      score: 2450,
-                      change: '+125',
-                      trend: 'up',
-                      avatar: '����',
-                    },
-                    {
-                      rank: 2,
-                      name: 'PredictionKing',
-                      score: 2380,
-                      change: '+89',
-                      trend: 'up',
-                      avatar: '👑',
-                    },
-                    {
-                      rank: 3,
-                      name: 'StatsGuru99',
-                      score: 2340,
-                      change: '+67',
-                      trend: 'up',
-                      avatar: '🧠',
-                    },
-                    {
-                      rank: 4,
-                      name: 'SportsSage',
-                      score: 2290,
-                      change: '+45',
-                      trend: 'up',
-                      avatar: '⚡',
-                    },
-                    {
-                      rank: 5,
-                      name: 'You',
-                      score: 1890,
-                      change: '+156',
-                      trend: 'up',
-                      avatar: '🎯',
-                      highlight: true,
-                    },
-                  ].map((player, index) => (
-                    <div
-                      key={index}
+              <div
+                style={{
+                  display: 'grid',
+                  gap: '12px',
+                }}
+              >
+                {[
+                  {
+                    rank: 1,
+                    name: 'DataMaster_Pro',
+                    score: 2450,
+                    change: '+125',
+                    trend: 'up',
+                    avatar: '🔥',
+                  },
+                  {
+                    rank: 2,
+                    name: 'PredictionKing',
+                    score: 2380,
+                    change: '+89',
+                    trend: 'up',
+                    avatar: '👑',
+                  },
+                  {
+                    rank: 3,
+                    name: 'StatsGuru99',
+                    score: 2340,
+                    change: '+67',
+                    trend: 'up',
+                    avatar: '🧠',
+                  },
+                  {
+                    rank: 4,
+                    name: 'SportsSage',
+                    score: 2290,
+                    change: '+45',
+                    trend: 'up',
+                    avatar: '⚡',
+                  },
+                  {
+                    rank: 5,
+                    name: 'You',
+                    score: 1890,
+                    change: '+156',
+                    trend: 'up',
+                    avatar: '🎯',
+                    highlight: true,
+                  },
+                  {
+                    rank: 6,
+                    name: 'AIPredictor',
+                    score: 1845,
+                    change: '+23',
+                    trend: 'up',
+                    avatar: '🤖',
+                  },
+                  {
+                    rank: 7,
+                    name: 'ScoreWizard',
+                    score: 1790,
+                    change: '+67',
+                    trend: 'up',
+                    avatar: '🧙‍♂️',
+                  },
+                  {
+                    rank: 8,
+                    name: 'BetMaster88',
+                    score: 1756,
+                    change: '+34',
+                    trend: 'up',
+                    avatar: '💰',
+                  },
+                ].map((player, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'auto auto 1fr auto auto',
+                      alignItems: 'center',
+                      padding: 'clamp(12px, 3vw, 16px)',
+                      borderRadius: '12px',
+                      background: player.highlight
+                        ? 'rgba(37, 99, 235, 0.15)'
+                        : 'rgba(51, 65, 85, 0.3)',
+                      border: player.highlight
+                        ? '1px solid rgba(37, 99, 235, 0.4)'
+                        : '1px solid transparent',
+                      transition: 'all 0.3s ease',
+                      animation: player.highlight
+                        ? 'pulse 2s infinite'
+                        : 'none',
+                      gap: 'clamp(8px, 2vw, 16px)',
+                    }}
+                  >
+                    <span
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: '12px 16px',
-                        margin: '8px 0',
-                        borderRadius: '12px',
-                        background: player.highlight
-                          ? 'rgba(37, 99, 235, 0.15)'
-                          : 'rgba(51, 65, 85, 0.3)',
-                        border: player.highlight
-                          ? '1px solid rgba(37, 99, 235, 0.4)'
-                          : '1px solid transparent',
-                        transition: 'all 0.3s ease',
-                        animation: player.highlight
-                          ? 'pulse 2s infinite'
-                          : 'none',
+                        fontSize: 'clamp(14px, 2.5vw, 16px)',
+                        fontWeight: '700',
+                        color: player.rank <= 3 ? '#F59E0B' : '#64748B',
+                        minWidth: 'clamp(20px, 4vw, 30px)',
                       }}
                     >
+                      #{player.rank}
+                    </span>
+
+                    <span style={{ fontSize: 'clamp(18px, 3vw, 22px)' }}>
+                      {player.avatar}
+                    </span>
+
+                    <div>
                       <div
                         style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '12px',
-                          flex: 1,
+                          color: player.highlight ? '#60A5FA' : '#F1F5F9',
+                          fontWeight: '600',
+                          fontSize: 'clamp(14px, 2.5vw, 16px)',
                         }}
                       >
-                        <span
-                          style={{
-                            fontSize: '14px',
-                            fontWeight: '700',
-                            color: player.rank <= 3 ? '#F59E0B' : '#64748B',
-                            minWidth: '20px',
-                          }}
-                        >
-                          #{player.rank}
-                        </span>
-
-                        <span style={{ fontSize: '20px' }}>
-                          {player.avatar}
-                        </span>
-
-                        <div style={{ flex: 1 }}>
-                          <div
-                            style={{
-                              color: player.highlight ? '#60A5FA' : '#F1F5F9',
-                              fontWeight: '600',
-                              fontSize: '14px',
-                            }}
-                          >
-                            {player.name}
-                          </div>
-                          <div
-                            style={{
-                              color: '#94A3B8',
-                              fontSize: '12px',
-                            }}
-                          >
-                            {player.score.toLocaleString()} pts
-                          </div>
-                        </div>
-
-                        <div
-                          style={{
-                            color: '#10B981',
-                            fontSize: '12px',
-                            fontWeight: '600',
-                            padding: '2px 8px',
-                            background: 'rgba(16, 185, 129, 0.1)',
-                            borderRadius: '8px',
-                          }}
-                        >
-                          {player.change}
-                        </div>
+                        {player.name}
+                      </div>
+                      <div
+                        style={{
+                          color: '#94A3B8',
+                          fontSize: 'clamp(12px, 2vw, 14px)',
+                        }}
+                      >
+                        {player.score.toLocaleString()} pts
                       </div>
                     </div>
-                  ))}
-                </div>
 
-                <div
-                  style={{
-                    marginTop: '24px',
-                    paddingTop: '16px',
-                    borderTop: '1px solid rgba(51, 65, 85, 0.6)',
-                    textAlign: 'center',
-                  }}
-                >
+                    <div
+                      style={{
+                        color: '#10B981',
+                        fontSize: 'clamp(12px, 2vw, 14px)',
+                        fontWeight: '600',
+                        padding: '4px 8px',
+                        background: 'rgba(16, 185, 129, 0.1)',
+                        borderRadius: '8px',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {player.change}
+                    </div>
+
+                    <div
+                      style={{
+                        color: '#10B981',
+                        fontSize: 'clamp(12px, 2vw, 14px)',
+                      }}
+                    >
+                      ↗️
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div
+                style={{
+                  marginTop: '32px',
+                  paddingTop: '24px',
+                  borderTop: '1px solid rgba(51, 65, 85, 0.6)',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: '24px',
+                  textAlign: 'center',
+                }}
+              >
+                <div>
                   <div
                     style={{
                       color: '#F59E0B',
-                      fontSize: '24px',
+                      fontSize: 'clamp(1.5rem, 4vw, 2rem)',
                       fontWeight: '700',
                       marginBottom: '4px',
                     }}
                   >
                     $12,500
                   </div>
-                  <div style={{ color: '#94A3B8', fontSize: '12px' }}>
-                    Total Prize Pool This Month
+                  <div
+                    style={{
+                      color: '#94A3B8',
+                      fontSize: 'clamp(12px, 2vw, 14px)',
+                    }}
+                  >
+                    Total Prize Pool
+                  </div>
+                </div>
+                <div>
+                  <div
+                    style={{
+                      color: '#10B981',
+                      fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+                      fontWeight: '700',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    2,847
+                  </div>
+                  <div
+                    style={{
+                      color: '#94A3B8',
+                      fontSize: 'clamp(12px, 2vw, 14px)',
+                    }}
+                  >
+                    Active Players
+                  </div>
+                </div>
+                <div>
+                  <div
+                    style={{
+                      color: '#60A5FA',
+                      fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+                      fontWeight: '700',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    18 Days
+                  </div>
+                  <div
+                    style={{
+                      color: '#94A3B8',
+                      fontSize: 'clamp(12px, 2vw, 14px)',
+                    }}
+                  >
+                    Time Remaining
                   </div>
                 </div>
               </div>
