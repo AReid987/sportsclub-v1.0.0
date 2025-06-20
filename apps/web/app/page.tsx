@@ -13,9 +13,155 @@ const colors = {
     900: '#171717',
   },
   success: '#00C853',
+  error: '#FF1744',
   white: '#FFFFFF',
 };
 
+// Countdown Timer Component (Client-side only)
+function CountdownTimer() {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      const payout = new Date(nextMonth.getTime() - 5 * 60 * 60 * 1000); // EST = UTC-5
+      const diff = payout.getTime() - now.getTime();
+
+      if (diff > 0) {
+        setTimeLeft({
+          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((diff % (1000 * 60)) / 1000),
+        });
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  if (!mounted) {
+    // Return placeholder during SSR to prevent hydration mismatch
+    return (
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '12px',
+          marginBottom: '8px',
+        }}
+      >
+        {['Days', 'Hours', 'Minutes', 'Seconds'].map((unit) => (
+          <div
+            key={unit}
+            style={{
+              background: 'rgba(251, 191, 36, 0.1)',
+              borderRadius: '8px',
+              padding: '8px 4px',
+            }}
+          >
+            <div
+              style={{
+                color: '#FCD34D',
+                fontSize: '18px',
+                fontWeight: '700',
+                fontFamily: 'monospace',
+              }}
+            >
+              --
+            </div>
+            <div
+              style={{
+                color: '#FEF3C7',
+                fontSize: '10px',
+                fontWeight: '500',
+              }}
+            >
+              {unit}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        gap: '12px',
+        marginBottom: '8px',
+      }}
+    >
+      {Object.entries(timeLeft).map(([unit, value]) => (
+        <div
+          key={unit}
+          style={{
+            background: 'rgba(251, 191, 36, 0.1)',
+            borderRadius: '8px',
+            padding: '8px 4px',
+          }}
+        >
+          <div
+            style={{
+              color: '#FCD34D',
+              fontSize: '18px',
+              fontWeight: '700',
+              fontFamily: 'monospace',
+            }}
+          >
+            {String(value).padStart(2, '0')}
+          </div>
+          <div
+            style={{
+              color: '#FEF3C7',
+              fontSize: '10px',
+              fontWeight: '500',
+            }}
+          >
+            {unit.charAt(0).toUpperCase() + unit.slice(1)}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Get current month name (static, safe for SSR)
+function getCurrentMonthYear() {
+  // Use a fixed date approach that's safe for SSR
+  if (typeof window === 'undefined') {
+    return 'Loading...';
+  }
+  return new Date().toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+// Calculate days remaining (client-side safe)
+function getDaysRemaining() {
+  if (typeof window === 'undefined') {
+    return '--';
+  }
+  const now = new Date();
+  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  const diff = nextMonth.getTime() - now.getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
 // Styles
 const styles = {
   container: {
@@ -291,17 +437,7 @@ export default function Home() {
                   fontSize: '12px',
                 }}
               >
-                Until{' '}
-                {new Date(
-                  new Date().getFullYear(),
-                  new Date().getMonth() + 1,
-                  1,
-                ).toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric',
-                })}{' '}
-                12:00 AM EST
+                Until next month's payout 12:00 AM EST
               </div>
             </div>
           </div>
@@ -434,11 +570,7 @@ export default function Home() {
                     margin: 0,
                   }}
                 >
-                  {new Date().toLocaleDateString('en-US', {
-                    month: 'long',
-                    year: 'numeric',
-                  })}{' '}
-                  Leaderboard
+                  {getCurrentMonthYear()} Leaderboard
                 </h3>
                 <div
                   style={{
@@ -873,18 +1005,7 @@ export default function Home() {
                       marginBottom: '4px',
                     }}
                   >
-                    {(() => {
-                      const now = new Date();
-                      const nextMonth = new Date(
-                        now.getFullYear(),
-                        now.getMonth() + 1,
-                        1,
-                      );
-                      const diff = nextMonth.getTime() - now.getTime();
-                      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                      return days;
-                    })()}{' '}
-                    Days
+                    {getDaysRemaining()} Days
                   </div>
                   <div
                     style={{
