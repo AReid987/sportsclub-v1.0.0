@@ -1259,7 +1259,7 @@ export default function Home() {
                 fontSize: 'clamp(2.5rem, 6vw, 4rem)',
                 fontWeight: 'bold',
                 marginBottom: '20px',
-                color: colors.neutral[900],
+                color: colors.neutral[100],
               }}
             >
               Stop Guessing. Start{' '}
