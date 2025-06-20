@@ -10,7 +10,6 @@ import { GamificationSection } from './sections/GamificationSection.tsx';
 import { TestimonialsSection } from './sections/TestimonialsSection.tsx';
 import { FinalCTASection } from './sections/FinalCTASection.tsx';
 import { Footer } from './sections/Footer.tsx';
-
 export function LandingPage() {
   return (
     <main className="min-h-screen">

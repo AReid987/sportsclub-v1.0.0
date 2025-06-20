@@ -5,8 +5,14 @@
    ▲ Next.js 15.3.0
 
    Creating an optimized production build ...
+lint
  ✓ Compiled successfully in 3.0s
    Linting and checking validity of types ...
+
+./app/layout.tsx
+3:10  Warning: 'Analytics' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
    Collecting page data ...
    Generating static pages (0/5) ...
    Generating static pages (1/5)
