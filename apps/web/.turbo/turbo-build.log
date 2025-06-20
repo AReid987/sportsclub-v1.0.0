@@ -5,7 +5,8 @@
    ▲ Next.js 15.3.0
 
    Creating an optimized production build ...
- ✓ Compiled successfully in 4.0s
+lint
+ ✓ Compiled successfully in 3.0s
    Linting and checking validity of types ...
 
 ./app/layout.tsx
@@ -22,11 +23,11 @@ info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/d
    Collecting build traces ...
 
 Route (app)                                 Size  First Load JS
-┌ ○ /                                    5.91 kB         107 kB
+┌ ○ /                                    57.9 kB         159 kB
 └ ○ /_not-found                            973 B         102 kB
 + First Load JS shared by all             101 kB
-  ├ chunks/272-2e5de07dfcc047b0.js       46.2 kB
-  ├ chunks/7037dcde-51f9c4b323de930e.js  53.2 kB
+  ├ chunks/272-f7c6fd9a3bc57741.js       46.2 kB
+  ├ chunks/7037dcde-5ebe0e385538f64e.js  53.2 kB
   └ other shared chunks (total)          1.89 kB
 
 

@@ -11,8 +11,9 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"]
-    }
+      "@/lib/*": ["./lib/*"]
+    },
+    "allowImportingTsExtensions": true
   },
   "include": [
     "**/*.ts",
