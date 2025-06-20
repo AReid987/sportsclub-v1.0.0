@@ -1,0 +1,28 @@
+
+> @sportsclub/web@0.1.0 build /app/apps/web
+> next build
+
+   ▲ Next.js 15.3.0
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 3.0s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/5) ...
+   Generating static pages (1/5)
+   Generating static pages (2/5)
+   Generating static pages (3/5)
+ ✓ Generating static pages (5/5)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    57.9 kB         159 kB
+└ ○ /_not-found                            973 B         102 kB
++ First Load JS shared by all             101 kB
+  ├ chunks/272-f7c6fd9a3bc57741.js       46.2 kB
+  ├ chunks/7037dcde-5ebe0e385538f64e.js  53.2 kB
+  └ other shared chunks (total)          1.89 kB
+
+
+○  (Static)  prerendered as static content
