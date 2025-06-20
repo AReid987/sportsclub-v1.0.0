@@ -479,55 +479,152 @@ export default function Home() {
               position: 'relative',
             }}
           >
-            {/* User's Rank - Relocated to bottom-left */}
+            {/* User's Rank - Sticky leaderboard row style */}
             <div
               style={{
-                position: 'absolute',
-                bottom: '20px',
-                left: '20px',
-                zIndex: 10,
-                background: 'rgba(37, 99, 235, 0.9)',
+                position: 'sticky',
+                top: '80px',
+                zIndex: 20,
+                margin: '0 0 16px 0',
+                background: 'rgba(37, 99, 235, 0.95)',
                 backdropFilter: 'blur(10px)',
-                borderRadius: '16px',
+                borderRadius: '12px',
                 padding: '16px 20px',
                 border: '1px solid rgba(37, 99, 235, 0.4)',
                 boxShadow: '0 8px 32px rgba(37, 99, 235, 0.3)',
                 animation: 'pulse 2s infinite',
-                minWidth: '140px',
               }}
             >
               <div
                 style={{
-                  color: '#60A5FA',
-                  fontSize: '11px',
-                  fontWeight: '600',
-                  marginBottom: '6px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                }}
-              >
-                Your Rank
-              </div>
-              <div
-                style={{
-                  display: 'flex',
+                  display: 'grid',
+                  gridTemplateColumns: '60px 1fr auto',
                   alignItems: 'center',
-                  gap: '10px',
+                  gap: '16px',
                 }}
               >
-                <span style={{ fontSize: '18px' }}>🎯</span>
-                <div>
+                {/* Rank and Avatar */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '40px',
+                      height: '40px',
+                      background: 'rgba(71, 85, 105, 0.8)',
+                      borderRadius: '12px',
+                      color: '#CBD5E1',
+                      fontSize: '16px',
+                      fontWeight: '800',
+                      border: '1px solid rgba(148, 163, 184, 0.2)',
+                    }}
+                  >
+                    47
+                  </div>
+                  <div style={{ fontSize: '24px' }}>🎯</div>
+                </div>
+
+                {/* Name and Score */}
+                <div style={{ minWidth: 0 }}>
                   <div
                     style={{
                       color: '#F1F5F9',
-                      fontWeight: '800',
+                      fontWeight: '700',
                       fontSize: '16px',
+                      marginBottom: '6px',
                     }}
                   >
-                    #47
+                    You
                   </div>
-                  <div style={{ color: '#CBD5E1', fontSize: '11px' }}>
-                    1,890 coins
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: '#60A5FA',
+                        fontWeight: '800',
+                        fontSize: '15px',
+                      }}
+                    >
+                      1,890 coins
+                    </span>
+                    <span
+                      style={{
+                        color: '#10B981',
+                        fontSize: '13px',
+                        fontWeight: '700',
+                        background: 'rgba(16, 185, 129, 0.1)',
+                        padding: '2px 6px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      +12
+                    </span>
+                  </div>
+                </div>
+
+                {/* Coin Breakdown */}
+                <div
+                  style={{
+                    textAlign: 'right',
+                    fontSize: '12px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '4px',
+                    minWidth: '90px',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <span style={{ color: '#94A3B8' }}>Safe:</span>
+                    <span style={{ color: '#10B981', fontWeight: '700' }}>
+                      680
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <span style={{ color: '#94A3B8' }}>Risk:</span>
+                    <span style={{ color: '#F59E0B', fontWeight: '700' }}>
+                      120
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      paddingTop: '4px',
+                      borderTop: '1px solid rgba(71, 85, 105, 0.4)',
+                    }}
+                  >
+                    <span style={{ color: '#CBD5E1', fontWeight: '600' }}>
+                      Total:
+                    </span>
+                    <span style={{ color: '#60A5FA', fontWeight: '800' }}>
+                      800
+                    </span>
                   </div>
                 </div>
               </div>
@@ -591,158 +688,25 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Top 3 Players - Card Layout */}
+              {/* Top 3 Players - Podium Layout */}
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                  gap: '24px',
+                  gridTemplateColumns: '1fr 1.4fr 1fr',
+                  gap: '20px',
                   marginBottom: '40px',
+                  alignItems: 'end',
+                  maxWidth: '800px',
+                  margin: '0 auto 40px auto',
                 }}
               >
-                {/* 1st Place Card */}
+                {/* 2nd Place - Left */}
                 <div
                   style={{
-                    background: 'rgba(15, 23, 42, 0.95)',
-                    borderRadius: '20px',
-                    padding: '24px',
-                    border: '2px solid rgba(255, 215, 0, 0.3)',
-                    boxShadow: '0 20px 60px rgba(255, 215, 0, 0.15)',
-                    position: 'relative',
-                    animation: 'slideUpBounce 1s ease-out both',
-                    textAlign: 'center',
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '-12px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      background: 'linear-gradient(135deg, #FFD700, #FFA500)',
-                      color: '#92400E',
-                      fontWeight: '900',
-                      fontSize: '14px',
-                      padding: '6px 20px',
-                      borderRadius: '20px',
-                      boxShadow: '0 4px 20px rgba(255, 215, 0, 0.4)',
-                    }}
-                  >
-                    🏆 #1
-                  </div>
-
-                  <div
-                    style={{
-                      width: '80px',
-                      height: '80px',
-                      borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #FFD700, #FFA500)',
-                      margin: '20px auto 16px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '32px',
-                      border: '4px solid rgba(255, 215, 0, 0.3)',
-                    }}
-                  >
-                    🔥
-                  </div>
-
-                  <h4
-                    style={{
-                      color: '#F1F5F9',
-                      fontSize: '18px',
-                      fontWeight: '800',
-                      marginBottom: '8px',
-                      margin: 0,
-                    }}
-                  >
-                    DataMaster_Pro
-                  </h4>
-
-                  <div
-                    style={{
-                      color: '#FCD34D',
-                      fontSize: '24px',
-                      fontWeight: '900',
-                      marginBottom: '8px',
-                      textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-                    }}
-                  >
-                    2,450 coins
-                  </div>
-
-                  <div
-                    style={{
-                      color: '#10B981',
-                      fontSize: '14px',
-                      fontWeight: '700',
-                      marginBottom: '16px',
-                      background: 'rgba(16, 185, 129, 0.1)',
-                      padding: '4px 12px',
-                      borderRadius: '8px',
-                      display: 'inline-block',
-                    }}
-                  >
-                    +125 today
-                  </div>
-
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(3, 1fr)',
-                      gap: '8px',
-                      fontSize: '11px',
-                      marginTop: '16px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        background: 'rgba(16, 185, 129, 0.1)',
-                        padding: '6px',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      <div style={{ color: '#10B981', fontWeight: '700' }}>
-                        1,800
-                      </div>
-                      <div style={{ color: '#94A3B8' }}>Safe</div>
-                    </div>
-                    <div
-                      style={{
-                        background: 'rgba(245, 158, 11, 0.1)',
-                        padding: '6px',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      <div style={{ color: '#F59E0B', fontWeight: '700' }}>
-                        200
-                      </div>
-                      <div style={{ color: '#94A3B8' }}>Risk</div>
-                    </div>
-                    <div
-                      style={{
-                        background: 'rgba(96, 165, 250, 0.1)',
-                        padding: '6px',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      <div style={{ color: '#60A5FA', fontWeight: '700' }}>
-                        2,000
-                      </div>
-                      <div style={{ color: '#94A3B8' }}>Total</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 2nd Place Card */}
-                <div
-                  style={{
-                    background: 'rgba(15, 23, 42, 0.9)',
-                    borderRadius: '20px',
-                    padding: '24px',
-                    border: '2px solid rgba(192, 192, 192, 0.3)',
-                    boxShadow: '0 15px 40px rgba(192, 192, 192, 0.1)',
+                    background: '#0f172a',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    border: '1px solid #475569',
                     position: 'relative',
                     animation: 'slideUpBounce 1s ease-out 0.2s both',
                     textAlign: 'center',
@@ -750,42 +714,43 @@ export default function Home() {
                 >
                   <div
                     style={{
-                      position: 'absolute',
-                      top: '-12px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      background: 'linear-gradient(135deg, #C0C0C0, #E6E6FA)',
-                      color: '#374151',
-                      fontWeight: '900',
-                      fontSize: '14px',
-                      padding: '6px 20px',
-                      borderRadius: '20px',
-                      boxShadow: '0 4px 20px rgba(192, 192, 192, 0.3)',
-                    }}
-                  >
-                    🥈 #2
-                  </div>
-
-                  <div
-                    style={{
-                      width: '70px',
-                      height: '70px',
+                      width: '60px',
+                      height: '60px',
                       borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #C0C0C0, #E6E6FA)',
-                      margin: '20px auto 16px',
+                      background: 'linear-gradient(135deg, #94a3b8, #cbd5e1)',
+                      margin: '0 auto 16px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '28px',
-                      border: '3px solid rgba(192, 192, 192, 0.3)',
+                      fontSize: '24px',
+                      position: 'relative',
                     }}
                   >
                     ⚡
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '-8px',
+                        right: '-8px',
+                        width: '24px',
+                        height: '24px',
+                        background: 'linear-gradient(135deg, #94a3b8, #cbd5e1)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px',
+                        fontWeight: '800',
+                        color: '#1e293b',
+                      }}
+                    >
+                      2
+                    </div>
                   </div>
 
                   <h4
                     style={{
-                      color: '#F1F5F9',
+                      color: '#f1f5f9',
                       fontSize: '16px',
                       fontWeight: '700',
                       marginBottom: '8px',
@@ -797,8 +762,8 @@ export default function Home() {
 
                   <div
                     style={{
-                      color: '#60A5FA',
-                      fontSize: '20px',
+                      color: '#60a5fa',
+                      fontSize: '18px',
                       fontWeight: '800',
                       marginBottom: '8px',
                     }}
@@ -808,75 +773,117 @@ export default function Home() {
 
                   <div
                     style={{
-                      color: '#10B981',
-                      fontSize: '13px',
+                      color: '#10b981',
+                      fontSize: '12px',
                       fontWeight: '600',
-                      marginBottom: '16px',
-                      background: 'rgba(16, 185, 129, 0.1)',
-                      padding: '4px 12px',
-                      borderRadius: '8px',
+                      background: '#064e3b',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
                       display: 'inline-block',
                     }}
                   >
                     +89 today
                   </div>
+                </div>
+
+                {/* 1st Place - Center (Larger) */}
+                <div
+                  style={{
+                    background: '#0f172a',
+                    borderRadius: '20px',
+                    padding: '28px',
+                    border: '2px solid #fbbf24',
+                    boxShadow: '0 20px 60px rgba(251, 191, 36, 0.15)',
+                    position: 'relative',
+                    animation: 'slideUpBounce 1s ease-out both',
+                    textAlign: 'center',
+                    transform: 'scale(1.1)',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '80px',
+                      height: '80px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                      margin: '0 auto 20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '32px',
+                      position: 'relative',
+                      border: '3px solid rgba(251, 191, 36, 0.3)',
+                    }}
+                  >
+                    🔥
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '-12px',
+                        right: '-12px',
+                        width: '32px',
+                        height: '32px',
+                        background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '16px',
+                        fontWeight: '900',
+                        color: '#92400e',
+                        boxShadow: '0 4px 20px rgba(251, 191, 36, 0.4)',
+                      }}
+                    >
+                      1
+                    </div>
+                  </div>
+
+                  <h4
+                    style={{
+                      color: '#f1f5f9',
+                      fontSize: '20px',
+                      fontWeight: '800',
+                      marginBottom: '12px',
+                      margin: 0,
+                    }}
+                  >
+                    DataMaster_Pro
+                  </h4>
 
                   <div
                     style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(3, 1fr)',
-                      gap: '6px',
-                      fontSize: '10px',
-                      marginTop: '16px',
+                      color: '#fcd34d',
+                      fontSize: '26px',
+                      fontWeight: '900',
+                      marginBottom: '12px',
+                      textShadow: '0 2px 4px rgba(0,0,0,0.3)',
                     }}
                   >
-                    <div
-                      style={{
-                        background: 'rgba(16, 185, 129, 0.1)',
-                        padding: '6px',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      <div style={{ color: '#10B981', fontWeight: '700' }}>
-                        1,280
-                      </div>
-                      <div style={{ color: '#94A3B8' }}>Safe</div>
-                    </div>
-                    <div
-                      style={{
-                        background: 'rgba(245, 158, 11, 0.1)',
-                        padding: '6px',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      <div style={{ color: '#F59E0B', fontWeight: '700' }}>
-                        320
-                      </div>
-                      <div style={{ color: '#94A3B8' }}>Risk</div>
-                    </div>
-                    <div
-                      style={{
-                        background: 'rgba(96, 165, 250, 0.1)',
-                        padding: '6px',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      <div style={{ color: '#60A5FA', fontWeight: '700' }}>
-                        1,600
-                      </div>
-                      <div style={{ color: '#94A3B8' }}>Total</div>
-                    </div>
+                    2,450 coins
+                  </div>
+
+                  <div
+                    style={{
+                      color: '#10b981',
+                      fontSize: '14px',
+                      fontWeight: '700',
+                      background: '#064e3b',
+                      padding: '6px 12px',
+                      borderRadius: '8px',
+                      display: 'inline-block',
+                    }}
+                  >
+                    +125 today
                   </div>
                 </div>
 
-                {/* 3rd Place Card */}
+                {/* 3rd Place - Right */}
                 <div
                   style={{
-                    background: 'rgba(15, 23, 42, 0.85)',
-                    borderRadius: '20px',
-                    padding: '24px',
-                    border: '2px solid rgba(205, 127, 50, 0.3)',
-                    boxShadow: '0 15px 40px rgba(205, 127, 50, 0.1)',
+                    background: '#0f172a',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    border: '1px solid #475569',
                     position: 'relative',
                     animation: 'slideUpBounce 1s ease-out 0.4s both',
                     textAlign: 'center',
@@ -884,42 +891,43 @@ export default function Home() {
                 >
                   <div
                     style={{
-                      position: 'absolute',
-                      top: '-12px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      background: 'linear-gradient(135deg, #CD7F32, #B8860B)',
-                      color: '#1F2937',
-                      fontWeight: '900',
-                      fontSize: '14px',
-                      padding: '6px 20px',
-                      borderRadius: '20px',
-                      boxShadow: '0 4px 20px rgba(205, 127, 50, 0.3)',
-                    }}
-                  >
-                    🥉 #3
-                  </div>
-
-                  <div
-                    style={{
                       width: '60px',
                       height: '60px',
                       borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #CD7F32, #B8860B)',
-                      margin: '20px auto 16px',
+                      background: 'linear-gradient(135deg, #a16207, #ca8a04)',
+                      margin: '0 auto 16px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: '24px',
-                      border: '3px solid rgba(205, 127, 50, 0.3)',
+                      position: 'relative',
                     }}
                   >
                     🧠
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '-8px',
+                        right: '-8px',
+                        width: '24px',
+                        height: '24px',
+                        background: 'linear-gradient(135deg, #a16207, #ca8a04)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px',
+                        fontWeight: '800',
+                        color: '#1e293b',
+                      }}
+                    >
+                      3
+                    </div>
                   </div>
 
                   <h4
                     style={{
-                      color: '#F1F5F9',
+                      color: '#f1f5f9',
                       fontSize: '15px',
                       fontWeight: '600',
                       marginBottom: '8px',
@@ -931,8 +939,8 @@ export default function Home() {
 
                   <div
                     style={{
-                      color: '#60A5FA',
-                      fontSize: '18px',
+                      color: '#60a5fa',
+                      fontSize: '17px',
                       fontWeight: '700',
                       marginBottom: '8px',
                     }}
@@ -942,64 +950,16 @@ export default function Home() {
 
                   <div
                     style={{
-                      color: '#10B981',
+                      color: '#10b981',
                       fontSize: '12px',
                       fontWeight: '600',
-                      marginBottom: '16px',
-                      background: 'rgba(16, 185, 129, 0.1)',
-                      padding: '4px 12px',
-                      borderRadius: '8px',
+                      background: '#064e3b',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
                       display: 'inline-block',
                     }}
                   >
                     +67 today
-                  </div>
-
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(3, 1fr)',
-                      gap: '6px',
-                      fontSize: '10px',
-                      marginTop: '16px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        background: 'rgba(16, 185, 129, 0.1)',
-                        padding: '6px',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      <div style={{ color: '#10B981', fontWeight: '700' }}>
-                        980
-                      </div>
-                      <div style={{ color: '#94A3B8' }}>Safe</div>
-                    </div>
-                    <div
-                      style={{
-                        background: 'rgba(245, 158, 11, 0.1)',
-                        padding: '6px',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      <div style={{ color: '#F59E0B', fontWeight: '700' }}>
-                        220
-                      </div>
-                      <div style={{ color: '#94A3B8' }}>Risk</div>
-                    </div>
-                    <div
-                      style={{
-                        background: 'rgba(96, 165, 250, 0.1)',
-                        padding: '6px',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      <div style={{ color: '#60A5FA', fontWeight: '700' }}>
-                        1,200
-                      </div>
-                      <div style={{ color: '#94A3B8' }}>Total</div>
-                    </div>
                   </div>
                 </div>
               </div>
