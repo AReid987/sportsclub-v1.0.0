@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: sportsclub
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install PDM
+        run: pip install pdm
+
+      - name: Install dependencies (JS/TS)
+        run: pnpm install
+
+      - name: Install dependencies (Python)
+        run: pdm install
+
+      - name: Run Turborepo build
+        run: pnpm turbo run build
+
+      - name: Run Turborepo lint
+        run: pnpm turbo run lint
+
+      - name: Run ESLint and Prettier checks
+        run: |
+          pnpm exec eslint . --ext .js,.jsx,.ts,.tsx
+          pnpm exec prettier --check .
+
+      - name: Run Black and Flake8 checks
+        run: |
+          pdm run black --check .
+          pdm run flake8 .
