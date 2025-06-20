@@ -1,0 +1,33 @@
+
+> @sportsclub/web@0.1.0 build /app/apps/web
+> next build
+
+   ▲ Next.js 15.3.0
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 4.0s
+   Linting and checking validity of types ...
+
+./app/layout.tsx
+3:10  Warning: 'Analytics' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/5) ...
+   Generating static pages (1/5)
+   Generating static pages (2/5)
+   Generating static pages (3/5)
+ ✓ Generating static pages (5/5)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    5.91 kB         107 kB
+└ ○ /_not-found                            973 B         102 kB
++ First Load JS shared by all             101 kB
+  ├ chunks/272-2e5de07dfcc047b0.js       46.2 kB
+  ├ chunks/7037dcde-51f9c4b323de930e.js  53.2 kB
+  └ other shared chunks (total)          1.89 kB
+
+
+○  (Static)  prerendered as static content
