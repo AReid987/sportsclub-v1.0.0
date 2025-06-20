@@ -140,27 +140,47 @@ function CountdownTimer() {
   );
 }
 
-// Get current month name (static, safe for SSR)
-function getCurrentMonthYear() {
-  // Use a fixed date approach that's safe for SSR
-  if (typeof window === 'undefined') {
-    return 'Loading...';
+// Month Display Component (Client-side only)
+function MonthDisplay() {
+  const [monthYear, setMonthYear] = useState('');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setMonthYear(
+      new Date().toLocaleDateString('en-US', {
+        month: 'long',
+        year: 'numeric',
+      }),
+    );
+  }, []);
+
+  if (!mounted) {
+    // Return placeholder during SSR
+    return <span>Current Month</span>;
   }
-  return new Date().toLocaleDateString('en-US', {
-    month: 'long',
-    year: 'numeric',
-  });
+
+  return <span>{monthYear}</span>;
 }
 
-// Calculate days remaining (client-side safe)
-function getDaysRemaining() {
-  if (typeof window === 'undefined') {
-    return '--';
+// Days Remaining Component (Client-side only)
+function DaysRemaining() {
+  const [days, setDays] = useState('--');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const now = new Date();
+    const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const diff = nextMonth.getTime() - now.getTime();
+    setDays(Math.floor(diff / (1000 * 60 * 60 * 24)));
+  }, []);
+
+  if (!mounted) {
+    return <span>--</span>;
   }
-  const now = new Date();
-  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-  const diff = nextMonth.getTime() - now.getTime();
-  return Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  return <span>{days}</span>;
 }
 // Styles
 const styles = {
@@ -570,7 +590,7 @@ export default function Home() {
                     margin: 0,
                   }}
                 >
-                  {getCurrentMonthYear()} Leaderboard
+                  <MonthDisplay /> Leaderboard
                 </h3>
                 <div
                   style={{
@@ -1005,7 +1025,7 @@ export default function Home() {
                       marginBottom: '4px',
                     }}
                   >
-                    {getDaysRemaining()} Days
+                    <DaysRemaining /> Days
                   </div>
                   <div
                     style={{
