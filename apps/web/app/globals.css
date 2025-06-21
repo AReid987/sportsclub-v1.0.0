@@ -165,6 +165,15 @@
   }
 }
 
+@keyframes fillBar {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: var(--target-width, 100%);
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
