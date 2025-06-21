@@ -2610,4 +2610,8 @@ export default function Home() {
       </footer>
     </div>
   );
-}
+// import { LandingPage } from '@/components/LandingPage.tsx';
+
+// export default function Home() {
+//   return <LandingPage />;
+// }
