@@ -6,13 +6,13 @@ export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
+    const newCollapsedState = !isCollapsed;
+    setIsCollapsed(newCollapsedState);
+
     // Update main content margin
-    const mainContent = document.querySelector(
-      'div[style*="marginLeft"]',
-    ) as HTMLElement;
+    const mainContent = document.getElementById('main-content') as HTMLElement;
     if (mainContent) {
-      mainContent.style.marginLeft = isCollapsed ? '240px' : '64px';
+      mainContent.style.marginLeft = newCollapsedState ? '64px' : '240px';
     }
   };
 

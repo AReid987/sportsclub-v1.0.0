@@ -37,6 +37,7 @@ export default function RootLayout({
         <div style={{ display: 'flex', minHeight: '100vh' }}>
           <Sidebar />
           <div
+            id="main-content"
             style={{
               marginLeft: '240px',
               flex: 1,
