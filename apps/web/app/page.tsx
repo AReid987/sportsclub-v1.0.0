@@ -8,7 +8,7 @@ const colors = {
   accent: '#FF6B35',
   neutral: {
     50: '#F9F9F9',
-    100: '#F5F5F5',
+    100: '#F5F5F9',
     800: '#2A2A2A',
     900: '#171717',
   },
@@ -19,7 +19,12 @@ const colors = {
 
 // Countdown Timer Component (Client-side only)
 function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -27,17 +32,25 @@ function CountdownTimer() {
 
     const calculateTimeLeft = () => {
       const now = new Date();
-      const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-      const payout = new Date(nextMonth.getTime() - 5 * 60 * 60 * 1000); // EST = UTC-5
-      const diff = payout.getTime() - now.getTime();
+      const endOfMonth = new Date(
+        now.getFullYear(),
+        now.getMonth() + 1,
+        0,
+        23,
+        59,
+        59,
+      );
+      const timeDiff = endOfMonth.getTime() - now.getTime();
 
-      if (diff > 0) {
-        setTimeLeft({
-          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((diff % (1000 * 60)) / 1000),
-        });
+      if (timeDiff > 0) {
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+        setTimeLeft({ days, hours, minutes, seconds });
       }
     };
 
@@ -48,71 +61,70 @@ function CountdownTimer() {
   }, []);
 
   if (!mounted) {
-    // Return placeholder during SSR to prevent hydration mismatch
     return (
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '12px',
-        marginBottom: '8px',
-      }}>
-        {['Days', 'Hours', 'Minutes', 'Seconds'].map((unit) => (
-          <div key={unit} style={{
-            background: 'rgba(251, 191, 36, 0.1)',
-            borderRadius: '8px',
-            padding: '8px 4px',
-          }}>
-            <div style={{
-              color: '#FCD34D',
-              fontSize: '18px',
-              fontWeight: '700',
-              fontFamily: 'monospace',
-            }}>
-              --
-            </div>
-            <div style={{
-              color: '#FEF3C7',
-              fontSize: '10px',
-              fontWeight: '500',
-            }}>
-              {unit}
-            </div>
+      <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div
+            style={{ fontSize: '2rem', fontWeight: 'bold', color: '#F59E0B' }}
+          >
+            --
           </div>
-        ))}
+          <div style={{ fontSize: '0.875rem', color: '#94A3B8' }}>Days</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div
+            style={{ fontSize: '2rem', fontWeight: 'bold', color: '#F59E0B' }}
+          >
+            --
+          </div>
+          <div style={{ fontSize: '0.875rem', color: '#94A3B8' }}>Hours</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div
+            style={{ fontSize: '2rem', fontWeight: 'bold', color: '#F59E0B' }}
+          >
+            --
+          </div>
+          <div style={{ fontSize: '0.875rem', color: '#94A3B8' }}>Min</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div
+            style={{ fontSize: '2rem', fontWeight: 'bold', color: '#F59E0B' }}
+          >
+            --
+          </div>
+          <div style={{ fontSize: '0.875rem', color: '#94A3B8' }}>Sec</div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(4, 1fr)',
-      gap: '12px',
-      marginBottom: '8px',
-    }}>
-      {Object.entries(timeLeft).map(([unit, value]) => (
-        <div key={unit} style={{
-          background: 'rgba(251, 191, 36, 0.1)',
-          borderRadius: '8px',
-          padding: '8px 4px',
-        }}>
-          <div style={{
-            color: '#FCD34D',
-            fontSize: '18px',
-            fontWeight: '700',
-            fontFamily: 'monospace',
-          }}>
-            {String(value).padStart(2, '0')}
-          </div>
-          <div style={{
-            color: '#FEF3C7',
-            fontSize: '10px',
-            fontWeight: '500',
-          }}>
-            {unit.charAt(0).toUpperCase() + unit.slice(1)}
-          </div>
+    <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#F59E0B' }}>
+          {timeLeft.days}
         </div>
-      ))}
+        <div style={{ fontSize: '0.875rem', color: '#94A3B8' }}>Days</div>
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#F59E0B' }}>
+          {timeLeft.hours}
+        </div>
+        <div style={{ fontSize: '0.875rem', color: '#94A3B8' }}>Hours</div>
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#F59E0B' }}>
+          {timeLeft.minutes}
+        </div>
+        <div style={{ fontSize: '0.875rem', color: '#94A3B8' }}>Min</div>
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#F59E0B' }}>
+          {timeLeft.seconds}
+        </div>
+        <div style={{ fontSize: '0.875rem', color: '#94A3B8' }}>Sec</div>
+      </div>
     </div>
   );
 }
@@ -124,117 +136,69 @@ function MonthDisplay() {
 
   useEffect(() => {
     setMounted(true);
-    setMonthYear(new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }));
+    setMonthYear(
+      new Date().toLocaleDateString('en-US', {
+        month: 'long',
+        year: 'numeric',
+      }),
+    );
   }, []);
 
   if (!mounted) {
-    // Return placeholder during SSR
     return <span>Current Month</span>;
   }
 
   return <span>{monthYear}</span>;
 }
 
-// Days Remaining Component (Client-side only)
-function DaysRemaining() {
-  const [days, setDays] = useState('--');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const now = new Date();
-    const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-    const diff = nextMonth.getTime() - now.getTime();
-    setDays(Math.floor(diff / (1000 * 60 * 60 * 24)));
-  }, []);
-
-  if (!mounted) {
-    return <span>--</span>;
-  }
-
-  return <span>{days}</span>;
-}
-// Styles
-const styles = {
-  container: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '0 20px',
-  },
-  hero: {
-    minHeight: '100vh',
-    background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.accent} 100%)`,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: colors.white,
-    textAlign: 'center' as const,
-    padding: '40px 20px',
-  },
-  section: {
-    padding: '80px 20px',
-  },
-  button: {
-    background: '#1e293b',
-    color: colors.white,
-    padding: '16px 32px',
-    borderRadius: '50px',
-    border: 'none',
-    fontWeight: '600',
-    fontSize: '18px',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-  },
-  card: {
-    background: '#0f172a',
-    borderRadius: '20px',
-    padding: '40px',
-    border: '1px solid #334155',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-    gap: '20px',
-    marginTop: '40px',
-    width: '100%',
-  },
-};
-
 export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #1a1d29 0%, #2d3748 50%, #1a202c 100%)',
-        position: 'relative',
-        overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+      <section
+        style={{
+          minHeight: '100vh',
+          background:
+            'linear-gradient(135deg, #1a1d29 0%, #2d3748 50%, #1a202c 100%)',
+          position: 'relative',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         {/* Subtle dot pattern background */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(45, 91, 255, 0.15) 1px, transparent 0)',
-          backgroundSize: '40px 40px',
-          opacity: 0.3,
-        }} />
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage:
+              'radial-gradient(circle at 2px 2px, rgba(45, 91, 255, 0.15) 1px, transparent 0)',
+            backgroundSize: '40px 40px',
+            opacity: 0.3,
+          }}
+        />
 
-        <div style={styles.container}>
-          <div style={{
-            textAlign: 'center',
-            color: colors.white,
-            maxWidth: '800px',
+        <div
+          style={{
+            maxWidth: '1200px',
             margin: '0 auto',
-          }}>
+            padding: '0 20px',
+          }}
+        >
+          <div
+            style={{
+              textAlign: 'center',
+              maxWidth: '800px',
+              margin: '0 auto',
+              color: '#ffffff',
+            }}
+          >
             <div
               style={{
-                backdropFilter: 'blur(10px)',
                 background: 'rgba(45, 91, 255, 0.1)',
                 color: '#60A5FA',
                 fontSize: '16px',
@@ -243,10 +207,10 @@ export default function Home() {
                 borderRadius: '20px',
                 marginBottom: '24px',
                 border: '1px solid rgba(45, 91, 255, 0.3)',
+                backdropFilter: 'blur(10px)',
               }}
             >
               🏆 Join 50,000+ Smart Sports Players
-            </div>
             </div>
 
             <h1
@@ -257,9 +221,7 @@ export default function Home() {
                 lineHeight: '1.1',
               }}
             >
-              <span className="chrome-glow-text">
-                Sportsclub
-              </span>
+              <span className="chrome-glow-text">Sportsclub</span>
             </h1>
 
             <h2
@@ -293,12 +255,15 @@ export default function Home() {
                 }}
                 className="star-border-button"
                 onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.05) translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 12px 40px rgba(37, 99, 235, 0.6)';
+                  e.currentTarget.style.transform =
+                    'scale(1.05) translateY(-2px)';
+                  e.currentTarget.style.boxShadow =
+                    '0 12px 40px rgba(37, 99, 235, 0.6)';
                 }}
                 onMouseOut={(e) => {
                   e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(37, 99, 235, 0.4)';
+                  e.currentTarget.style.boxShadow =
+                    '0 8px 32px rgba(37, 99, 235, 0.4)';
                 }}
               >
                 <span style={{ position: 'relative', zIndex: 2 }}>
@@ -328,7 +293,25 @@ export default function Home() {
                     marginRight: '8px',
                   }}
                 />
-                Free trial included
+                <span style={{ fontSize: '16px' }}>Free trial included</span>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '16px',
+                }}
+              >
+                <span
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    background: '#10B981',
+                    borderRadius: '50%',
+                    marginRight: '8px',
+                  }}
+                />
+                <span>Cancel anytime</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span
@@ -340,50 +323,41 @@ export default function Home() {
                     marginRight: '8px',
                   }}
                 />
-                Cancel anytime
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span
-                  style={{
-                    width: '8px',
-                    height: '8px',
-                    background: '#10B981',
-                    borderRadius: '50%',
-                    marginRight: '8px',
-                  }}
-                />
-                Real cash prizes
+                <span style={{ fontSize: '16px' }}>Real cash prizes</span>
               </div>
             </div>
 
             {/* Live Countdown Timer */}
-            <div style={{
-              background: 'rgba(15, 23, 42, 0.8)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(251, 191, 36, 0.3)',
-              borderRadius: '16px',
-              padding: '20px',
-              textAlign: 'center',
-              maxWidth: '400px',
-              margin: '0 auto',
-            }}>
-              <div style={{
-                color: '#FEF3C7',
-                fontSize: '14px',
-                fontWeight: '600',
-                marginBottom: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-              }}>
+            <div
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(251, 191, 36, 0.3)',
+                borderRadius: '16px',
+                padding: '20px',
+                textAlign: 'center',
+                maxWidth: '400px',
+                margin: '0 auto',
+              }}
+            >
+              <div
+                style={{
+                  color: '#FEF3C7',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  marginBottom: '8px',
+                  gap: '8px',
+                }}
+              >
                 ⏰ Next Prize Payout
               </div>
               <CountdownTimer />
-              <div style={{
-                color: '#94A3B8',
-                fontSize: '12px',
-              }}>
+              <div
+                style={{
+                  color: '#94A3B8',
+                  fontSize: '12px',
+                }}
+              >
                 Until next month's payout 12:00 AM EST
               </div>
             </div>
@@ -392,455 +366,596 @@ export default function Home() {
       </section>
 
       {/* Live Leaderboard Section */}
-      <section style={{
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-        padding: '80px 0',
-        position: 'relative',
-      }}>
-        <div style={styles.container}>
-          <div style={{
-            textAlign: 'center',
-            marginBottom: '48px',
-          }}>
-            <h2 style={{
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              fontWeight: '700',
-              color: '#F1F5F9',
-              marginBottom: '16px',
-            }}>
+      <section
+        style={{
+          background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+          padding: '80px 0',
+          position: 'relative',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 20px',
+          }}
+        >
+          <div
+            style={{
+              textAlign: 'center',
+              marginBottom: '48px',
+            }}
+          >
+            <h2
+              style={{
+                color: '#F1F5F9',
+                fontSize: 'clamp(2rem, 5vw, 3rem)',
+                fontWeight: '700',
+                marginBottom: '16px',
+              }}
+            >
               🏆 Live Competition
             </h2>
-            <p style={{
-              fontSize: '1.1rem',
-              color: '#94A3B8',
-              maxWidth: '600px',
-              margin: '0 auto',
-            }}>
-              See how you stack up against thousands of players competing for real prizes
+            <p
+              style={{
+                color: '#94A3B8',
+                fontSize: '24px',
+                maxWidth: '600px',
+                margin: '0 auto',
+              }}
+            >
+              See how you stack up against thousands of players competing for
+              real prizes
             </p>
           </div>
 
-          <div style={{
-            maxWidth: '1000px',
-            margin: '0 auto',
-            position: 'relative',
-          }}>
+          <div
+            style={{
+              maxWidth: '1000px',
+              margin: '0 auto',
+              position: 'relative',
+            }}
+          >
             {/* User's Rank - Sticky leaderboard row style */}
-            <div style={{
-              position: 'sticky',
-              top: '80px',
-              zIndex: 20,
-              margin: '0 0 16px 0',
-              background: 'rgba(37, 99, 235, 0.95)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '12px',
-              padding: '16px 20px',
-              border: '1px solid rgba(37, 99, 235, 0.4)',
-              boxShadow: '0 8px 32px rgba(37, 99, 235, 0.3)',
-              animation: 'pulse 2s infinite',
-            }}>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: '60px 1fr auto',
-                alignItems: 'center',
-                gap: '16px',
-              }}>
-                {/* Rank and Avatar */}
-                <div style={{
-                  display: 'flex',
+            <div
+              style={{
+                position: 'sticky',
+                top: '80px',
+                zIndex: 20,
+                margin: '0 0 16px 0',
+                background: 'rgba(37, 99, 235, 0.95)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '12px',
+                padding: '16px 20px',
+                border: '1px solid rgba(37, 99, 235, 0.4)',
+                boxShadow: '0 8px 32px rgba(37, 99, 235, 0.3)',
+                animation: 'pulse 2s infinite',
+              }}
+            >
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '60px 1fr auto',
                   alignItems: 'center',
-                  gap: '12px',
-                }}>
-                  <div style={{
+                  gap: '16px',
+                }}
+              >
+                <div
+                  style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '40px',
-                    height: '40px',
-                    background: 'rgba(71, 85, 105, 0.8)',
-                    borderRadius: '12px',
-                    color: '#CBD5E1',
-                    fontSize: '16px',
-                    fontWeight: '800',
-                    border: '1px solid rgba(148, 163, 184, 0.2)',
-                  }}>
+                    gap: '12px',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '40px',
+                      height: '40px',
+                      background: 'rgba(71, 85, 105, 0.8)',
+                      borderRadius: '12px',
+                      color: '#CBD5E1',
+                      fontSize: '16px',
+                      fontWeight: '800',
+                      border: '1px solid rgba(148, 163, 184, 0.2)',
+                    }}
+                  >
                     47
                   </div>
                   <div style={{ fontSize: '24px' }}>🎯</div>
                 </div>
 
-                {/* Name and Score */}
                 <div style={{ minWidth: 0 }}>
-                  <div style={{
-                    color: '#F1F5F9',
-                    fontWeight: '700',
-                    fontSize: '16px',
-                    marginBottom: '6px',
-                  }}>
+                  <div
+                    style={{
+                      color: '#F1F5F9',
+                      fontWeight: '700',
+                      fontSize: '16px',
+                      marginBottom: '6px',
+                    }}
+                  >
                     You
                   </div>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    marginBottom: '4px',
-                  }}>
-                    <span style={{
-                      color: '#60A5FA',
-                      fontWeight: '800',
-                      fontSize: '15px',
-                    }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: '#60A5FA',
+                        fontWeight: '800',
+                        fontSize: '15px',
+                      }}
+                    >
                       1,890 coins
                     </span>
-                    <span style={{
-                      color: '#10B981',
-                      fontSize: '13px',
-                      fontWeight: '700',
-                      background: 'rgba(16, 185, 129, 0.1)',
-                      padding: '2px 6px',
-                      borderRadius: '6px',
-                    }}>
+                    <span
+                      style={{
+                        color: '#10B981',
+                        fontSize: '13px',
+                        fontWeight: '700',
+                        background: 'rgba(16, 185, 129, 0.1)',
+                        padding: '2px 6px',
+                        borderRadius: '6px',
+                      }}
+                    >
                       +12
                     </span>
                   </div>
                 </div>
 
-                {/* Coin Breakdown */}
-                <div style={{
-                  textAlign: 'right',
-                  fontSize: '12px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '4px',
-                  minWidth: '90px',
-                }}>
-                  <div style={{
+                <div
+                  style={{
+                    textAlign: 'right',
+                    fontSize: '12px',
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
+                    flexDirection: 'column',
+                    gap: '4px',
+                    minWidth: '90px',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
                     <span style={{ color: '#94A3B8' }}>Safe:</span>
-                    <span style={{ color: '#10B981', fontWeight: '700' }}>680</span>
+                    <span style={{ color: '#10B981', fontWeight: '700' }}>
+                      680
+                    </span>
                   </div>
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
                     <span style={{ color: '#94A3B8' }}>Risk:</span>
-                    <span style={{ color: '#F59E0B', fontWeight: '700' }}>120</span>
+                    <span style={{ color: '#F59E0B', fontWeight: '700' }}>
+                      120
+                    </span>
                   </div>
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    paddingTop: '4px',
-                    borderTop: '1px solid rgba(71, 85, 105, 0.4)',
-                  }}>
-                    <span style={{ color: '#CBD5E1', fontWeight: '600' }}>Total:</span>
-                    <span style={{ color: '#60A5FA', fontWeight: '800' }}>800</span>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      paddingTop: '4px',
+                      borderTop: '1px solid rgba(71, 85, 105, 0.4)',
+                    }}
+                  >
+                    <span style={{ color: '#CBD5E1', fontWeight: '600' }}>
+                      Total:
+                    </span>
+                    <span style={{ color: '#60A5FA', fontWeight: '800' }}>
+                      800
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div style={{
-              background: 'rgba(15, 23, 42, 0.8)',
-              backdropFilter: 'blur(20px)',
-              borderRadius: '24px',
-              border: '1px solid rgba(51, 65, 85, 0.6)',
-              padding: 'clamp(20px, 4vw, 40px)',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '32px',
-                paddingBottom: '20px',
-                borderBottom: '1px solid rgba(51, 65, 85, 0.6)',
-                flexWrap: 'wrap',
-                gap: '16px',
-              }}>
-                <h3 style={{
-                  color: '#F1F5F9',
-                  fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
-                  fontWeight: '700',
-                  margin: 0,
-                }}>
-                  <MonthDisplay /> Leaderboard
-                </h3>
-                <div style={{
-                  background: 'rgba(16, 185, 129, 0.2)',
-                  color: '#10B981',
-                  padding: '6px 16px',
-                  borderRadius: '12px',
-                  fontSize: '12px',
-                  fontWeight: '600',
+            <div
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(20px)',
+                borderRadius: '24px',
+                border: '1px solid rgba(51, 65, 85, 0.6)',
+                padding: 'clamp(20px, 4vw, 40px)',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+              }}
+            >
+              <div
+                style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '4px',
-                }}>
-                  <div style={{
-                    width: '6px',
-                    height: '6px',
-                    background: '#10B981',
-                    borderRadius: '50%',
-                    animation: 'pulse 1s infinite',
-                  }} />
+                  justifyContent: 'space-between',
+                  marginBottom: '32px',
+                  paddingBottom: '20px',
+                  borderBottom: '1px solid rgba(51, 65, 85, 0.6)',
+                  flexWrap: 'wrap',
+                  gap: '16px',
+                }}
+              >
+                <h3
+                  style={{
+                    color: '#F1F5F9',
+                    fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
+                    fontWeight: '700',
+                    margin: 0,
+                  }}
+                >
+                  <MonthDisplay /> Leaderboard
+                </h3>
+                <div
+                  style={{
+                    background: 'rgba(16, 185, 129, 0.2)',
+                    color: '#10B981',
+                    padding: '6px 16px',
+                    borderRadius: '12px',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      background: '#10B981',
+                      borderRadius: '50%',
+                      animation: 'pulse 1s infinite',
+                    }}
+                  />
                   LIVE UPDATES
                 </div>
               </div>
 
               {/* Top 3 Players - Podium Layout */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1.4fr 1fr',
-                gap: '20px',
-                marginBottom: '40px',
-                alignItems: 'end',
-                maxWidth: '800px',
-                margin: '0 auto 40px auto',
-              }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1.4fr 1fr',
+                  gap: '20px',
+                  marginBottom: '40px',
+                  alignItems: 'end',
+                  maxWidth: '800px',
+                  margin: '0 auto 40px auto',
+                }}
+              >
                 {/* 2nd Place - Left */}
-                <div style={{
-                  background: '#0f172a',
-                  borderRadius: '16px',
-                  padding: '20px',
-                  border: '1px solid #475569',
-                  position: 'relative',
-                  animation: 'slideUpBounce 1s ease-out 0.2s both',
-                  textAlign: 'center',
-                }}>
-                  <div style={{
-                    width: '60px',
-                    height: '60px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #94a3b8, #cbd5e1)',
-                    margin: '0 auto 16px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '24px',
+                <div
+                  style={{
+                    background: '#0f172a',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    border: '1px solid #475569',
                     position: 'relative',
-                  }}>
-                    ⚡
-                    <div style={{
-                      position: 'absolute',
-                      top: '-8px',
-                      right: '-8px',
-                      width: '24px',
-                      height: '24px',
-                      background: 'linear-gradient(135deg, #94a3b8, #cbd5e1)',
+                    animation: 'slideUpBounce 1s ease-out 0.2s both',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '60px',
+                      height: '60px',
                       borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #94a3b8, #cbd5e1)',
+                      margin: '0 auto 16px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '12px',
-                      fontWeight: '800',
-                      color: '#1e293b',
-                    }}>
+                      fontSize: '24px',
+                      position: 'relative',
+                    }}
+                  >
+                    ⚡
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '-8px',
+                        right: '-8px',
+                        width: '24px',
+                        height: '24px',
+                        background: 'linear-gradient(135deg, #94a3b8, #cbd5e1)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px',
+                        fontWeight: '800',
+                        color: '#1e293b',
+                      }}
+                    >
                       2
                     </div>
                   </div>
 
-                  <h4 style={{
-                    color: '#f1f5f9',
-                    fontSize: '16px',
-                    fontWeight: '700',
-                    marginBottom: '8px',
-                    margin: 0,
-                  }}>
+                  <h4
+                    style={{
+                      color: '#f1f5f9',
+                      fontSize: '16px',
+                      fontWeight: '700',
+                      marginBottom: '8px',
+                      margin: 0,
+                    }}
+                  >
                     QuickPick_Elite
                   </h4>
 
-                  <div style={{
-                    color: '#60a5fa',
-                    fontSize: '18px',
-                    fontWeight: '800',
-                    marginBottom: '8px',
-                  }}>
+                  <div
+                    style={{
+                      color: '#60a5fa',
+                      fontSize: '18px',
+                      fontWeight: '800',
+                      marginBottom: '8px',
+                    }}
+                  >
                     2,398 coins
                   </div>
 
-                  <div style={{
-                    color: '#10b981',
-                    fontSize: '12px',
-                    fontWeight: '600',
-                    background: '#064e3b',
-                    padding: '4px 8px',
-                    borderRadius: '6px',
-                    display: 'inline-block',
-                  }}>
+                  <div
+                    style={{
+                      color: '#10b981',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      background: '#064e3b',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      display: 'inline-block',
+                    }}
+                  >
                     +89 today
                   </div>
                 </div>
 
                 {/* 1st Place - Center (Larger) */}
-                <div style={{
-                  background: '#0f172a',
-                  borderRadius: '20px',
-                  padding: '28px',
-                  border: '2px solid #fbbf24',
-                  boxShadow: '0 20px 60px rgba(251, 191, 36, 0.15)',
-                  position: 'relative',
-                  animation: 'slideUpBounce 1s ease-out both',
-                  textAlign: 'center',
-                  transform: 'scale(1.1)',
-                }}>
-                  <div style={{
-                    width: '80px',
-                    height: '80px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
-                    margin: '0 auto 20px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '32px',
+                <div
+                  style={{
+                    background: '#0f172a',
+                    borderRadius: '20px',
+                    padding: '28px',
+                    border: '2px solid #fbbf24',
+                    boxShadow: '0 20px 60px rgba(251, 191, 36, 0.15)',
                     position: 'relative',
-                    border: '3px solid rgba(251, 191, 36, 0.3)',
-                  }}>
-                    🔥
-                    <div style={{
-                      position: 'absolute',
-                      top: '-12px',
-                      right: '-12px',
-                      width: '32px',
-                      height: '32px',
-                      background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                    animation: 'slideUpBounce 1s ease-out both',
+                    textAlign: 'center',
+                    transform: 'scale(1.1)',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '80px',
+                      height: '80px',
                       borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                      margin: '0 auto 20px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '16px',
-                      fontWeight: '900',
-                      color: '#92400e',
-                      boxShadow: '0 4px 20px rgba(251, 191, 36, 0.4)',
-                    }}>
+                      fontSize: '32px',
+                      position: 'relative',
+                      border: '3px solid rgba(251, 191, 36, 0.3)',
+                    }}
+                  >
+                    🔥
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '-12px',
+                        right: '-12px',
+                        width: '32px',
+                        height: '32px',
+                        background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '16px',
+                        fontWeight: '900',
+                        color: '#92400e',
+                        boxShadow: '0 4px 20px rgba(251, 191, 36, 0.4)',
+                      }}
+                    >
                       1
                     </div>
                   </div>
 
-                  <h4 style={{
-                    color: '#f1f5f9',
-                    fontSize: '20px',
-                    fontWeight: '800',
-                    marginBottom: '12px',
-                    margin: 0,
-                  }}>
+                  <h4
+                    style={{
+                      color: '#f1f5f9',
+                      fontSize: '20px',
+                      fontWeight: '800',
+                      marginBottom: '12px',
+                      margin: 0,
+                    }}
+                  >
                     DataMaster_Pro
                   </h4>
 
-                  <div style={{
-                    color: '#fcd34d',
-                    fontSize: '26px',
-                    fontWeight: '900',
-                    marginBottom: '12px',
-                    textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-                  }}>
+                  <div
+                    style={{
+                      color: '#fcd34d',
+                      fontSize: '26px',
+                      fontWeight: '900',
+                      marginBottom: '12px',
+                      textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                    }}
+                  >
                     2,450 coins
                   </div>
 
-                  <div style={{
-                    color: '#10b981',
-                    fontSize: '14px',
-                    fontWeight: '700',
-                    background: '#064e3b',
-                    padding: '6px 12px',
-                    borderRadius: '8px',
-                    display: 'inline-block',
-                  }}>
+                  <div
+                    style={{
+                      color: '#10b981',
+                      fontSize: '14px',
+                      fontWeight: '700',
+                      background: '#064e3b',
+                      padding: '6px 12px',
+                      borderRadius: '8px',
+                      display: 'inline-block',
+                    }}
+                  >
                     +125 today
                   </div>
                 </div>
 
                 {/* 3rd Place - Right */}
-                <div style={{
-                  background: '#0f172a',
-                  borderRadius: '16px',
-                  padding: '20px',
-                  border: '1px solid #475569',
-                  position: 'relative',
-                  animation: 'slideUpBounce 1s ease-out 0.4s both',
-                  textAlign: 'center',
-                }}>
-                  <div style={{
-                    width: '60px',
-                    height: '60px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #a16207, #ca8a04)',
-                    margin: '0 auto 16px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '24px',
+                <div
+                  style={{
+                    background: '#0f172a',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    border: '1px solid #475569',
                     position: 'relative',
-                  }}>
-                    🧠
-                    <div style={{
-                      position: 'absolute',
-                      top: '-8px',
-                      right: '-8px',
-                      width: '24px',
-                      height: '24px',
-                      background: 'linear-gradient(135deg, #a16207, #ca8a04)',
+                    animation: 'slideUpBounce 1s ease-out 0.4s both',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '60px',
+                      height: '60px',
                       borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #a16207, #ca8a04)',
+                      margin: '0 auto 16px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '12px',
-                      fontWeight: '800',
-                      color: '#1e293b',
-                    }}>
+                      fontSize: '24px',
+                      position: 'relative',
+                    }}
+                  >
+                    🧠
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '-8px',
+                        right: '-8px',
+                        width: '24px',
+                        height: '24px',
+                        background: 'linear-gradient(135deg, #a16207, #ca8a04)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px',
+                        fontWeight: '800',
+                        color: '#1e293b',
+                      }}
+                    >
                       3
                     </div>
                   </div>
 
-                  <h4 style={{
-                    color: '#f1f5f9',
-                    fontSize: '15px',
-                    fontWeight: '600',
-                    marginBottom: '8px',
-                    margin: 0,
-                  }}>
+                  <h4
+                    style={{
+                      color: '#f1f5f9',
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      marginBottom: '8px',
+                      margin: 0,
+                    }}
+                  >
                     StatsGuru99
                   </h4>
 
-                  <div style={{
-                    color: '#60a5fa',
-                    fontSize: '17px',
-                    fontWeight: '700',
-                    marginBottom: '8px',
-                  }}>
+                  <div
+                    style={{
+                      color: '#60a5fa',
+                      fontSize: '17px',
+                      fontWeight: '700',
+                      marginBottom: '8px',
+                    }}
+                  >
                     2,340 coins
                   </div>
 
-                  <div style={{
-                    color: '#10b981',
-                    fontSize: '12px',
-                    fontWeight: '600',
-                    background: '#064e3b',
-                    padding: '4px 8px',
-                    borderRadius: '6px',
-                    display: 'inline-block',
-                  }}>
+                  <div
+                    style={{
+                      color: '#10b981',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      background: '#064e3b',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      display: 'inline-block',
+                    }}
+                  >
                     +67 today
                   </div>
                 </div>
               </div>
 
               {/* Rest of Leaderboard */}
-              <div style={{
-                display: 'grid',
-                gap: '8px',
-              }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gap: '8px',
+                }}
+              >
                 {[
-                  { rank: 4, name: 'SportsSage', score: 2290, change: '+45', safe: 850, risk: 150, total: 1000, avatar: '⚡' },
-                  { rank: 5, name: 'AIPredictor', score: 2245, change: '+23', safe: 780, risk: 220, total: 1000, avatar: '🤖' },
-                  { rank: 6, name: 'ScoreWizard', score: 2190, change: '+67', safe: 650, risk: 350, total: 1000, avatar: '🧙‍♂️' },
-                  { rank: 7, name: 'BetMaster88', score: 2156, change: '+34', safe: 720, risk: 280, total: 1000, avatar: '💰' },
-                  { rank: 8, name: 'PicksProdigy', score: 2098, change: '+78', safe: 600, risk: 400, total: 1000, avatar: '🌟' },
+                  {
+                    rank: 4,
+                    name: 'SportsSage',
+                    score: 2290,
+                    change: '+45',
+                    safe: 850,
+                    risk: 150,
+                    total: 1000,
+                    avatar: '⚡',
+                  },
+                  {
+                    rank: 5,
+                    name: 'AIPredictor',
+                    score: 2245,
+                    change: '+23',
+                    safe: 780,
+                    risk: 220,
+                    total: 1000,
+                    avatar: '🤖',
+                  },
+                  {
+                    rank: 6,
+                    name: 'ScoreWizard',
+                    score: 2190,
+                    change: '+67',
+                    safe: 650,
+                    risk: 350,
+                    total: 1000,
+                    avatar: '🧙‍♂️',
+                  },
+                  {
+                    rank: 7,
+                    name: 'BetMaster88',
+                    score: 2156,
+                    change: '+34',
+                    safe: 720,
+                    risk: 280,
+                    total: 1000,
+                    avatar: '💰',
+                  },
+                  {
+                    rank: 8,
+                    name: 'PicksProdigy',
+                    score: 2098,
+                    change: '+78',
+                    safe: 600,
+                    risk: 400,
+                    total: 1000,
+                    avatar: '🌟',
+                  },
                 ].map((player, index) => (
                   <div
                     key={index}
@@ -854,129 +969,139 @@ export default function Home() {
                       border: '1px solid rgba(71, 85, 105, 0.3)',
                       transition: 'all 0.3s ease',
                       gap: '16px',
-                      animation: `slideInFromRight 0.8s ease-out ${0.6 + index * 0.1}s both`,
+                      animation: `slideInFromRight 0.8s ease-out ${
+                        0.6 + index * 0.1
+                      }s both`,
                       marginBottom: '8px',
                     }}
                   >
-                    {/* Rank and Avatar */}
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                    }}>
-                      <div style={{
+                    <div
+                      style={{
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '40px',
-                        height: '40px',
-                        background: 'rgba(71, 85, 105, 0.8)',
-                        borderRadius: '12px',
-                        color: '#CBD5E1',
-                        fontSize: '16px',
-                        fontWeight: '800',
-                        border: '1px solid rgba(148, 163, 184, 0.2)',
-                      }}>
+                        gap: '12px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '40px',
+                          height: '40px',
+                          background: 'rgba(71, 85, 105, 0.8)',
+                          borderRadius: '12px',
+                          color: '#CBD5E1',
+                          fontSize: '16px',
+                          fontWeight: '800',
+                          border: '1px solid rgba(148, 163, 184, 0.2)',
+                        }}
+                      >
                         {player.rank}
                       </div>
                       <div style={{ fontSize: '24px' }}>{player.avatar}</div>
                     </div>
 
-                    {/* Name and Score */}
                     <div style={{ minWidth: 0 }}>
-                      <div style={{
-                        color: '#F1F5F9',
-                        fontWeight: '700',
-                        fontSize: '16px',
-                        marginBottom: '6px',
-                      }}>
-                        {player.name}
-                      <h3
+                      <div
                         style={{
-                          fontSize: '24px',
-                          fontWeight: 'bold',
-                          marginBottom: '8px',
-                          color: '#ffffff',
+                          color: '#F1F5F9',
+                          fontWeight: '700',
+                          fontSize: '16px',
+                          marginBottom: '6px',
                         }}
                       >
-                        Personal Tutor
-                      </h3>
-                      <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
-                        Learn sports analytics concepts with personalized
-                        explanations and examples.
-                      </p>
+                        {player.name}
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '12px',
+                          marginBottom: '4px',
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: '#60A5FA',
+                            fontWeight: '800',
+                            fontSize: '15px',
+                          }}
+                        >
+                          {player.score.toLocaleString()} coins
+                        </span>
+                        <span
+                          style={{
+                            color: player.change.includes('+')
+                              ? '#10B981'
+                              : '#EF4444',
+                            fontSize: '13px',
+                            fontWeight: '700',
+                            background: player.change.includes('+')
+                              ? 'rgba(16, 185, 129, 0.1)'
+                              : 'rgba(239, 68, 68, 0.1)',
+                            padding: '2px 6px',
+                            borderRadius: '6px',
+                          }}
+                        >
+                          {player.change}
+                        </span>
                       </div>
                     </div>
 
-                    {/* Coin Breakdown */}
+                    <div
+                      style={{
+                        textAlign: 'right',
+                        fontSize: '12px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '4px',
+                        minWidth: '90px',
+                      }}
+                    >
+                      <div
                         style={{
-                          fontSize: '2rem',
-                          fontWeight: 'bold',
-                          color: '#ffffff',
-                          marginBottom: '20px',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
                         }}
                       >
-                        {item.step}
+                        <span style={{ color: '#94A3B8' }}>Safe:</span>
+                        <span style={{ color: '#10B981', fontWeight: '700' }}>
+                          {player.safe}
+                        </span>
                       </div>
-                      <div style={{ fontSize: '4rem', marginBottom: '20px' }}>
-                        {item.icon}
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <span style={{ color: '#94A3B8' }}>Risk:</span>
+                        <span style={{ color: '#F59E0B', fontWeight: '700' }}>
+                          {player.risk}
+                        </span>
                       </div>
-                      <h3
+                      <div
                         style={{
-                          fontSize: '1.5rem',
-                          fontWeight: 'bold',
-                          marginBottom: '15px',
-                          color: '#ffffff',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          paddingTop: '4px',
+                          borderTop: '1px solid rgba(71, 85, 105, 0.4)',
                         }}
                       >
-                        {item.title}
-                      </h3>
-                      <p
-                        style={{
-                          color: '#9b9b9b',
-                          lineHeight: '1.6',
-                        }}
-                      >
-                        {item.desc}
-                      </p>
+                        <span style={{ color: '#CBD5E1', fontWeight: '600' }}>
+                          Total:
+                        </span>
+                        <span style={{ color: '#60A5FA', fontWeight: '800' }}>
+                          {player.total}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}
-              </div>
-
-              <div style={{
-                marginTop: '32px',
-                paddingTop: '24px',
-                borderTop: '1px solid rgba(51, 65, 85, 0.6)',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '24px',
-                textAlign: 'center',
-              }}>
-                <div>
-                  <div style={{ color: '#F59E0B', fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '700', marginBottom: '4px' }}>
-                    $12,500
-                  </div>
-                  <div style={{ color: '#94A3B8', fontSize: 'clamp(12px, 2vw, 14px)' }}>
-                    Total Prize Pool
-                  </div>
-                </div>
-                <div>
-                  <div style={{ color: '#10B981', fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '700', marginBottom: '4px' }}>
-                    2,847
-                  </div>
-                  <div style={{ color: '#94A3B8', fontSize: 'clamp(12px, 2vw, 14px)' }}>
-                    Active Players
-                  </div>
-                </div>
-                <div>
-                  <div style={{ color: '#60A5FA', fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '700', marginBottom: '4px' }}>
-                    <DaysRemaining /> Days
-                  </div>
-                  <div style={{ color: '#94A3B8', fontSize: 'clamp(12px, 2vw, 14px)' }}>
-                    Time Remaining
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -984,16 +1109,25 @@ export default function Home() {
       </section>
 
       {/* Problem/Solution Section */}
-      <section style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #1a1d29 0%, #2d3748 50%, #1a202c 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        position: 'relative',
-      }}>
-        <div style={styles.container}>
+      <section
+        style={{
+          minHeight: '100vh',
+          background:
+            'linear-gradient(135deg, #1a1d29 0%, #2d3748 50%, #1a202c 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 20px',
+          }}
+        >
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
             <h2
               style={{
@@ -1026,42 +1160,91 @@ export default function Home() {
             </p>
           </div>
 
-          <div style={styles.grid}>
-            <div style={styles.card}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '20px',
+              marginTop: '40px',
+              width: '100%',
+            }}
+          >
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              }}
+            >
               <div style={{ fontSize: '3rem', marginBottom: '20px' }}>⚠️</div>
               <h3
                 style={{
                   fontSize: '1.5rem',
                   fontWeight: 'bold',
                   marginBottom: '15px',
-                  color: colors.neutral[900],
+                  color: '#ffffff',
                 }}
               >
                 Information Overload
               </h3>
-              <p style={{ color: colors.neutral[800], lineHeight: '1.6' }}>
+              <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
                 Drowning in stats, opinions, and conflicting advice from
                 countless sources.
               </p>
+            </div>
 
-              <p style={{ color: colors.neutral[800], lineHeight: '1.6' }}>
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🧠</div>
+              <h3
+                style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  marginBottom: '15px',
+                  color: '#ffffff',
+                }}
+              >
+                No Predictive Skills
+              </h3>
+              <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
                 Traditional gut feelings and hunches lead to inconsistent
                 results.
               </p>
             </div>
-            <div style={styles.card}>
+
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              }}
+            >
               <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🛡️</div>
               <h3
                 style={{
                   fontSize: '1.5rem',
                   fontWeight: 'bold',
                   marginBottom: '15px',
-                  color: colors.neutral[900],
+                  color: '#ffffff',
                 }}
               >
                 High-Risk / Low Reward
               </h3>
-              <p style={{ color: colors.neutral[800], lineHeight: '1.6' }}>
+              <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
                 Traditional sports picks require large stakes with unpredictable
                 outcomes.
               </p>
@@ -1071,8 +1254,18 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section style={styles.section}>
-        <div style={styles.container}>
+      <section
+        style={{
+          padding: '80px 20px',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 20px',
+          }}
+        >
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
             <h2
               style={{
@@ -1099,12 +1292,14 @@ export default function Home() {
               </span>
             </h2>
             <p style={{ fontSize: '1.25rem', color: '#ffffff' }}>
-              Get started in minutes and begin your journey to smarter sports predictions.
+              Get started in minutes and begin your journey to smarter sports
+              predictions.
             </p>
           </div>
 
           <div
             style={{
+              display: 'grid',
               gap: 'clamp(20px, 4vw, 40px)',
               marginTop: '40px',
               width: '100%',
@@ -1142,44 +1337,51 @@ export default function Home() {
               <div
                 key={index}
                 style={{
-                  ...styles.card,
+                  background: '#0f172a',
+                  borderRadius: '20px',
+                  padding: '40px',
+                  border: '1px solid #334155',
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
                   textAlign: 'center',
-                  width: '100%',
-                  minHeight: '300px',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
+                  minHeight: '300px',
+                  width: '100%',
                 }}
               >
                 <div>
                   <div
                     style={{
-                      fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                      fontSize: '2rem',
+                      fontWeight: 'bold',
+                      color: '#ffffff',
                       marginBottom: '20px',
-                      color: colors.neutral[800],
                     }}
                   >
                     {item.step}
                   </div>
-                  <div style={{ fontSize: 'clamp(3rem, 6vw, 4rem)', marginBottom: '20px' }}>
+                  <div style={{ fontSize: '4rem', marginBottom: '20px' }}>
                     {item.icon}
                   </div>
                   <h3
                     style={{
-                      fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)',
+                      fontSize: '1.5rem',
                       fontWeight: 'bold',
                       marginBottom: '15px',
-                      color: colors.neutral[900],
+                      color: '#ffffff',
                     }}
                   >
                     {item.title}
                   </h3>
                 </div>
-                <p style={{
-                  color: colors.neutral[800],
-                  lineHeight: '1.6',
-                  fontSize: 'clamp(0.9rem, 2vw, 1rem)',
-                }}>
+                <p
+                  style={{
+                    color: '#9b9b9b',
+                    lineHeight: '1.6',
+                  }}
+                >
                   {item.desc}
                 </p>
               </div>
@@ -1191,15 +1393,22 @@ export default function Home() {
       {/* AI Assistant Section */}
       <section
         style={{
-          ...styles.section,
-          background: `linear-gradient(135deg, ${colors.primary}15, ${colors.accent}15)`,
+          background:
+            'linear-gradient(135deg, rgba(45, 91, 255, 0.082), rgba(255, 107, 53, 0.082))',
+          padding: '80px 20px',
         }}
       >
-        <div style={styles.container}>
+        <div
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 20px',
+          }}
+        >
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
               gap: '60px',
               alignItems: 'center',
             }}
@@ -1207,14 +1416,14 @@ export default function Home() {
             <div>
               <div
                 style={{
-                  marginBottom: '20px',
-                  background: `${colors.primary}20`,
+                  background: 'rgba(45, 91, 255, 0.125)',
                   color: colors.primary,
+                  fontSize: '14px',
+                  fontWeight: '600',
                   padding: '8px 16px',
                   borderRadius: '25px',
                   display: 'inline-block',
-                  fontSize: '14px',
-                  fontWeight: '600',
+                  marginBottom: '20px',
                 }}
               >
                 🧠 AI-Powered Intelligence
@@ -1223,11 +1432,11 @@ export default function Home() {
                 style={{
                   fontSize: 'clamp(2.5rem, 6vw, 4rem)',
                   fontWeight: 'bold',
-                  marginBottom: '20px',
-                  color: colors.neutral[900],
+                  marginBottom: '24px',
+                  color: colors.neutral[100],
                 }}
               >
-                Master Your Game with{' '}
+                <span style={{ color: '#ffffff' }}>Master Your Game with</span>{' '}
                 <span
                   style={{
                     background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
@@ -1240,10 +1449,10 @@ export default function Home() {
               </h2>
               <p
                 style={{
-                  fontSize: '1.25rem',
-                  color: colors.neutral[800],
-                  marginBottom: '30px',
+                  fontSize: '24px',
+                  color: '#ffffff',
                   lineHeight: '1.6',
+                  marginBottom: '30px',
                 }}
               >
                 Our advanced AI assistant doesn't just give you predictions—it
@@ -1255,129 +1464,154 @@ export default function Home() {
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '20px',
+                  fontSize: '24px',
                 }}
               >
-                {[
-                  {
-                    icon: '💬',
-                    title: 'Smart Q&A',
-                    desc: 'Ask questions about teams, players, and matchups. Get instant, data-driven answers.',
-                  },
-                  {
-                    icon: '📊',
-                    title: 'Visual Analytics',
-                    desc: 'Generative UI creates custom charts and visualizations for better insights.',
-                  },
-                  {
-                    icon: '📚',
-                    title: 'Personal Tutor',
-                    desc: 'Learn sports analytics concepts with personalized explanations and examples.',
-                  },
-                ].map((feature, index) => (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '15px',
+                  }}
+                >
                   <div
-                    key={index}
                     style={{
-                      display: 'flex',
-                      gap: '15px',
-                      alignItems: 'flex-start',
+                      fontSize: '2rem',
                     }}
                   >
-                    <div style={{ fontSize: '2rem', flexShrink: 0 }}>
-                      {feature.icon}
-                    </div>
-                    <div>
-                      <h3
-                        style={{
-                          fontSize: '24px',
-                          fontWeight: 'bold',
-                          marginBottom: '8px',
-                          color: '#ffffff',
-                        }}
-                      >
-                        Visual Analytics
-                      </h3>
-                      <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
-                        Generative UI creates custom charts and visualizations for
-                        better insights.
-                      </p>
-                        }}
-                      >
-                        {feature.desc}
-                      </p>
-                    </div>
+                    💬
                   </div>
-                ))}
+                  <div>
+                    <h3
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: 'bold',
+                        marginBottom: '8px',
+                        color: '#ffffff',
+                      }}
+                    >
+                      Smart Q&A
+                    </h3>
+                    <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
+                      Ask questions about teams, players, and matchups. Get
+                      instant, data-driven answers.
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '15px',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: '2rem',
+                    }}
+                  >
+                    📊
+                  </div>
+                  <div>
+                    <h3
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: 'bold',
+                        marginBottom: '8px',
+                        color: '#ffffff',
+                      }}
+                    >
+                      Visual Analytics
+                    </h3>
+                    <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
+                      Generative UI creates custom charts and visualizations for
+                      better insights.
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '15px',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: '2rem',
+                    }}
+                  >
+                    📚
+                  </div>
+                  <div style={{ color: '#ffffff' }}>
+                    <h3
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: 'bold',
+                        marginBottom: '8px',
+                        color: '#ffffff',
+                      }}
+                    >
+                      Personal Tutor
+                    </h3>
+                    <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
+                      Learn sports analytics concepts with personalized
+                      explanations and examples.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div style={styles.card}>
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              }}
+            >
               <div
                 style={{
+                  background: '#1e293b',
+                  borderRadius: '12px',
+                  padding: '20px',
                   marginBottom: '20px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
                 }}
               >
                 <div
                   style={{
-                    width: '40px',
-                    height: '40px',
-                    background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.5rem',
+                    color: '#60A5FA',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    marginBottom: '12px',
                   }}
                 >
-                  🧠
+                  AI Analysis: Lakers vs Warriors
                 </div>
-                <span
-                  style={{ fontWeight: 'bold', color: colors.neutral[900] }}
-                >
-                  AI Assistant
-                </span>
                 <div
                   style={{
-                    width: '8px',
-                    height: '8px',
-                    background: colors.success,
-                    borderRadius: '50%',
-                    marginLeft: 'auto',
+                    fontSize: '13px',
+                    lineHeight: '1.5',
+                    color: '#CBD5E1',
+                    marginBottom: '15px',
                   }}
-                ></div>
-            <h2
-              style={{
-                fontSize: 'clamp(2.5rem, 6vw, 4rem)',
-                fontWeight: 'bold',
-                marginBottom: '24px',
-                color: colors.neutral[100],
-              }}
-            >
-              <span style={{ color: '#ffffff' }}>Master Your Game with</span>{' '}
-              <span
-                style={{
-                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                AI Insights
-              </span>
-            </h2>
-            <p
-              style={{
-                fontSize: '24px',
-                color: '#ffffff',
-                lineHeight: '1.6',
-                marginBottom: '30px',
-              }}
-            >
-              Our advanced AI assistant doesn't just give you predictions—it
-              teaches you how to think like a pro analyst. Learn, adapt, and
-              improve with every interaction.
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontSize: '24px' }}>
+                >
+                  <div
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    <span>Lakers ATS Last 5</span>
+                    <span style={{ color: colors.success, fontWeight: 'bold' }}>
+                      4-1
+                    </span>
+                  </div>
+                  <div
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    <span>O/U Trend</span>
                     <span style={{ color: colors.accent, fontWeight: 'bold' }}>
                       Under 65%
                     </span>
@@ -1386,7 +1620,7 @@ export default function Home() {
                 <p
                   style={{
                     fontSize: '12px',
-                    color: colors.neutral[800],
+                    color: colors.neutral[100],
                     marginTop: '10px',
                   }}
                 >
@@ -1399,8 +1633,18 @@ export default function Home() {
       </section>
 
       {/* Community Section */}
-      <section style={styles.section}>
-        <div style={styles.container}>
+      <section
+        style={{
+          padding: '80px 20px',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 20px',
+          }}
+        >
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
             <div
               style={{
@@ -1421,7 +1665,7 @@ export default function Home() {
                 fontSize: 'clamp(2.5rem, 6vw, 4rem)',
                 fontWeight: 'bold',
                 marginBottom: '20px',
-                color: colors.neutral[900],
+                color: colors.neutral[100],
               }}
             >
               Connect, Discuss,{' '}
@@ -1435,218 +1679,10 @@ export default function Home() {
                 Conquer Together
               </span>
             </h2>
-            <p style={{ fontSize: '1.25rem', color: colors.neutral[800] }}>
-              Join a thriving community of sports prediction enthusiasts. Share
-              strategies, celebrate wins, and learn from the best minds in the
-              game.
+            <p style={{ fontSize: '1.25rem', color: colors.neutral[100] }}>
+              Join a thriving community of sports enthusiasts and data-driven
+              predictors
             </p>
-          </div>
-
-          <div style={styles.grid}>
-            {[
-              {
-                icon: '💬',
-                title: 'Reddit-Style Forum',
-                desc: 'Discuss strategies, share insights, and learn from experienced players in topic-based communities.',
-                stat: '10K+ Daily Discussions',
-              },
-              {
-                icon: '⚡',
-                title: 'Live Event Chat',
-                desc: 'Real-time chat during games with fellow enthusiasts. React to plays as they happen.',
-                stat: 'Active During All Games',
-              },
-              {
-                icon: '🛡️',
-                title: 'AI Moderation',
-                desc: 'Smart moderation keeps discussions constructive and informative. Quality conversations guaranteed.',
-                stat: '95% Positive Interactions',
-              },
-            ].map((feature, index) => (
-              <div key={index} style={styles.card}>
-                <div
-                  style={{
-                    fontSize: '3rem',
-                    marginBottom: '20px',
-                    textAlign: 'center',
-                  }}
-                >
-                  {feature.icon}
-                </div>
-                <h3
-                  style={{
-                    fontSize: '1.5rem',
-                    fontWeight: 'bold',
-                    marginBottom: '15px',
-                    color: colors.neutral[900],
-                  }}
-                >
-                  {feature.title}
-                </h3>
-                <p
-                  style={{
-                    color: colors.neutral[800],
-                    lineHeight: '1.6',
-                    marginBottom: '15px',
-                  }}
-                >
-                  {feature.desc}
-                </p>
-                <div
-                  style={{
-                    background: `${colors.success}20`,
-                    color: colors.success,
-                    padding: '8px 12px',
-                    borderRadius: '20px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    textAlign: 'center',
-                  }}
-                >
-                  {feature.stat}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section style={{ ...styles.section, background: colors.neutral[50] }}>
-        <div style={styles.container}>
-          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <div
-              style={{
-                marginBottom: '20px',
-                background: `${colors.success}20`,
-                color: colors.success,
-                padding: '8px 16px',
-                borderRadius: '25px',
-                display: 'inline-block',
-                fontSize: '14px',
-                fontWeight: '600',
-              }}
-            >
-              ⭐ 4.9/5 Average Rating
-            </div>
-            <h2
-              style={{
-                fontSize: 'clamp(2.5rem, 6vw, 4rem)',
-                fontWeight: 'bold',
-                marginBottom: '20px',
-                color: colors.neutral[900],
-              }}
-            >
-              Trusted by{' '}
-              <span
-                style={{
-                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                50,000+ Players
-              </span>
-            </h2>
-          </div>
-
-          <div style={styles.grid}>
-            {[
-              {
-                name: 'Mike Rodriguez',
-                role: 'Data Analyst',
-                quote:
-                  "Sportsclub changed how I approach sports predictions. The AI insights are incredibly accurate, and I've improved my win rate by 40% in just 3 months.",
-                metric: '40% Win Rate Increase',
-              },
-              {
-                name: 'Sarah Chen',
-                role: 'Fantasy Sports Enthusiast',
-                quote:
-                  'The community aspect is amazing. Learning from other experienced players has been invaluable. Plus, the monthly prizes make it even more exciting!',
-                metric: '$1,200 Won Last Quarter',
-              },
-              {
-                name: 'James Williams',
-                role: 'Casual Sports Bettor',
-                quote:
-                  'Finally, a platform that teaches you HOW to think about sports betting instead of just giving picks. The AI tutor feature is like having a personal coach.',
-                metric: '85% Accuracy Rate',
-              },
-            ].map((testimonial, index) => (
-              <div key={index} style={styles.card}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '15px',
-                    marginBottom: '20px',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '50px',
-                      height: '50px',
-                      background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: colors.white,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {testimonial.name
-                      .split(' ')
-                      .map((n) => n[0])
-                      .join('')}
-                  </div>
-                  <div>
-                    <h4
-                      style={{ fontWeight: 'bold', color: colors.neutral[900] }}
-                    >
-                      {testimonial.name}
-                    </h4>
-                    <p style={{ fontSize: '14px', color: colors.neutral[800] }}>
-                      {testimonial.role}
-                    </p>
-                  </div>
-                </div>
-                <div style={{ marginBottom: '15px' }}>
-                  {[...Array(5)].map((_, i) => (
-                    <span
-                      key={i}
-                      style={{ color: '#FFD700', fontSize: '1.2rem' }}
-                    >
-                      ⭐
-                    </span>
-                  ))}
-                </div>
-                <p
-                  style={{
-                    color: colors.neutral[800],
-                    lineHeight: '1.6',
-                    marginBottom: '20px',
-                    fontStyle: 'italic',
-                  }}
-                >
-                  "{testimonial.quote}"
-                </p>
-                <div
-                  style={{
-                    background: `${colors.success}20`,
-                    color: colors.success,
-                    padding: '8px 12px',
-                    borderRadius: '20px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    textAlign: 'center',
-                  }}
-                >
-                  📈 {testimonial.metric}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -1654,107 +1690,78 @@ export default function Home() {
       {/* Final CTA Section */}
       <section
         style={{
-          ...styles.section,
-          background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-          color: colors.white,
+          background: 'linear-gradient(135deg, #1a1d29 0%, #2d3748 100%)',
+          padding: '80px 20px',
+          textAlign: 'center',
+          color: '#ffffff',
         }}
       >
-        <div style={styles.container}>
+        <div
+          style={{
+            maxWidth: '800px',
+            margin: '0 auto',
+          }}
+        >
           <div
-            style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}
+            style={{
+              marginBottom: '20px',
+              background: `${colors.success}20`,
+              color: colors.success,
+              padding: '8px 16px',
+              borderRadius: '25px',
+              display: 'inline-block',
+              fontSize: '14px',
+              fontWeight: '600',
+            }}
           >
-            <div
+            ⭐ 4.9/5 Average Rating
+          </div>
+          <h2
+            style={{
+              fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+              fontWeight: 'bold',
+              marginBottom: '20px',
+            }}
+          >
+            Ready to Transform Your{' '}
+            <span style={{ color: '#FFE066' }}>Sports Predictions?</span>
+          </h2>
+          <p
+            style={{
+              fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
+              marginBottom: '40px',
+              lineHeight: '1.6',
+            }}
+          >
+            Stop gambling with gut feelings. Start winning with data-driven
+            insights, AI guidance, and skill-based predictions.
+          </p>
+
+          <div style={{ marginBottom: '40px' }}>
+            <button
               style={{
-                marginBottom: '20px',
-                background: 'rgba(255,255,255,0.2)',
-                padding: '8px 16px',
-                borderRadius: '25px',
-                display: 'inline-block',
-                fontSize: '14px',
+                background: '#1e293b',
+                color: colors.white,
+                padding: '20px 40px',
+                borderRadius: '50px',
+                border: 'none',
                 fontWeight: '600',
+                fontSize: '20px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'scale(1.05)';
+                e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.3)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.2)';
               }}
             >
-              🚀 Join 50,000+ Smart Sports Players
-            </div>
-            <h2
-              style={{
-                fontSize: 'clamp(2.5rem, 6vw, 4rem)',
-                fontWeight: 'bold',
-                marginBottom: '20px',
-              }}
-            >
-              Ready to Transform Your{' '}
-              <span style={{ color: '#FFE066' }}>Sports Predictions?</span>
-            </h2>
-            <p
-              style={{
-                fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
-                marginBottom: '40px',
-                lineHeight: '1.6',
-              }}
-            >
-              Stop gambling with gut feelings. Start winning with data-driven
-              insights, AI guidance, and skill-based predictions.
-            </p>
-
-            <div style={{ marginBottom: '40px' }}>
-              <button
-                style={{
-                  background: '#1e293b',
-                  color: colors.white,
-                  padding: '20px 40px',
-                  borderRadius: '50px',
-                  border: 'none',
-                  fontWeight: '600',
-                  fontSize: '20px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                  e.currentTarget.style.boxShadow =
-                    '0 12px 40px rgba(0,0,0,0.3)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow =
-                    '0 8px 30px rgba(0,0,0,0.2)';
-                }}
-              >
-                🚀 Start Your Free Trial →
-              </button>
-              <p style={{ fontSize: '14px', marginTop: '15px', opacity: 0.8 }}>
-                No credit card required • Start with 500 free coins • Cancel
-                anytime
-              </p>
-            </div>
-
-            <div
-              style={{
-                background: 'rgba(255,255,255,0.1)',
-                borderRadius: '20px',
-                padding: '30px',
-                marginTop: '40px',
-              }}
-            >
-              <div
-                style={{
-                  fontSize: '3rem',
-                  fontWeight: 'bold',
-                  color: '#FFE066',
-                  marginBottom: '10px',
-                }}
-              >
-                $19.99
-              </div>
-              <div style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
-                per month
-              </div>
-              <div style={{ fontSize: '14px', opacity: 0.8 }}>
-                Less than $0.67 per day • Unlimited predictions • Full AI access
-              </div>
-            </div>
+              🚀 Start Your Free Trial
+            </button>
           </div>
         </div>
       </section>
@@ -1762,12 +1769,17 @@ export default function Home() {
       {/* Footer */}
       <footer
         style={{
-          background: colors.neutral[900],
-          color: colors.white,
-          padding: '60px 20px 20px',
+          background: '#0F172A',
+          padding: '60px 20px 30px',
+          borderTop: '1px solid #334155',
         }}
       >
-        <div style={styles.container}>
+        <div
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+          }}
+        >
           <div
             style={{
               display: 'grid',
@@ -1781,46 +1793,46 @@ export default function Home() {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '10px',
                   marginBottom: '20px',
                 }}
               >
-                <div
+                <span
                   style={{
-                    width: '40px',
-                    height: '40px',
-                    background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-                    borderRadius: '10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
                     fontSize: '1.5rem',
                     fontWeight: 'bold',
                   }}
                 >
-                  S
-                </div>
-                <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
                   Sportsclub
                 </span>
               </div>
               <p
                 style={{
-                  color: colors.neutral[100],
-                  marginBottom: '20px',
+                  color: '#94A3B8',
                   lineHeight: '1.6',
+                  marginBottom: '20px',
                 }}
               >
                 Play Smart. Win Big. Transform your sports predictions with
                 AI-powered insights and skill-based gaming.
               </p>
             </div>
+
             <div>
-              <h3 style={{ fontWeight: 'bold', marginBottom: '15px' }}>
-                Product
-              </h3>
+              <h4
+                style={{
+                  fontWeight: 'bold',
+                  marginBottom: '15px',
+                  color: '#F1F5F9',
+                }}
+              >
+                Quick Links
+              </h4>
               <div
-                style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px',
+                }}
               >
                 {['How It Works', 'AI Assistant', 'Community', 'Pricing'].map(
                   (link, index) => (
@@ -1828,9 +1840,15 @@ export default function Home() {
                       key={index}
                       href="#"
                       style={{
-                        color: colors.neutral[100],
+                        color: '#94A3B8',
                         textDecoration: 'none',
-                        fontSize: '14px',
+                        transition: 'color 0.3s ease',
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.color = '#60A5FA';
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.color = '#94A3B8';
                       }}
                     >
                       {link}
@@ -1839,100 +1857,17 @@ export default function Home() {
                 )}
               </div>
             </div>
-            <div>
-              <h3 style={{ fontWeight: 'bold', marginBottom: '15px' }}>
-                Legal
-              </h3>
-              <div
-                style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
-              >
-                {[
-                  'Terms of Service',
-                  'Privacy Policy',
-                  'Compliance',
-                  'Responsible Gaming',
-                ].map((link, index) => (
-            <p
-              style={{
-                color: '#94A3B8',
-                fontSize: '24px',
-                maxWidth: '600px',
-                margin: '0 auto',
-              }}
-            >
-              See how you stack up against thousands of players competing for
-              real prizes
-            </p>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 style={{ fontWeight: 'bold', marginBottom: '15px' }}>
-                Stay Updated
-              </h3>
-              <p
-                style={{
-                  color: colors.neutral[100],
-                  fontSize: '14px',
-                  marginBottom: '15px',
-                }}
-              >
-                Get the latest insights and updates.
-              </p>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    borderRadius: '10px',
-                    border: 'none',
-                    background: colors.neutral[800],
-                    color: colors.white,
-                  }}
-                />
-                <button
-                  style={{
-                    padding: '10px 20px',
-                    borderRadius: '10px',
-                    border: 'none',
-                    background: colors.primary,
-                    color: colors.white,
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Subscribe
-                </button>
-              </div>
-            </div>
           </div>
+
           <div
             style={{
-              borderTop: `1px solid ${colors.neutral[800]}`,
-              paddingTop: '20px',
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: '20px',
+              paddingTop: '30px',
+              borderTop: '1px solid #334155',
+              textAlign: 'center',
             }}
           >
             <div style={{ fontSize: '14px', color: colors.neutral[100] }}>
               © 2024 Sportsclub. All rights reserved.
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                gap: '20px',
-                fontSize: '14px',
-                color: colors.neutral[100],
-              }}
-            >
-              <span>🇺🇸 Available in US</span>
-              <span>🔒 SSL Secured</span>
-              <span>✅ Licensed Platform</span>
             </div>
           </div>
         </div>
