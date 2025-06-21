@@ -293,7 +293,7 @@ export default function Home() {
                     marginRight: '8px',
                   }}
                 />
-                <span style={{ fontSize: '16px' }}>Free trial included</span>
+                <span style={{ fontSize: '16px' }}>Free account available</span>
               </div>
               <div
                 style={{
@@ -1564,68 +1564,351 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            {/* Floating AI Chat Interface with Glassmorphism */}
             <div
               style={{
-                background: '#0f172a',
-                borderRadius: '20px',
-                padding: '40px',
-                border: '1px solid #334155',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                position: 'relative',
+                background: 'rgba(15, 23, 42, 0.4)',
+                backdropFilter: 'blur(24px)',
+                borderRadius: '24px',
+                padding: '32px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow:
+                  '0 24px 48px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+                transform: 'perspective(1000px) rotateX(2deg)',
+                overflow: 'hidden',
               }}
             >
+              {/* Floating glass effect background */}
               <div
                 style={{
-                  background: '#1e293b',
-                  borderRadius: '12px',
-                  padding: '20px',
-                  marginBottom: '20px',
+                  position: 'absolute',
+                  top: '-50%',
+                  left: '-50%',
+                  width: '200%',
+                  height: '200%',
+                  background:
+                    'radial-gradient(circle at 30% 20%, rgba(96, 165, 250, 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(251, 191, 36, 0.08) 0%, transparent 50%)',
+                  pointerEvents: 'none',
+                }}
+              />
+
+              {/* Chat Header */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  marginBottom: '24px',
+                  position: 'relative',
+                  zIndex: 1,
                 }}
               >
                 <div
                   style={{
-                    color: '#60A5FA',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    marginBottom: '12px',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #60A5FA, #3B82F6)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '16px',
+                    boxShadow: '0 8px 16px rgba(96, 165, 250, 0.3)',
                   }}
                 >
-                  AI Analysis: Lakers vs Warriors
+                  🤖
                 </div>
+                <div>
+                  <div
+                    style={{
+                      color: '#F1F5F9',
+                      fontSize: '16px',
+                      fontWeight: '600',
+                    }}
+                  >
+                    AI Sports Analyst
+                  </div>
+                  <div
+                    style={{
+                      color: '#10B981',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: '#10B981',
+                        animation: 'pulse 2s infinite',
+                      }}
+                    />
+                    Online
+                  </div>
+                </div>
+              </div>
+
+              {/* Chat Messages */}
+              <div
+                style={{
+                  position: 'relative',
+                  zIndex: 1,
+                }}
+              >
+                {/* User Message */}
                 <div
                   style={{
-                    fontSize: '13px',
-                    lineHeight: '1.5',
-                    color: '#CBD5E1',
-                    marginBottom: '15px',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginBottom: '16px',
                   }}
                 >
                   <div
-                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                    style={{
+                      background: 'rgba(96, 165, 250, 0.2)',
+                      backdropFilter: 'blur(16px)',
+                      borderRadius: '16px 16px 4px 16px',
+                      padding: '12px 16px',
+                      maxWidth: '280px',
+                      border: '1px solid rgba(96, 165, 250, 0.3)',
+                    }}
                   >
-                    <span>Lakers ATS Last 5</span>
-                    <span style={{ color: colors.success, fontWeight: 'bold' }}>
-                      4-1
-                    </span>
-                  </div>
-                  <div
-                    style={{ display: 'flex', justifyContent: 'space-between' }}
-                  >
-                    <span>O/U Trend</span>
-                    <span style={{ color: colors.accent, fontWeight: 'bold' }}>
-                      Under 65%
-                    </span>
+                    <div
+                      style={{
+                        color: '#F1F5F9',
+                        fontSize: '14px',
+                        lineHeight: '1.4',
+                      }}
+                    >
+                      Which data should I think about for this pick?
+                    </div>
+                    <div
+                      style={{
+                        color: '#94A3B8',
+                        fontSize: '10px',
+                        marginTop: '4px',
+                        textAlign: 'right',
+                      }}
+                    >
+                      Just now
+                    </div>
                   </div>
                 </div>
-                <p
+
+                {/* AI Response with Data Visualization */}
+                <div
                   style={{
-                    fontSize: '12px',
-                    color: colors.neutral[100],
-                    marginTop: '10px',
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    marginBottom: '8px',
                   }}
                 >
-                  Recommendation: Lakers +6.5, Under 235.5
-                </p>
+                  <div
+                    style={{
+                      background: 'rgba(15, 23, 42, 0.8)',
+                      backdropFilter: 'blur(16px)',
+                      borderRadius: '16px 16px 16px 4px',
+                      padding: '16px',
+                      maxWidth: '100%',
+                      border: '1px solid rgba(51, 65, 85, 0.5)',
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: '#F1F5F9',
+                        fontSize: '14px',
+                        lineHeight: '1.4',
+                        marginBottom: '16px',
+                      }}
+                    >
+                      Great question! Here are the key data points for Lakers vs
+                      Warriors:
+                    </div>
+
+                    {/* Interactive Data Visualization */}
+                    <div
+                      style={{
+                        background: 'rgba(30, 41, 59, 0.6)',
+                        borderRadius: '12px',
+                        padding: '16px',
+                        border: '1px solid rgba(71, 85, 105, 0.4)',
+                      }}
+                    >
+                      {/* Chart Header */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginBottom: '16px',
+                        }}
+                      >
+                        <div
+                          style={{
+                            color: '#60A5FA',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                          }}
+                        >
+                          Performance Metrics
+                        </div>
+                        <div
+                          style={{
+                            background: 'rgba(16, 185, 129, 0.2)',
+                            color: '#10B981',
+                            padding: '2px 8px',
+                            borderRadius: '8px',
+                            fontSize: '10px',
+                            fontWeight: '600',
+                          }}
+                        >
+                          LIVE
+                        </div>
+                      </div>
+
+                      {/* Animated Progress Bars */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '12px',
+                        }}
+                      >
+                        {[
+                          {
+                            label: 'Lakers ATS L5',
+                            value: 80,
+                            color: '#10B981',
+                          },
+                          {
+                            label: 'Warriors Home Record',
+                            value: 65,
+                            color: '#60A5FA',
+                          },
+                          {
+                            label: 'O/U Trend (Under)',
+                            value: 75,
+                            color: '#F59E0B',
+                          },
+                          {
+                            label: 'Injury Impact',
+                            value: 45,
+                            color: '#EF4444',
+                          },
+                        ].map((metric, index) => (
+                          <div key={index}>
+                            <div
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                marginBottom: '4px',
+                              }}
+                            >
+                              <span
+                                style={{
+                                  color: '#CBD5E1',
+                                  fontSize: '11px',
+                                  fontWeight: '500',
+                                }}
+                              >
+                                {metric.label}
+                              </span>
+                              <span
+                                style={{
+                                  color: metric.color,
+                                  fontSize: '11px',
+                                  fontWeight: '600',
+                                }}
+                              >
+                                {metric.value}%
+                              </span>
+                            </div>
+                            <div
+                              style={{
+                                width: '100%',
+                                height: '6px',
+                                background: 'rgba(71, 85, 105, 0.3)',
+                                borderRadius: '3px',
+                                overflow: 'hidden',
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: `${metric.value}%`,
+                                  height: '100%',
+                                  background: `linear-gradient(90deg, ${metric.color}, ${metric.color}dd)`,
+                                  borderRadius: '3px',
+                                  animation: `fillBar 1.5s ease-out ${
+                                    index * 0.2
+                                  }s both`,
+                                }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Recommendation */}
+                      <div
+                        style={{
+                          marginTop: '16px',
+                          padding: '12px',
+                          background: 'rgba(96, 165, 250, 0.1)',
+                          borderRadius: '8px',
+                          border: '1px solid rgba(96, 165, 250, 0.2)',
+                        }}
+                      >
+                        <div
+                          style={{
+                            color: '#60A5FA',
+                            fontSize: '11px',
+                            fontWeight: '600',
+                            marginBottom: '4px',
+                          }}
+                        >
+                          AI RECOMMENDATION
+                        </div>
+                        <div
+                          style={{
+                            color: '#F1F5F9',
+                            fontSize: '12px',
+                            lineHeight: '1.3',
+                          }}
+                        >
+                          Lakers +6.5 (Strong confidence: 78%)
+                          <br />
+                          Under 235.5 (Moderate confidence: 65%)
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        color: '#94A3B8',
+                        fontSize: '10px',
+                        marginTop: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '4px',
+                          height: '4px',
+                          borderRadius: '50%',
+                          background: '#94A3B8',
+                          animation: 'pulse 1.5s infinite',
+                        }}
+                      />
+                      AI is typing...
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1687,7 +1970,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Final CTA Section */}
+      {/* Early Adopter Pricing Section */}
       <section
         style={{
           background: 'linear-gradient(135deg, #1a1d29 0%, #2d3748 100%)',
@@ -1698,69 +1981,522 @@ export default function Home() {
       >
         <div
           style={{
-            maxWidth: '800px',
+            maxWidth: '1200px',
             margin: '0 auto',
           }}
         >
           <div
             style={{
-              marginBottom: '20px',
-              background: `${colors.success}20`,
-              color: colors.success,
+              marginBottom: '24px',
+              background: 'linear-gradient(135deg, #F59E0B, #F97316)',
+              color: '#FFFFFF',
               padding: '8px 16px',
-              borderRadius: '25px',
+              borderRadius: '24px',
               display: 'inline-block',
-              fontSize: '14px',
+              fontSize: '16px',
               fontWeight: '600',
+              boxShadow: '0 8px 24px rgba(245, 158, 11, 0.3)',
             }}
           >
-            ⭐ 4.9/5 Average Rating
+            🔥 Limited Time: Early Adopter Pricing
           </div>
+
           <h2
             style={{
-              fontSize: 'clamp(2.5rem, 6vw, 4rem)',
-              fontWeight: 'bold',
-              marginBottom: '20px',
+              fontSize: 'clamp(32px, 6vw, 64px)',
+              fontWeight: '800',
+              marginBottom: '24px',
+              lineHeight: '1.2',
             }}
           >
-            Ready to Transform Your{' '}
-            <span style={{ color: '#FFE066' }}>Sports Predictions?</span>
-          </h2>
-          <p
-            style={{
-              fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
-              marginBottom: '40px',
-              lineHeight: '1.6',
-            }}
-          >
-            Stop gambling with gut feelings. Start winning with data-driven
-            insights, AI guidance, and skill-based predictions.
-          </p>
-
-          <div style={{ marginBottom: '40px' }}>
-            <button
+            Choose Your{' '}
+            <span
               style={{
-                background: '#1e293b',
-                color: colors.white,
-                padding: '20px 40px',
-                borderRadius: '50px',
-                border: 'none',
-                fontWeight: '600',
-                fontSize: '20px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'scale(1.05)';
-                e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.3)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.2)';
+                background: 'linear-gradient(135deg, #60A5FA, #F59E0B)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
               }}
             >
-              🚀 Start Your Free Trial
+              Game Plan
+            </span>
+          </h2>
+
+          <p
+            style={{
+              fontSize: '24px',
+              marginBottom: '48px',
+              lineHeight: '1.6',
+              color: '#CBD5E1',
+              maxWidth: '600px',
+              margin: '0 auto 48px auto',
+            }}
+          >
+            Free account includes community forums, practice league, and AI
+            tutoring. Subscribe for predictions and real prizes.
+          </p>
+
+          {/* Pricing Tiers */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '32px',
+              marginTop: '48px',
+            }}
+          >
+            {/* Prediction Padawan */}
+            <div
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(16px)',
+                borderRadius: '24px',
+                padding: '32px',
+                border: '1px solid rgba(51, 65, 85, 0.6)',
+                position: 'relative',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow =
+                  '0 24px 48px rgba(0, 0, 0, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0px)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '48px',
+                  marginBottom: '16px',
+                }}
+              >
+                🥋
+              </div>
+              <h3
+                style={{
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  marginBottom: '8px',
+                  color: '#F1F5F9',
+                }}
+              >
+                Prediction Padawan
+              </h3>
+              <div
+                style={{
+                  fontSize: '48px',
+                  fontWeight: '800',
+                  color: '#60A5FA',
+                  marginBottom: '8px',
+                }}
+              >
+                $19.99
+                <span
+                  style={{
+                    fontSize: '16px',
+                    color: '#94A3B8',
+                    fontWeight: '400',
+                  }}
+                >
+                  /month
+                </span>
+              </div>
+              <p
+                style={{
+                  color: '#94A3B8',
+                  fontSize: '16px',
+                  marginBottom: '24px',
+                  lineHeight: '1.5',
+                }}
+              >
+                Perfect for beginners ready to start making smart predictions
+              </p>
+              <div
+                style={{
+                  textAlign: 'left',
+                  marginBottom: '32px',
+                }}
+              >
+                {[
+                  'Monthly virtual coins',
+                  'Basic AI predictions',
+                  'Community access',
+                  'Performance tracking',
+                  'Mobile app access',
+                ].map((feature, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    <span style={{ color: '#10B981', fontSize: '16px' }}>
+                      ✓
+                    </span>
+                    <span style={{ color: '#CBD5E1', fontSize: '16px' }}>
+                      {feature}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <button
+                style={{
+                  width: '100%',
+                  background: 'rgba(96, 165, 250, 0.2)',
+                  border: '2px solid #60A5FA',
+                  borderRadius: '16px',
+                  padding: '16px',
+                  color: '#60A5FA',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#60A5FA';
+                  e.currentTarget.style.color = '#FFFFFF';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(96, 165, 250, 0.2)';
+                  e.currentTarget.style.color = '#60A5FA';
+                }}
+              >
+                Start Learning
+              </button>
+            </div>
+
+            {/* Analyst League */}
+            <div
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(16px)',
+                borderRadius: '24px',
+                padding: '32px',
+                border: '2px solid #F59E0B',
+                position: 'relative',
+                transition: 'all 0.3s ease',
+                transform: 'scale(1.05)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform =
+                  'scale(1.05) translateY(-8px)';
+                e.currentTarget.style.boxShadow =
+                  '0 32px 64px rgba(245, 158, 11, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1.05) translateY(0px)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '-12px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  background: 'linear-gradient(135deg, #F59E0B, #F97316)',
+                  color: '#FFFFFF',
+                  padding: '8px 16px',
+                  borderRadius: '16px',
+                  fontSize: '12px',
+                  fontWeight: '600',
+                }}
+              >
+                MOST POPULAR
+              </div>
+              <div
+                style={{
+                  fontSize: '48px',
+                  marginBottom: '16px',
+                }}
+              >
+                📊
+              </div>
+              <h3
+                style={{
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  marginBottom: '8px',
+                  color: '#F1F5F9',
+                }}
+              >
+                Analyst League
+              </h3>
+              <div
+                style={{
+                  fontSize: '48px',
+                  fontWeight: '800',
+                  color: '#F59E0B',
+                  marginBottom: '8px',
+                }}
+              >
+                $49.99
+                <span
+                  style={{
+                    fontSize: '16px',
+                    color: '#94A3B8',
+                    fontWeight: '400',
+                  }}
+                >
+                  /month
+                </span>
+              </div>
+              <p
+                style={{
+                  color: '#94A3B8',
+                  fontSize: '16px',
+                  marginBottom: '24px',
+                  lineHeight: '1.5',
+                }}
+              >
+                Advanced features for serious sports analysts
+              </p>
+              <div
+                style={{
+                  textAlign: 'left',
+                  marginBottom: '32px',
+                }}
+              >
+                {[
+                  'Everything in Padawan',
+                  'Advanced AI analytics',
+                  'Custom data visualizations',
+                  'Priority support',
+                  'Advanced leaderboards',
+                  'Exclusive tournaments',
+                ].map((feature, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    <span style={{ color: '#F59E0B', fontSize: '16px' }}>
+                      ✓
+                    </span>
+                    <span style={{ color: '#CBD5E1', fontSize: '16px' }}>
+                      {feature}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <button
+                style={{
+                  width: '100%',
+                  background: 'linear-gradient(135deg, #F59E0B, #F97316)',
+                  border: 'none',
+                  borderRadius: '16px',
+                  padding: '16px',
+                  color: '#FFFFFF',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 8px 24px rgba(245, 158, 11, 0.3)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow =
+                    '0 12px 32px rgba(245, 158, 11, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0px)';
+                  e.currentTarget.style.boxShadow =
+                    '0 8px 24px rgba(245, 158, 11, 0.3)';
+                }}
+              >
+                Level Up Now
+              </button>
+            </div>
+
+            {/* Premier Pro */}
+            <div
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(16px)',
+                borderRadius: '24px',
+                padding: '32px',
+                border: '1px solid rgba(168, 85, 247, 0.6)',
+                position: 'relative',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow =
+                  '0 24px 48px rgba(168, 85, 247, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0px)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '48px',
+                  marginBottom: '16px',
+                }}
+              >
+                👑
+              </div>
+              <h3
+                style={{
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  marginBottom: '8px',
+                  color: '#F1F5F9',
+                }}
+              >
+                Premier Pro
+              </h3>
+              <div
+                style={{
+                  fontSize: '48px',
+                  fontWeight: '800',
+                  color: '#A855F7',
+                  marginBottom: '8px',
+                }}
+              >
+                $99.99
+                <span
+                  style={{
+                    fontSize: '16px',
+                    color: '#94A3B8',
+                    fontWeight: '400',
+                  }}
+                >
+                  /month
+                </span>
+              </div>
+              <p
+                style={{
+                  color: '#94A3B8',
+                  fontSize: '16px',
+                  marginBottom: '24px',
+                  lineHeight: '1.5',
+                }}
+              >
+                Professional-grade tools for elite predictors
+              </p>
+              <div
+                style={{
+                  textAlign: 'left',
+                  marginBottom: '32px',
+                }}
+              >
+                {[
+                  'Everything in Analyst',
+                  'AI-powered recommendations',
+                  'Private coaching sessions',
+                  'VIP community access',
+                  'Custom analytics dashboard',
+                  'Highest prize pool access',
+                  'White-glove support',
+                ].map((feature, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    <span style={{ color: '#A855F7', fontSize: '16px' }}>
+                      ✓
+                    </span>
+                    <span style={{ color: '#CBD5E1', fontSize: '16px' }}>
+                      {feature}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <button
+                style={{
+                  width: '100%',
+                  background: 'rgba(168, 85, 247, 0.2)',
+                  border: '2px solid #A855F7',
+                  borderRadius: '16px',
+                  padding: '16px',
+                  color: '#A855F7',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#A855F7';
+                  e.currentTarget.style.color = '#FFFFFF';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(168, 85, 247, 0.2)';
+                  e.currentTarget.style.color = '#A855F7';
+                }}
+              >
+                Go Pro
+              </button>
+            </div>
+          </div>
+
+          {/* Free Account CTA */}
+          <div
+            style={{
+              marginTop: '56px',
+              padding: '32px',
+              background: 'rgba(15, 23, 42, 0.6)',
+              backdropFilter: 'blur(12px)',
+              borderRadius: '24px',
+              border: '1px solid rgba(51, 65, 85, 0.6)',
+            }}
+          >
+            <h3
+              style={{
+                fontSize: '24px',
+                fontWeight: '700',
+                marginBottom: '16px',
+                color: '#F1F5F9',
+              }}
+            >
+              Not Ready to Subscribe?
+            </h3>
+            <p
+              style={{
+                fontSize: '16px',
+                color: '#94A3B8',
+                marginBottom: '24px',
+                lineHeight: '1.5',
+              }}
+            >
+              Create a free account to access community forums, practice
+              leagues, and AI tutoring. Upgrade anytime to unlock predictions
+              and real prizes.
+            </p>
+            <button
+              style={{
+                background: 'transparent',
+                border: '2px solid #60A5FA',
+                borderRadius: '16px',
+                padding: '16px 32px',
+                color: '#60A5FA',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(96, 165, 250, 0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              Create Free Account
             </button>
           </div>
         </div>
