@@ -939,10 +939,6 @@ export default function Home() {
                       >
                         {item.desc}
                       </p>
-                      }}>
-                        <span style={{ color: '#CBD5E1', fontWeight: '600' }}>Total:</span>
-                        <span style={{ color: '#60A5FA', fontWeight: '800' }}>{player.total}</span>
-                      </div>
                     </div>
                   </div>
                 ))}
