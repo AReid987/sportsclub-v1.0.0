@@ -2,7 +2,7 @@
 name = "auth-service"
 version = "0.1.0"
 description = "Authentication and User Service for Sportsclub"
-authors = ["Sportsclub Team <contact@sportsclub.example.com>"]
+authors = ["Sportsclub Team <admin@twgsportsclub.com>", "A. Reid <antonio@twgsportsclub.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
