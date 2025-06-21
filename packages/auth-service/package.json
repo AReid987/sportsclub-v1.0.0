@@ -4,7 +4,7 @@
   "private": true,
   "description": "Authentication and User Service (FastAPI)",
   "scripts": {
-    "dev": "echo \"TODO: Add command to run FastAPI dev server\"",
-    "lint": "echo \"TODO: Add linting command for auth-service\""
+    "dev": "uvicorn main:app --reload --port 8001 --app-dir src",
+    "lint": "ruff check . && ruff format --check . && mypy ."
   }
 }
