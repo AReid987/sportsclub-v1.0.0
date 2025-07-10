@@ -2074,6 +2074,164 @@ export default function Home() {
         </div>
       </section>
 
+      {/* AI-Powered Insights Section */}
+      <section
+        style={{
+          padding: '80px 20px',
+          background:
+            'linear-gradient(135deg, rgba(45, 91, 255, 0.05), rgba(255, 107, 53, 0.05))',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 20px',
+          }}
+        >
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <div
+              style={{
+                marginBottom: '20px',
+                background: 'rgba(96, 165, 250, 0.2)',
+                color: '#60A5FA',
+                padding: '8px 16px',
+                borderRadius: '25px',
+                display: 'inline-block',
+                fontSize: '14px',
+                fontWeight: '600',
+                border: '1px solid rgba(96, 165, 250, 0.3)',
+              }}
+            >
+              🤖 Your Unfair Advantage
+            </div>
+            <h2
+              style={{
+                fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+                fontWeight: 'bold',
+                marginBottom: '20px',
+                color: '#ffffff',
+              }}
+            >
+              Master Your Game with{' '}
+              <span
+                style={{
+                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                AI Insights
+              </span>
+            </h2>
+            <p
+              style={{
+                fontSize: '1.25rem',
+                color: '#CBD5E1',
+                maxWidth: '700px',
+                margin: '0 auto',
+              }}
+            >
+              Unlock the power of artificial intelligence to elevate your sports
+              prediction game
+            </p>
+          </div>
+
+          <div
+            style={{
+              marginTop: '40px',
+              width: '100%',
+            }}
+            className="three-card-grid"
+          >
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>💬</div>
+              <h3
+                style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  marginBottom: '15px',
+                  color: '#ffffff',
+                }}
+              >
+                Smart Q&A
+              </h3>
+              <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
+                Ask anything from player stats to historical trends. Get
+                instant, intelligent answers powered by comprehensive sports
+                data.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>📊</div>
+              <h3
+                style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  marginBottom: '15px',
+                  color: '#ffffff',
+                }}
+              >
+                Visual Analysis
+              </h3>
+              <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
+                Get AI-generated charts and graphs to visualize team performance
+                and your prediction patterns.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🎓</div>
+              <h3
+                style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  marginBottom: '15px',
+                  color: '#ffffff',
+                }}
+              >
+                Personalized Tutoring
+              </h3>
+              <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
+                Let the AI guide you on what data is important and review your
+                monthly performance.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Community Section */}
       <section
         style={{
