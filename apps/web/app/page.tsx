@@ -2110,9 +2110,11 @@ export default function Home() {
                 fontWeight: 'bold',
                 marginBottom: '20px',
                 color: '#ffffff',
+                lineHeight: '1.1',
               }}
             >
-              Master Your Game with{' '}
+              Master Your Game
+              <br />
               <span
                 style={{
                   background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
@@ -2120,7 +2122,7 @@ export default function Home() {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                AI Insights
+                with AI Insights
               </span>
             </h2>
             <p
