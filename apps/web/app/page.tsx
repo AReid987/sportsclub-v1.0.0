@@ -433,8 +433,7 @@ export default function Home() {
                 margin: '0 auto',
               }}
             >
-              See how you stack up against thousands of players competing for
-              real prizes
+              Where Prowess is Proven
             </p>
           </div>
 
