@@ -1399,7 +1399,7 @@ export default function Home() {
                 step: '03',
                 icon: '🏆',
                 title: 'Compete & Climb',
-                desc: 'Watch your predictions play out in real-time and climb the leaderboard. Track your progress and improve your skills.',
+                desc: 'Track your progress on the real-time leaderboard as your correct picks multiply your coin balance.',
               },
               {
                 step: '04',
@@ -1862,7 +1862,7 @@ export default function Home() {
                           fontSize: '12px',
                         }}
                       >
-                        👩‍🎓
+                        ����‍🎓
                       </div>
                       <span
                         style={{
