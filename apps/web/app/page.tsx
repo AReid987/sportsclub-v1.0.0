@@ -1217,15 +1217,15 @@ export default function Home() {
                 color: '#f5f5f5',
               }}
             >
-              Stop Guessing.{' '}
+              Your Sports Genius{' '}
               <span
                 style={{
-                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+                  background: `linear-gradient(135deg, ${colors.error}, ${colors.accent})`,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                Start Winning.
+                is Wasted.
               </span>
             </h2>
             <p
@@ -1236,7 +1236,7 @@ export default function Home() {
                 margin: '0 auto',
               }}
             >
-              Traditional sports prediction is broken. We've built a better way.
+              The Problem with Traditional Sports Gaming
             </p>
           </div>
 
@@ -1263,7 +1263,7 @@ export default function Home() {
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               }}
             >
-              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>⚠️</div>
+              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>💸</div>
               <h3
                 style={{
                   fontSize: '1.5rem',
@@ -1272,11 +1272,11 @@ export default function Home() {
                   color: '#ffffff',
                 }}
               >
-                Information Overload
+                It's Costly & High-Risk
               </h3>
               <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
-                Drowning in stats, opinions, and conflicting advice from
-                countless sources.
+                Traditional betting requires you to risk your own money on
+                uncertain outcomes.
               </p>
             </div>
 
@@ -1290,7 +1290,7 @@ export default function Home() {
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               }}
             >
-              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🧠</div>
+              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🎲</div>
               <h3
                 style={{
                   fontSize: '1.5rem',
@@ -1299,11 +1299,11 @@ export default function Home() {
                   color: '#ffffff',
                 }}
               >
-                No Predictive Skills
+                It's Based on Luck
               </h3>
               <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
-                Traditional gut feelings and hunches lead to inconsistent
-                results.
+                Most fantasy leagues can be won or lost on a single lucky (or
+                unlucky) week, not true skill.
               </p>
             </div>
 
@@ -1317,7 +1317,7 @@ export default function Home() {
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               }}
             >
-              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🛡️</div>
+              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>😔</div>
               <h3
                 style={{
                   fontSize: '1.5rem',
@@ -1326,11 +1326,11 @@ export default function Home() {
                   color: '#ffffff',
                 }}
               >
-                High-Risk / Low Reward
+                It's Isolating
               </h3>
               <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
-                Traditional sports picks require large stakes with unpredictable
-                outcomes.
+                Most platforms are a solo experience, lacking a true community
+                to discuss strategy and share the excitement.
               </p>
             </div>
           </div>
