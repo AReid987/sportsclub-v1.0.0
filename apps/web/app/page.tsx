@@ -779,7 +779,7 @@ export default function Home() {
                       border: '3px solid rgba(251, 191, 36, 0.3)',
                     }}
                   >
-                    🔥
+                    ��
                     <div
                       style={{
                         position: 'absolute',
@@ -1387,7 +1387,7 @@ export default function Home() {
                 step: '01',
                 icon: '👤',
                 title: 'Sign Up & Get Coins',
-                desc: 'Create your account and receive monthly virtual coins to start playing. No upfront costs, just pure skill-based fun.',
+                desc: 'Create your account, and get a monthly deposit of virtual coins to play with.',
               },
               {
                 step: '02',
