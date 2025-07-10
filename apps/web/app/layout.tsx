@@ -1,7 +1,5 @@
 import localFont from 'next/font/local';
 import './globals.css';
-import { Analytics } from '@vercel/analytics/next';
-import Sidebar from '../src/components/Sidebar';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -34,19 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <div style={{ display: 'flex', minHeight: '100vh' }}>
-          <Sidebar />
-          <div
-            id="main-content"
-            style={{
-              marginLeft: '240px',
-              flex: 1,
-              transition: 'margin-left 0.3s ease',
-            }}
-          >
-            {children}
-          </div>
-        </div>
+        {children}
       </body>
     </html>
   );

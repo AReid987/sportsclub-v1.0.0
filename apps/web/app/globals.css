@@ -14,19 +14,6 @@
   }
 }
 
-/* Three Card Grid - responsive layout for problem/solution sections */
-.three-card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-}
-
-@media (max-width: 1100px) {
-  .three-card-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* Metallic and shimmer animations */
 @keyframes metalShine {
   0% {
@@ -38,41 +25,6 @@
   100% {
     background-position: 0% 50%;
   }
-}
-
-/* Glowing chrome/platinum animation for Sportsclub H1 */
-@keyframes glow {
-  0%,
-  100% {
-    text-shadow: 0 0 5px rgba(218, 218, 218, 0.8),
-      0 0 10px rgba(218, 218, 218, 0.6), 0 0 15px rgba(218, 218, 218, 0.4),
-      0 0 20px rgba(218, 218, 218, 0.3), 0 0 35px rgba(218, 218, 218, 0.2);
-  }
-  50% {
-    text-shadow: 0 0 10px rgba(255, 255, 255, 1),
-      0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6),
-      0 0 40px rgba(255, 255, 255, 0.4), 0 0 70px rgba(255, 255, 255, 0.3);
-  }
-}
-
-.chrome-glow-text {
-  background: linear-gradient(
-    135deg,
-    #e5e7eb 0%,
-    #f9fafb 20%,
-    #ffffff 35%,
-    #e5e7eb 50%,
-    #d1d5db 65%,
-    #f3f4f6 80%,
-    #e5e7eb 100%
-  );
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: glow 3s ease-in-out infinite alternate,
-    shimmer 4s ease-in-out infinite;
-  -webkit-text-stroke: 1px rgba(156, 163, 175, 0.6);
 }
 
 @keyframes shimmer {
@@ -108,83 +60,6 @@
   50% {
     opacity: 0.9;
     transform: scale(1.02);
-  }
-}
-
-/* Star Border Button Animation */
-.star-border-button {
-  position: relative;
-  background-clip: padding-box;
-}
-
-.star-border-button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 2px;
-  background: linear-gradient(
-    45deg,
-    #60a5fa,
-    #3b82f6,
-    #1d4ed8,
-    #fcd34d,
-    #f59e0b,
-    #60a5fa
-  );
-  background-size: 300% 300%;
-  border-radius: inherit;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  animation: starBorder 3s linear infinite;
-  z-index: -1;
-}
-
-@keyframes starBorder {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Leaderboard Animations */
-@keyframes slideUpBounce {
-  0% {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  60% {
-    opacity: 1;
-    transform: translateY(-10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInFromRight {
-  0% {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fillBar {
-  from {
-    width: 0%;
-    opacity: 0.6;
-  }
-  to {
-    opacity: 1;
   }
 }
 
