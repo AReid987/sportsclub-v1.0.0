@@ -779,7 +779,7 @@ export default function Home() {
                       border: '3px solid rgba(251, 191, 36, 0.3)',
                     }}
                   >
-                    ��
+                    🔥
                     <div
                       style={{
                         position: 'absolute',
@@ -1393,7 +1393,7 @@ export default function Home() {
                 step: '02',
                 icon: '🎯',
                 title: 'Make Smart Picks',
-                desc: 'Use our AI insights to make informed predictions on your favorite sports. Learn from real-time data and expert analysis.',
+                desc: 'Use your knowledge and our AI insights to make predictions on major sporting events.',
               },
               {
                 step: '03',
