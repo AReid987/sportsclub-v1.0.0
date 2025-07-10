@@ -1247,9 +1247,6 @@ export default function Home() {
               gap: '32px',
               marginTop: '40px',
               width: '100%',
-              '@media (min-width: 768px) and (max-width: 1100px)': {
-                gridTemplateColumns: 'repeat(1, 1fr)',
-              },
             }}
             className="three-card-grid"
           >
