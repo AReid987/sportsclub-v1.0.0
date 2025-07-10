@@ -1405,7 +1405,7 @@ export default function Home() {
                 step: '04',
                 icon: '🎁',
                 title: 'Win Real Prizes',
-                desc: 'Top performers earn real cash prizes, exclusive rewards, and recognition. Your skills directly translate to rewards.',
+                desc: 'Finish among the top-ranked players at the end of the month to win real cash prizes.',
               },
             ].map((item, index) => (
               <div
@@ -1862,7 +1862,7 @@ export default function Home() {
                           fontSize: '12px',
                         }}
                       >
-                        ����‍🎓
+                        👩‍🎓
                       </div>
                       <span
                         style={{
