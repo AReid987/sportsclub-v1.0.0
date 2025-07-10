@@ -387,7 +387,7 @@ export default function Home() {
                   fontSize: '12px',
                 }}
               >
-                Until next month's payout 12:00 AM EST
+                Until next month&apos;s payout 12:00 AM EST
               </div>
             </div>
           </div>
@@ -1689,7 +1689,7 @@ export default function Home() {
                 overflow: 'hidden',
               }}
             >
-              {/* Floating glass effect background with Annie's colors */}
+                {/* Floating glass effect background with Annie&apos;s colors */}
               <div
                 style={{
                   position: 'absolute',
@@ -1882,8 +1882,8 @@ export default function Home() {
                       }}
                     >
                       Excellent question! Let me teach you about the key
-                      performance indicators that matter most. Here's what the
-                      data tells us about team patterns—I'll show you how to
+                        performance indicators that matter most. Here&apos;s what the
+                        data tells us about team patterns—I&apos;ll show you how to
                       analyze, not what to conclude:
                     </div>
 
@@ -1896,7 +1896,7 @@ export default function Home() {
                         border: '1px solid rgba(71, 85, 105, 0.4)',
                       }}
                     >
-                      {/* Chart Header */}
+              {/* Annie's Chat Header */}
                       <div
                         style={{
                           display: 'flex',
@@ -1928,7 +1928,7 @@ export default function Home() {
                         </div>
                       </div>
 
-                      {/* Animated Progress Bars */}
+                {/* Annie's Educational Response */}
                       <div
                         style={{
                           display: 'flex',

@@ -1,7 +1,6 @@
 import localFont from 'next/font/local';
 import './globals.css';
-import { Analytics } from '@vercel/analytics/next';
-import Sidebar from '../src/components/Sidebar';
+import Sidebar from '../src/components/Sidebar.tsx';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
