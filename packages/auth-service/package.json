@@ -4,7 +4,7 @@
   "private": true,
   "description": "Authentication and User Service (FastAPI)",
   "scripts": {
-    "dev": "uvicorn main:app --reload --port 8001 --app-dir src",
+    "dev": "echo 'Auth service disabled for frontend development'",
     "lint": "ruff check . && ruff format --check . && mypy ."
   }
 }
