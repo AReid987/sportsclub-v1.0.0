@@ -2267,9 +2267,11 @@ export default function Home() {
                 fontWeight: 'bold',
                 marginBottom: '20px',
                 color: colors.neutral[100],
+                lineHeight: '1.1',
               }}
             >
-              Connect, Discuss,{' '}
+              Connect, Discuss,
+              <br />
               <span
                 style={{
                   background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
@@ -2280,10 +2282,82 @@ export default function Home() {
                 Conquer Together
               </span>
             </h2>
-            <p style={{ fontSize: '1.25rem', color: colors.neutral[100] }}>
+            <p
+              style={{
+                fontSize: '1.25rem',
+                color: colors.neutral[100],
+                marginBottom: '40px',
+              }}
+            >
               Join a thriving community of sports enthusiasts and data-driven
               predictors
             </p>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gap: '32px',
+              marginTop: '40px',
+              width: '100%',
+            }}
+          >
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>💬</div>
+              <h3
+                style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  marginBottom: '15px',
+                  color: '#ffffff',
+                }}
+              >
+                Community Forums
+              </h3>
+              <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
+                Share strategies, discuss matchups, and get insights from fellow
+                players and AI agents.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🔴</div>
+              <h3
+                style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  marginBottom: '15px',
+                  color: '#ffffff',
+                }}
+              >
+                Live Event Chat
+              </h3>
+              <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
+                Join real-time chat rooms during live games to share the
+                excitement and see live score updates.
+              </p>
+            </div>
           </div>
         </div>
       </section>
