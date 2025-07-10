@@ -226,15 +226,33 @@ export default function Home() {
 
             <h2
               style={{
-                fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-                fontWeight: '600',
-                marginBottom: '40px',
-                lineHeight: '1.2',
+                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                fontWeight: '800',
+                marginBottom: '24px',
+                lineHeight: '1.1',
                 color: '#F1F5F9',
               }}
             >
-              Play Smart. <span style={{ color: '#60A5FA' }}>Win Big.</span>
+              Stop Guessing.{' '}
+              <span style={{ color: '#60A5FA' }}>Start Winning.</span>
             </h2>
+
+            <p
+              style={{
+                fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
+                fontWeight: '500',
+                marginBottom: '40px',
+                lineHeight: '1.4',
+                color: '#CBD5E1',
+                maxWidth: '700px',
+                margin: '0 auto 40px auto',
+              }}
+            >
+              Your sports knowledge is now a cash asset.{' '}
+              <span style={{ color: '#FCD34D', fontWeight: '600' }}>
+                Play Smart. Win Big.
+              </span>
+            </p>
 
             <div style={{ marginBottom: '32px' }}>
               <button
@@ -267,7 +285,7 @@ export default function Home() {
                 }}
               >
                 <span style={{ position: 'relative', zIndex: 2 }}>
-                  🎯 Join Sportsclub Now
+                  🏆 Start Your First Competition
                 </span>
               </button>
             </div>
@@ -416,20 +434,21 @@ export default function Home() {
               position: 'relative',
             }}
           >
-            {/* User's Rank - Sticky leaderboard row style */}
+            {/* User's Rank - Glassmorphism Sticky Card */}
             <div
               style={{
                 position: 'sticky',
-                top: '80px',
-                zIndex: 20,
-                margin: '0 0 16px 0',
-                background: 'rgba(37, 99, 235, 0.95)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '12px',
-                padding: '16px 20px',
-                border: '1px solid rgba(37, 99, 235, 0.4)',
-                boxShadow: '0 8px 32px rgba(37, 99, 235, 0.3)',
-                animation: 'pulse 2s infinite',
+                top: '16px',
+                zIndex: 30,
+                margin: '0 0 24px 0',
+                background: 'rgba(15, 23, 42, 0.4)',
+                backdropFilter: 'blur(20px)',
+                borderRadius: '16px',
+                padding: '20px 24px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow:
+                  '0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(96, 165, 250, 0.2)',
+                animation: 'userRankFloat 3s ease-in-out infinite',
               }}
             >
               <div
@@ -898,11 +917,11 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Rest of Leaderboard */}
+              {/* Rest of Leaderboard - Animated */}
               <div
                 style={{
                   display: 'grid',
-                  gap: '8px',
+                  gap: '12px',
                 }}
               >
                 {[
@@ -915,6 +934,8 @@ export default function Home() {
                     risk: 150,
                     total: 1000,
                     avatar: '⚡',
+                    trending: 'up',
+                    activity: 'gaining',
                   },
                   {
                     rank: 5,
@@ -925,6 +946,8 @@ export default function Home() {
                     risk: 220,
                     total: 1000,
                     avatar: '🤖',
+                    trending: 'up',
+                    activity: 'stable',
                   },
                   {
                     rank: 6,
@@ -935,16 +958,20 @@ export default function Home() {
                     risk: 350,
                     total: 1000,
                     avatar: '🧙‍♂️',
+                    trending: 'up',
+                    activity: 'gaining',
                   },
                   {
                     rank: 7,
                     name: 'BetMaster88',
                     score: 2156,
-                    change: '+34',
+                    change: '-12',
                     safe: 720,
                     risk: 280,
                     total: 1000,
                     avatar: '💰',
+                    trending: 'down',
+                    activity: 'losing',
                   },
                   {
                     rank: 8,
@@ -955,24 +982,45 @@ export default function Home() {
                     risk: 400,
                     total: 1000,
                     avatar: '🌟',
+                    trending: 'up',
+                    activity: 'gaining',
                   },
                 ].map((player, index) => (
                   <div
                     key={index}
                     style={{
                       display: 'grid',
-                      gridTemplateColumns: '60px 1fr auto',
+                      gridTemplateColumns: '60px 1fr auto 40px',
                       alignItems: 'center',
-                      padding: '16px 20px',
+                      padding: '20px 24px',
                       borderRadius: '16px',
-                      background: 'rgba(51, 65, 85, 0.4)',
-                      border: '1px solid rgba(71, 85, 105, 0.3)',
-                      transition: 'all 0.3s ease',
+                      background:
+                        player.activity === 'gaining'
+                          ? 'rgba(16, 185, 129, 0.08)'
+                          : player.activity === 'losing'
+                          ? 'rgba(239, 68, 68, 0.08)'
+                          : 'rgba(51, 65, 85, 0.4)',
+                      border: `1px solid ${
+                        player.activity === 'gaining'
+                          ? 'rgba(16, 185, 129, 0.2)'
+                          : player.activity === 'losing'
+                          ? 'rgba(239, 68, 68, 0.2)'
+                          : 'rgba(71, 85, 105, 0.3)'
+                      }`,
+                      transition: 'all 0.4s ease',
                       gap: '16px',
                       animation: `slideInFromRight 0.8s ease-out ${
                         0.6 + index * 0.1
-                      }s both`,
-                      marginBottom: '8px',
+                      }s both, ${
+                        player.activity === 'gaining'
+                          ? 'rankUp'
+                          : player.activity === 'losing'
+                          ? 'rankDown'
+                          : 'rankPulse'
+                      } 2s ease-in-out infinite`,
+                      marginBottom: '12px',
+                      position: 'relative',
+                      overflow: 'hidden',
                     }}
                   >
                     <div
@@ -1100,6 +1148,27 @@ export default function Home() {
                         </span>
                       </div>
                     </div>
+
+                    {/* Trend Indicator */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: '24px',
+                          animation:
+                            player.trending === 'up'
+                              ? 'trendUp 1.5s ease-in-out infinite'
+                              : 'trendDown 1.5s ease-in-out infinite',
+                        }}
+                      >
+                        {player.trending === 'up' ? '📈' : '📉'}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -1163,11 +1232,15 @@ export default function Home() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '20px',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '32px',
               marginTop: '40px',
               width: '100%',
+              '@media (min-width: 768px) and (max-width: 1100px)': {
+                gridTemplateColumns: 'repeat(1, 1fr)',
+              },
             }}
+            className="three-card-grid"
           >
             <div
               style={{
@@ -1416,17 +1489,30 @@ export default function Home() {
             <div>
               <div
                 style={{
-                  background: 'rgba(45, 91, 255, 0.125)',
-                  color: colors.primary,
-                  fontSize: '14px',
+                  background:
+                    'linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2))',
+                  color: '#E879F9',
+                  fontSize: '16px',
                   fontWeight: '600',
                   padding: '8px 16px',
-                  borderRadius: '25px',
-                  display: 'inline-block',
-                  marginBottom: '20px',
+                  borderRadius: '24px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginBottom: '24px',
+                  border: '1px solid rgba(168, 85, 247, 0.3)',
                 }}
               >
-                🧠 AI-Powered Intelligence
+                <div
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: '#10B981',
+                    animation: 'pulse 2s infinite',
+                  }}
+                />
+                🎓 Meet Annie the Analyst
               </div>
               <h2
                 style={{
@@ -1436,15 +1522,15 @@ export default function Home() {
                   color: colors.neutral[100],
                 }}
               >
-                <span style={{ color: '#ffffff' }}>Master Your Game with</span>{' '}
+                <span style={{ color: '#ffffff' }}>Learn From</span>{' '}
                 <span
                   style={{
-                    background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+                    background: `linear-gradient(135deg, #A855F7, #EC4899)`,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  AI Insights
+                  Annie
                 </span>
               </h2>
               <p
@@ -1452,49 +1538,57 @@ export default function Home() {
                   fontSize: '24px',
                   color: '#ffffff',
                   lineHeight: '1.6',
-                  marginBottom: '30px',
+                  marginBottom: '32px',
                 }}
               >
-                Our advanced AI assistant doesn't just give you predictions—it
-                teaches you how to think like a pro analyst. Learn, adapt, and
-                improve with every interaction.
+                Your personal AI sports analyst who teaches you to think like a
+                pro. Annie provides data insights and educational guidance in
+                the latent space—never telling you what to pick, but showing you
+                how to analyze effectively.
               </p>
               <div
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '20px',
-                  fontSize: '24px',
+                  gap: '24px',
                 }}
               >
                 <div
                   style={{
                     display: 'flex',
                     alignItems: 'flex-start',
-                    gap: '15px',
+                    gap: '16px',
                   }}
                 >
                   <div
                     style={{
-                      fontSize: '2rem',
+                      fontSize: '32px',
+                      filter: 'drop-shadow(0 4px 8px rgba(168, 85, 247, 0.3))',
                     }}
                   >
-                    💬
+                    💡
                   </div>
                   <div>
                     <h3
                       style={{
                         fontSize: '24px',
-                        fontWeight: 'bold',
+                        fontWeight: '700',
                         marginBottom: '8px',
-                        color: '#ffffff',
+                        color: '#E879F9',
                       }}
                     >
-                      Smart Q&A
+                      Educational Insights
                     </h3>
-                    <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
-                      Ask questions about teams, players, and matchups. Get
-                      instant, data-driven answers.
+                    <p
+                      style={{
+                        color: '#CBD5E1',
+                        lineHeight: '1.6',
+                        fontSize: '18px',
+                      }}
+                    >
+                      Annie breaks down complex sports analytics into digestible
+                      lessons, teaching you the 'why' behind every data point
+                      without bias.
                     </p>
                   </div>
                 </div>
@@ -1503,30 +1597,38 @@ export default function Home() {
                   style={{
                     display: 'flex',
                     alignItems: 'flex-start',
-                    gap: '15px',
+                    gap: '16px',
                   }}
                 >
                   <div
                     style={{
-                      fontSize: '2rem',
+                      fontSize: '32px',
+                      filter: 'drop-shadow(0 4px 8px rgba(168, 85, 247, 0.3))',
                     }}
                   >
-                    📊
+                    🎨
                   </div>
                   <div>
                     <h3
                       style={{
                         fontSize: '24px',
-                        fontWeight: 'bold',
+                        fontWeight: '700',
                         marginBottom: '8px',
-                        color: '#ffffff',
+                        color: '#E879F9',
                       }}
                     >
-                      Visual Analytics
+                      Beautiful Visualizations
                     </h3>
-                    <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
-                      Generative UI creates custom charts and visualizations for
-                      better insights.
+                    <p
+                      style={{
+                        color: '#CBD5E1',
+                        lineHeight: '1.6',
+                        fontSize: '18px',
+                      }}
+                    >
+                      Watch data come alive through Annie's generative
+                      UI—interactive charts, trend analyses, and pattern
+                      recognition made intuitive.
                     </p>
                   </div>
                 </div>
@@ -1535,51 +1637,59 @@ export default function Home() {
                   style={{
                     display: 'flex',
                     alignItems: 'flex-start',
-                    gap: '15px',
+                    gap: '16px',
                   }}
                 >
                   <div
                     style={{
-                      fontSize: '2rem',
+                      fontSize: '32px',
+                      filter: 'drop-shadow(0 4px 8px rgba(168, 85, 247, 0.3))',
                     }}
                   >
-                    📚
+                    🧮
                   </div>
-                  <div style={{ color: '#ffffff' }}>
+                  <div>
                     <h3
                       style={{
                         fontSize: '24px',
-                        fontWeight: 'bold',
+                        fontWeight: '700',
                         marginBottom: '8px',
-                        color: '#ffffff',
+                        color: '#E879F9',
                       }}
                     >
-                      Personal Tutor
+                      Latent Space Learning
                     </h3>
-                    <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
-                      Learn sports analytics concepts with personalized
-                      explanations and examples.
+                    <p
+                      style={{
+                        color: '#CBD5E1',
+                        lineHeight: '1.6',
+                        fontSize: '18px',
+                      }}
+                    >
+                      Discover hidden patterns and relationships in sports data
+                      through Annie's advanced analytical frameworks and
+                      thoughtful guidance.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
-            {/* Floating AI Chat Interface with Glassmorphism */}
+            {/* Annie the Analyst - Educational Chat Interface */}
             <div
               style={{
                 position: 'relative',
-                background: 'rgba(15, 23, 42, 0.4)',
-                backdropFilter: 'blur(24px)',
+                background: 'rgba(15, 23, 42, 0.6)',
+                backdropFilter: 'blur(20px)',
                 borderRadius: '24px',
                 padding: '32px',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(168, 85, 247, 0.2)',
                 boxShadow:
-                  '0 24px 48px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05)',
-                transform: 'perspective(1000px) rotateX(2deg)',
+                  '0 24px 48px rgba(168, 85, 247, 0.15), 0 0 0 1px rgba(168, 85, 247, 0.1)',
+                transform: 'perspective(1000px) rotateX(1deg)',
                 overflow: 'hidden',
               }}
             >
-              {/* Floating glass effect background */}
+              {/* Floating glass effect background with Annie's colors */}
               <div
                 style={{
                   position: 'absolute',
@@ -1588,46 +1698,58 @@ export default function Home() {
                   width: '200%',
                   height: '200%',
                   background:
-                    'radial-gradient(circle at 30% 20%, rgba(96, 165, 250, 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(251, 191, 36, 0.08) 0%, transparent 50%)',
+                    'radial-gradient(circle at 30% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 50%)',
                   pointerEvents: 'none',
                 }}
               />
 
-              {/* Chat Header */}
+              {/* Annie's Chat Header */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '12px',
-                  marginBottom: '24px',
+                  gap: '16px',
+                  marginBottom: '32px',
                   position: 'relative',
                   zIndex: 1,
                 }}
               >
                 <div
                   style={{
-                    width: '40px',
-                    height: '40px',
+                    width: '56px',
+                    height: '56px',
                     borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #60A5FA, #3B82F6)',
+                    background: 'linear-gradient(135deg, #A855F7, #EC4899)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '16px',
-                    boxShadow: '0 8px 16px rgba(96, 165, 250, 0.3)',
+                    fontSize: '24px',
+                    boxShadow: '0 12px 24px rgba(168, 85, 247, 0.4)',
+                    border: '2px solid rgba(255, 255, 255, 0.1)',
                   }}
                 >
-                  🤖
+                  👩‍🎓
                 </div>
                 <div>
                   <div
                     style={{
                       color: '#F1F5F9',
-                      fontSize: '16px',
-                      fontWeight: '600',
+                      fontSize: '20px',
+                      fontWeight: '700',
+                      marginBottom: '2px',
                     }}
                   >
-                    AI Sports Analyst
+                    Annie the Analyst
+                  </div>
+                  <div
+                    style={{
+                      color: '#E879F9',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Your AI Sports Tutor
                   </div>
                   <div
                     style={{
@@ -1635,19 +1757,19 @@ export default function Home() {
                       fontSize: '12px',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '4px',
+                      gap: '6px',
                     }}
                   >
                     <div
                       style={{
-                        width: '6px',
-                        height: '6px',
+                        width: '8px',
+                        height: '8px',
                         borderRadius: '50%',
                         background: '#10B981',
                         animation: 'pulse 2s infinite',
                       }}
                     />
-                    Online
+                    Teaching mode active
                   </div>
                 </div>
               </div>
@@ -1664,33 +1786,34 @@ export default function Home() {
                   style={{
                     display: 'flex',
                     justifyContent: 'flex-end',
-                    marginBottom: '16px',
+                    marginBottom: '20px',
                   }}
                 >
                   <div
                     style={{
-                      background: 'rgba(96, 165, 250, 0.2)',
+                      background: 'rgba(168, 85, 247, 0.2)',
                       backdropFilter: 'blur(16px)',
-                      borderRadius: '16px 16px 4px 16px',
-                      padding: '12px 16px',
-                      maxWidth: '280px',
-                      border: '1px solid rgba(96, 165, 250, 0.3)',
+                      borderRadius: '20px 20px 4px 20px',
+                      padding: '16px 20px',
+                      maxWidth: '300px',
+                      border: '1px solid rgba(168, 85, 247, 0.3)',
                     }}
                   >
                     <div
                       style={{
                         color: '#F1F5F9',
-                        fontSize: '14px',
+                        fontSize: '15px',
                         lineHeight: '1.4',
                       }}
                     >
-                      Which data should I think about for this pick?
+                      Annie, what should I understand about team performance
+                      patterns?
                     </div>
                     <div
                       style={{
-                        color: '#94A3B8',
-                        fontSize: '10px',
-                        marginTop: '4px',
+                        color: '#CBD5E1',
+                        fontSize: '11px',
+                        marginTop: '6px',
                         textAlign: 'right',
                       }}
                     >
@@ -1699,34 +1822,69 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* AI Response with Data Visualization */}
+                {/* Annie's Educational Response */}
                 <div
                   style={{
                     display: 'flex',
                     justifyContent: 'flex-start',
-                    marginBottom: '8px',
+                    marginBottom: '12px',
                   }}
                 >
                   <div
                     style={{
-                      background: 'rgba(15, 23, 42, 0.8)',
-                      backdropFilter: 'blur(16px)',
-                      borderRadius: '16px 16px 16px 4px',
-                      padding: '16px',
+                      background: 'rgba(15, 23, 42, 0.9)',
+                      backdropFilter: 'blur(20px)',
+                      borderRadius: '20px 20px 20px 4px',
+                      padding: '20px',
                       maxWidth: '100%',
-                      border: '1px solid rgba(51, 65, 85, 0.5)',
+                      border: '1px solid rgba(168, 85, 247, 0.3)',
                     }}
                   >
                     <div
                       style={{
-                        color: '#F1F5F9',
-                        fontSize: '14px',
-                        lineHeight: '1.4',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
                         marginBottom: '16px',
                       }}
                     >
-                      Great question! Here are the key data points for Lakers vs
-                      Warriors:
+                      <div
+                        style={{
+                          width: '24px',
+                          height: '24px',
+                          borderRadius: '50%',
+                          background:
+                            'linear-gradient(135deg, #A855F7, #EC4899)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '12px',
+                        }}
+                      >
+                        👩‍🎓
+                      </div>
+                      <span
+                        style={{
+                          color: '#E879F9',
+                          fontSize: '12px',
+                          fontWeight: '600',
+                        }}
+                      >
+                        ANNIE
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        color: '#F1F5F9',
+                        fontSize: '15px',
+                        lineHeight: '1.5',
+                        marginBottom: '20px',
+                      }}
+                    >
+                      Excellent question! Let me teach you about the key
+                      performance indicators that matter most. Here's what the
+                      data tells us about team patterns—I'll show you how to
+                      analyze, not what to conclude:
                     </div>
 
                     {/* Interactive Data Visualization */}
@@ -2043,6 +2201,7 @@ export default function Home() {
               gap: '32px',
               marginTop: '48px',
             }}
+            className="pricing-grid"
           >
             {/* Prediction Padawan */}
             <div
