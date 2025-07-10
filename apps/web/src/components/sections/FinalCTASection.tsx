@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Rocket, Shield, CheckCircle, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/Button.js';
+import { Button } from '@/components/ui/Button.tsx';
 
 const benefits = [
   'Low monthly subscription - no high-stakes gambling',

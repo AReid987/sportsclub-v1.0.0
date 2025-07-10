@@ -1,15 +1,15 @@
 'use client';
 
 import React from 'react';
-import { HeroSection } from './sections/HeroSection.js';
-import { ProblemSolutionSection } from './sections/ProblemSolutionSection.js';
-import { HowItWorksSection } from './sections/HowItWorksSection.js';
-import { AIAssistantSection } from './sections/AIAssistantSection.js';
-import { CommunitySection } from './sections/CommunitySection.js';
-import { GamificationSection } from './sections/GamificationSection.js';
-import { TestimonialsSection } from './sections/TestimonialsSection.js';
-import { FinalCTASection } from './sections/FinalCTASection.js';
-import { Footer } from './sections/Footer.js';
+import { HeroSection } from './sections/HeroSection.tsx';
+import { ProblemSolutionSection } from './sections/ProblemSolutionSection.tsx';
+import { HowItWorksSection } from './sections/HowItWorksSection.tsx';
+import { AIAssistantSection } from './sections/AIAssistantSection.tsx';
+import { CommunitySection } from './sections/CommunitySection.tsx';
+import { GamificationSection } from './sections/GamificationSection.tsx';
+import { TestimonialsSection } from './sections/TestimonialsSection.tsx';
+import { FinalCTASection } from './sections/FinalCTASection.tsx';
+import { Footer } from './sections/Footer.tsx';
 
 export function LandingPage() {
   return (
