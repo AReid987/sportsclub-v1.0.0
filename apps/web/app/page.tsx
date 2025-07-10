@@ -241,17 +241,28 @@ export default function Home() {
               style={{
                 fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
                 fontWeight: '500',
-                marginBottom: '40px',
+                marginBottom: '24px',
                 lineHeight: '1.4',
                 color: '#CBD5E1',
+                maxWidth: '700px',
+                margin: '0 auto 24px auto',
+              }}
+            >
+              Your sports knowledge is now a cash asset.
+            </p>
+
+            <p
+              style={{
+                fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
+                fontWeight: '600',
+                marginBottom: '40px',
+                lineHeight: '1.4',
+                color: '#FCD34D',
                 maxWidth: '700px',
                 margin: '0 auto 40px auto',
               }}
             >
-              Your sports knowledge is now a cash asset.{' '}
-              <span style={{ color: '#FCD34D', fontWeight: '600' }}>
-                Play Smart. Win Big.
-              </span>
+              Play Smart. Win Big.
             </p>
 
             <div style={{ marginBottom: '32px' }}>
