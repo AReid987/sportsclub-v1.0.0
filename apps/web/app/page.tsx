@@ -1358,7 +1358,7 @@ export default function Home() {
                 gap: '16px',
               }}
             >
-              <span style={{ color: '#ffffff' }}>How It</span>
+              <span style={{ color: '#ffffff' }}>Your Path to</span>
               <span
                 style={{
                   background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
@@ -1366,13 +1366,9 @@ export default function Home() {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                Works
+                Consistent Wins
               </span>
             </h2>
-            <p style={{ fontSize: '1.25rem', color: '#ffffff' }}>
-              Get started in minutes and begin your journey to smarter sports
-              predictions.
-            </p>
           </div>
 
           <div
