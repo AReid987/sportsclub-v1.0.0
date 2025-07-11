@@ -444,7 +444,7 @@ export default function Home() {
               position: 'relative',
             }}
           >
-            {/* User's Rank - Glassmorphism Sticky Card */}
+            {/* User&apos;s Rank - Glassmorphism Sticky Card */}
             <div
               style={{
                 position: 'sticky',
@@ -1689,7 +1689,7 @@ export default function Home() {
                 overflow: 'hidden',
               }}
             >
-                {/* Floating glass effect background with Annie&apos;s colors */}
+              {/* Floating glass effect background with Annie&apos;s colors */}
               <div
                 style={{
                   position: 'absolute',
@@ -1896,7 +1896,7 @@ export default function Home() {
                         border: '1px solid rgba(71, 85, 105, 0.4)',
                       }}
                     >
-              {/* Annie's Chat Header */}
+              {/* Annie&apos;s Chat Header */}
                       <div
                         style={{
                           display: 'flex',
@@ -1928,7 +1928,7 @@ export default function Home() {
                         </div>
                       </div>
 
-                {/* Annie's Educational Response */}
+                {/* Annie&apos;s Educational Response */}
                       <div
                         style={{
                           display: 'flex',
@@ -2165,7 +2165,7 @@ export default function Home() {
                   color: '#ffffff',
                 }}
               >
-                Smart Q&A
+                Smart Q&amp;A
               </h3>
               <p style={{ color: '#9b9b9b', lineHeight: '1.6' }}>
                 Ask anything from player stats to historical trends. Get
