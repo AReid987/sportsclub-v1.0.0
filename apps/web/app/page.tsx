@@ -3335,6 +3335,109 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Final Call to Action */}
+      <section
+        style={{
+          background:
+            'linear-gradient(135deg, #1a1d29 0%, #2d3748 50%, #1a202c 100%)',
+          padding: '80px 20px',
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Subtle dot pattern background */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage:
+              'radial-gradient(circle at 2px 2px, rgba(45, 91, 255, 0.1) 1px, transparent 0)',
+            backgroundSize: '40px 40px',
+            opacity: 0.4,
+          }}
+        />
+
+        <div
+          style={{
+            maxWidth: '800px',
+            margin: '0 auto',
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          <h2
+            style={{
+              fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+              fontWeight: '900',
+              marginBottom: '24px',
+              color: '#ffffff',
+              lineHeight: '1.1',
+            }}
+          >
+            Your Sports Knowledge{' '}
+            <span
+              style={{
+                background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Is Now a Cash Asset.
+            </span>
+          </h2>
+
+          <p
+            style={{
+              fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)',
+              marginBottom: '40px',
+              color: '#CBD5E1',
+              lineHeight: '1.6',
+              maxWidth: '600px',
+              margin: '0 auto 40px auto',
+            }}
+          >
+            Stop leaving your insights on the table. Join a community of skilled
+            players and turn your predictions into profit.
+          </p>
+
+          <button
+            style={{
+              background: 'linear-gradient(135deg, #2563EB, #3B82F6)',
+              border: '2px solid transparent',
+              borderRadius: '50px',
+              padding: '20px 40px',
+              fontSize: '20px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 12px 40px rgba(37, 99, 235, 0.4)',
+              color: '#ffffff',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+            className="star-border-button"
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05) translateY(-2px)';
+              e.currentTarget.style.boxShadow =
+                '0 16px 48px rgba(37, 99, 235, 0.6)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'scale(1) translateY(0)';
+              e.currentTarget.style.boxShadow =
+                '0 12px 40px rgba(37, 99, 235, 0.4)';
+            }}
+          >
+            <span style={{ position: 'relative', zIndex: 2 }}>
+              🏆 Join the Competition Today
+            </span>
+          </button>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer
         style={{
