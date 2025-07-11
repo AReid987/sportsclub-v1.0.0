@@ -55,23 +55,11 @@
 
 .chrome-glow-text {
   color: #ffffff;
-  background: linear-gradient(
-    135deg,
-    #f8fafc 0%,
-    #ffffff 25%,
-    #e2e8f0 50%,
-    #ffffff 75%,
-    #f1f5f9 100%
-  );
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: glow 3s ease-in-out infinite alternate,
-    shimmer 4s ease-in-out infinite;
+  animation: glow 3s ease-in-out infinite alternate;
   font-weight: 900;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 @keyframes shimmer {
