@@ -979,7 +979,7 @@ export default function Home() {
                     safe: 720,
                     risk: 280,
                     total: 1000,
-                    avatar: '💰',
+                    avatar: '����',
                     trending: 'down',
                     activity: 'losing',
                   },
@@ -3211,6 +3211,126 @@ export default function Home() {
             >
               Create Free Account
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section
+        style={{
+          padding: '80px 20px',
+          background: '#0F172A',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '800px',
+            margin: '0 auto',
+            padding: '0 20px',
+          }}
+        >
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2
+              style={{
+                fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+                fontWeight: 'bold',
+                marginBottom: '20px',
+                color: '#ffffff',
+              }}
+            >
+              Your Questions,{' '}
+              <span
+                style={{
+                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                Answered
+              </span>
+            </h2>
+          </div>
+
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+          >
+            {[
+              {
+                question: 'Is this legal?',
+                answer:
+                  'Yes, this is completely legal. Our platform is skill-based and not gambling. Players compete using virtual coins in a prediction competition format, which is legal in all jurisdictions where skill-based competitions are permitted.',
+              },
+              {
+                question: 'How do I get paid?',
+                answer:
+                  'Top-ranking players at the end of each monthly season will win real cash prizes. The number of winners and prize pool amounts are transparently communicated at the beginning of each month. Payments are processed securely through our verified payment system.',
+              },
+              {
+                question: 'Can I buy more virtual coins?',
+                answer:
+                  'No, you cannot purchase additional virtual coins. However, you can earn more coins through accurate predictions, daily bonuses, login streaks, winning prediction streaks, and participating in AI-led events like sports trivia competitions.',
+              },
+              {
+                question: 'What sports are available?',
+                answer:
+                  'Available sports are based on in-season leagues and events that commence and conclude during each monthly competition period. We only include sports for which we have comprehensive event data, ensuring fair and accurate competition tracking.',
+              },
+            ].map((faq, index) => (
+              <details
+                key={index}
+                style={{
+                  background: 'rgba(15, 23, 42, 0.8)',
+                  borderRadius: '16px',
+                  border: '1px solid #334155',
+                  padding: '0',
+                  marginBottom: '8px',
+                }}
+              >
+                <summary
+                  style={{
+                    padding: '24px',
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    color: '#ffffff',
+                    cursor: 'pointer',
+                    listStyle: 'none',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderRadius: '16px',
+                    transition: 'background-color 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      'rgba(51, 65, 85, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }}
+                >
+                  {faq.question}
+                  <span
+                    style={{
+                      fontSize: '24px',
+                      color: '#60A5FA',
+                      transition: 'transform 0.2s ease',
+                    }}
+                  >
+                    +
+                  </span>
+                </summary>
+                <div
+                  style={{
+                    padding: '0 24px 24px 24px',
+                    color: '#CBD5E1',
+                    fontSize: '16px',
+                    lineHeight: '1.6',
+                  }}
+                >
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
           </div>
         </div>
       </section>
