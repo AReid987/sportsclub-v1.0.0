@@ -2362,6 +2362,329 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section
+        style={{
+          padding: '80px 20px',
+          background:
+            'linear-gradient(135deg, rgba(45, 91, 255, 0.03), rgba(255, 107, 53, 0.03))',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 20px',
+          }}
+        >
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2
+              style={{
+                fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+                fontWeight: 'bold',
+                marginBottom: '20px',
+                color: '#ffffff',
+              }}
+            >
+              Trusted by the{' '}
+              <span
+                style={{
+                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                Smartest Fans
+              </span>{' '}
+              in the Game
+            </h2>
+          </div>
+
+          {/* Testimonials Cards */}
+          <div
+            style={{
+              marginTop: '40px',
+              width: '100%',
+            }}
+            className="three-card-grid"
+          >
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                textAlign: 'left',
+              }}
+            >
+              {/* Star Rating */}
+              <div style={{ display: 'flex', marginBottom: '20px' }}>
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} style={{ color: '#FCD34D', fontSize: '20px' }}>
+                    ⭐
+                  </span>
+                ))}
+              </div>
+              <p
+                style={{
+                  color: '#F1F5F9',
+                  fontSize: '16px',
+                  lineHeight: '1.6',
+                  marginBottom: '20px',
+                  fontStyle: 'italic',
+                }}
+              >
+                "I've been using traditional betting apps for years, but this is
+                completely different. The AI insights actually help me
+                understand WHY certain picks make sense. I'm up 340% this
+                month!"
+              </p>
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
+              >
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #60A5FA, #3B82F6)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '18px',
+                  }}
+                >
+                  👨
+                </div>
+                <div>
+                  <div
+                    style={{
+                      color: '#ffffff',
+                      fontWeight: '600',
+                      fontSize: '14px',
+                    }}
+                  >
+                    Marcus T.
+                  </div>
+                  <div style={{ color: '#94A3B8', fontSize: '12px' }}>
+                    Fantasy Pro, 3 Years
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                textAlign: 'left',
+              }}
+            >
+              {/* Star Rating */}
+              <div style={{ display: 'flex', marginBottom: '20px' }}>
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} style={{ color: '#FCD34D', fontSize: '20px' }}>
+                    ⭐
+                  </span>
+                ))}
+              </div>
+              <p
+                style={{
+                  color: '#F1F5F9',
+                  fontSize: '16px',
+                  lineHeight: '1.6',
+                  marginBottom: '20px',
+                  fontStyle: 'italic',
+                }}
+              >
+                "The community aspect is incredible. Learning from other players
+                and the AI tutoring has made me so much better at reading games.
+                Won $850 last month!"
+              </p>
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
+              >
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #EC4899, #BE185D)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '18px',
+                  }}
+                >
+                  👩
+                </div>
+                <div>
+                  <div
+                    style={{
+                      color: '#ffffff',
+                      fontWeight: '600',
+                      fontSize: '14px',
+                    }}
+                  >
+                    Sarah K.
+                  </div>
+                  <div style={{ color: '#94A3B8', fontSize: '12px' }}>
+                    Sports Analyst
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                background: '#0f172a',
+                borderRadius: '20px',
+                padding: '40px',
+                border: '1px solid #334155',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                textAlign: 'left',
+              }}
+            >
+              {/* Star Rating */}
+              <div style={{ display: 'flex', marginBottom: '20px' }}>
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} style={{ color: '#FCD34D', fontSize: '20px' }}>
+                    ⭐
+                  </span>
+                ))}
+              </div>
+              <p
+                style={{
+                  color: '#F1F5F9',
+                  fontSize: '16px',
+                  lineHeight: '1.6',
+                  marginBottom: '20px',
+                  fontStyle: 'italic',
+                }}
+              >
+                "Finally, a platform that rewards actual sports knowledge
+                instead of pure luck. The leaderboard competition keeps me
+                engaged, and I love that it's skill-based."
+              </p>
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
+              >
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #10B981, #047857)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '18px',
+                  }}
+                >
+                  👨
+                </div>
+                <div>
+                  <div
+                    style={{
+                      color: '#ffffff',
+                      fontWeight: '600',
+                      fontSize: '14px',
+                    }}
+                  >
+                    James R.
+                  </div>
+                  <div style={{ color: '#94A3B8', fontSize: '12px' }}>
+                    Leaderboard Top 10
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Key Metrics */}
+          <div
+            style={{
+              marginTop: '60px',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '32px',
+              textAlign: 'center',
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: '2.5rem',
+                  fontWeight: '900',
+                  color: '#60A5FA',
+                  marginBottom: '8px',
+                }}
+              >
+                16,000+
+              </div>
+              <div
+                style={{
+                  color: '#94A3B8',
+                  fontSize: '16px',
+                  fontWeight: '500',
+                }}
+              >
+                Active Members
+              </div>
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: '2.5rem',
+                  fontWeight: '900',
+                  color: '#10B981',
+                  marginBottom: '8px',
+                }}
+              >
+                $28,000+
+              </div>
+              <div
+                style={{
+                  color: '#94A3B8',
+                  fontSize: '16px',
+                  fontWeight: '500',
+                }}
+              >
+                Paid in Prizes
+              </div>
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: '2.5rem',
+                  fontWeight: '900',
+                  color: '#FCD34D',
+                  marginBottom: '8px',
+                }}
+              >
+                4.9/5
+              </div>
+              <div
+                style={{
+                  color: '#94A3B8',
+                  fontSize: '16px',
+                  fontWeight: '500',
+                }}
+              >
+                User Rating
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Early Adopter Pricing Section */}
       <section
         style={{
