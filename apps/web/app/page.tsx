@@ -2753,12 +2753,9 @@ export default function Home() {
           {/* Pricing Tiers */}
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '32px',
               marginTop: '48px',
             }}
-            className="pricing-grid"
+            className="three-card-grid"
           >
             {/* Prediction Padawan */}
             <div
