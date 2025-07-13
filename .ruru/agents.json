@@ -1,0 +1,70 @@
+{
+  "agents": {
+    "agent-architect": {
+      "file": ".windsurf/rules/agent-architect.md",
+      "description": "Winston - Use for system design, architecture documents, technology selection, API design, and infrastructure planning",
+      "role": "unknown",
+      "tags": []
+    },
+    "agent-bmad-the-creator": {
+      "file": ".windsurf/rules/agent-bmad-the-creator.md",
+      "description": "The Creator - Use for creating new agents, expansion packs, and extending the BMAD framework",
+      "role": "unknown",
+      "tags": []
+    },
+    "agent-po": {
+      "file": ".windsurf/rules/agent-po.md",
+      "description": "Sarah - Use for backlog management, story refinement, acceptance criteria, sprint planning, and prioritization decisions",
+      "role": "unknown",
+      "tags": []
+    },
+    "agent-infra-devops-platform": {
+      "file": ".windsurf/rules/agent-infra-devops-platform.md",
+      "description": "Alex - Rule for Alex agent",
+      "role": "unknown",
+      "tags": []
+    },
+    "agent-analyst": {
+      "file": ".windsurf/rules/agent-analyst.md",
+      "description": "Mary - Use for market research, brainstorming, competitive analysis, creating project briefs, initial project discovery, and documenting existing projects (brownfield)",
+      "role": "unknown",
+      "tags": []
+    },
+    "agent-qa": {
+      "file": ".windsurf/rules/agent-qa.md",
+      "description": "Quinn - Use for senior code review, refactoring, test planning, quality assurance, and mentoring through code improvements",
+      "role": "unknown",
+      "tags": []
+    },
+    "agent-bmad-master": {
+      "file": ".windsurf/rules/agent-bmad-master.md",
+      "description": "BMad Master - Use when you need comprehensive expertise across all domains or rapid context switching between multiple agent capabilities",
+      "role": "unknown",
+      "tags": []
+    },
+    "agent-ux-expert": {
+      "file": ".windsurf/rules/agent-ux-expert.md",
+      "description": "Sally - Use for UI/UX design, wireframes, prototypes, front-end specifications, and user experience optimization",
+      "role": "unknown",
+      "tags": []
+    },
+    "agent-sm": {
+      "file": ".windsurf/rules/agent-sm.md",
+      "description": "Bob - Use for story creation, epic management, retrospectives in party-mode, and agile process guidance",
+      "role": "unknown",
+      "tags": []
+    },
+    "agent-pm": {
+      "file": ".windsurf/rules/agent-pm.md",
+      "description": "John - Use for creating PRDs, product strategy, feature prioritization, roadmap planning, and stakeholder communication",
+      "role": "unknown",
+      "tags": []
+    },
+    "agent-dev": {
+      "file": ".windsurf/rules/agent-dev.md",
+      "description": "James - Use for code implementation, debugging, refactoring, and development best practices",
+      "role": "unknown",
+      "tags": []
+    }
+  }
+}

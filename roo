@@ -1,0 +1,342 @@
+#!/usr/bin/env python3
+"""
+Roo Command - BMAD Integration Tool
+
+This script provides a command-line interface for interacting with the BMAD
+(Business Model Agile Development) system, including workflow execution,
+agent management, and rule application.
+"""
+
+import sys
+import os
+import json
+import yaml
+import argparse
+from pathlib import Path
+from typing import Dict, List, Optional, Any
+
+class BMADIntegration:
+    """Main class for BMAD integration functionality."""
+    
+    def __init__(self, base_path: str = "."):
+        self.base_path = Path(base_path)
+        self.bmad_core_path = self.base_path / ".bmad-core"
+        self.windsurf_path = self.base_path / ".windsurf"
+        self.roo_path = self.base_path / ".roo"
+        self.ruru_path = self.base_path / ".ruru"
+        
+    def list_workflows(self) -> List[Dict[str, Any]]:
+        """List all available BMAD workflows."""
+        workflows = []
+        
+        # Check both .bmad-core and .windsurf directories
+        for workflow_dir in [self.bmad_core_path / "workflows", self.windsurf_path / "workflows"]:
+            if workflow_dir.exists():
+                for workflow_file in workflow_dir.glob("*.yaml"):
+                    try:
+                        with open(workflow_file, 'r') as f:
+                            workflow_data = yaml.safe_load(f)
+                            workflows.append({
+                                "name": workflow_data.get("name", workflow_file.stem),
+                                "file": str(workflow_file),
+                                "description": workflow_data.get("description", "No description"),
+                                "type": "yaml"
+                            })
+                    except Exception as e:
+                        print(f"Error loading workflow {workflow_file}: {e}")
+                        
+                for workflow_file in workflow_dir.glob("*.md"):
+                    try:
+                        with open(workflow_file, 'r') as f:
+                            content = f.read()
+                            # Extract frontmatter
+                            if content.startswith("---"):
+                                parts = content.split("---", 2)
+                                if len(parts) >= 3:
+                                    frontmatter = yaml.safe_load(parts[1])
+                                    workflows.append({
+                                        "name": frontmatter.get("name", workflow_file.stem),
+                                        "file": str(workflow_file),
+                                        "description": frontmatter.get("description", "No description"),
+                                        "type": "markdown"
+                                    })
+                    except Exception as e:
+                        print(f"Error loading workflow {workflow_file}: {e}")
+        
+        return workflows
+    
+    def list_agents(self) -> List[Dict[str, Any]]:
+        """List all available BMAD agents."""
+        agents = []
+        
+        # Check both .bmad-core and .windsurf directories
+        for agent_dir in [self.bmad_core_path / "agents", self.windsurf_path / "rules"]:
+            if agent_dir.exists():
+                for agent_file in agent_dir.glob("*.md"):
+                    try:
+                        with open(agent_file, 'r') as f:
+                            content = f.read()
+                            # Extract frontmatter
+                            if content.startswith("---"):
+                                parts = content.split("---", 2)
+                                if len(parts) >= 3:
+                                    frontmatter = yaml.safe_load(parts[1])
+                                    agents.append({
+                                        "name": frontmatter.get("name", agent_file.stem),
+                                        "file": str(agent_file),
+                                        "description": frontmatter.get("description", "No description"),
+                                        "role": frontmatter.get("role", "unknown"),
+                                        "tags": frontmatter.get("tags", [])
+                                    })
+                    except Exception as e:
+                        print(f"Error loading agent {agent_file}: {e}")
+        
+        return agents
+    
+    def execute_workflow(self, workflow_name: str, params: Dict[str, Any] = None) -> bool:
+        """Execute a specific BMAD workflow."""
+        workflows = self.list_workflows()
+        target_workflow = None
+        
+        for workflow in workflows:
+            if workflow["name"] == workflow_name or workflow_name in workflow["file"]:
+                target_workflow = workflow
+                break
+        
+        if not target_workflow:
+            print(f"Workflow '{workflow_name}' not found.")
+            return False
+        
+        print(f"Executing workflow: {target_workflow['name']}")
+        print(f"Description: {target_workflow['description']}")
+        print(f"File: {target_workflow['file']}")
+        
+        # Load and process workflow
+        try:
+            with open(target_workflow['file'], 'r') as f:
+                if target_workflow['type'] == 'yaml':
+                    workflow_data = yaml.safe_load(f)
+                    self._process_yaml_workflow(workflow_data, params)
+                else:
+                    content = f.read()
+                    self._process_markdown_workflow(content, params)
+            
+            return True
+        except Exception as e:
+            print(f"Error executing workflow: {e}")
+            return False
+    
+    def _process_yaml_workflow(self, workflow_data: Dict[str, Any], params: Dict[str, Any] = None):
+        """Process a YAML workflow."""
+        print("\\nWorkflow Steps:")
+        steps = workflow_data.get("steps", [])
+        
+        for i, step in enumerate(steps, 1):
+            print(f"{i}. {step.get('name', 'Unnamed step')}")
+            if step.get('description'):
+                print(f"   Description: {step['description']}")
+            if step.get('agent'):
+                print(f"   Agent: {step['agent']}")
+            if step.get('action'):
+                print(f"   Action: {step['action']}")
+            print()
+    
+    def _process_markdown_workflow(self, content: str, params: Dict[str, Any] = None):
+        """Process a Markdown workflow."""
+        print("\\nWorkflow Content:")
+        
+        # Extract content after frontmatter
+        if content.startswith("---"):
+            parts = content.split("---", 2)
+            if len(parts) >= 3:
+                workflow_content = parts[2].strip()
+                print(workflow_content)
+        else:
+            print(content)
+    
+    def activate_agent(self, agent_name: str) -> bool:
+        """Activate a specific BMAD agent."""
+        agents = self.list_agents()
+        target_agent = None
+        
+        for agent in agents:
+            if agent["name"] == agent_name or agent_name in agent["file"]:
+                target_agent = agent
+                break
+        
+        if not target_agent:
+            print(f"Agent '{agent_name}' not found.")
+            return False
+        
+        print(f"Activating agent: {target_agent['name']}")
+        print(f"Description: {target_agent['description']}")
+        print(f"Role: {target_agent['role']}")
+        print(f"Tags: {', '.join(target_agent['tags'])}")
+        print(f"File: {target_agent['file']}")
+        
+        # Load and display agent instructions
+        try:
+            with open(target_agent['file'], 'r') as f:
+                content = f.read()
+                
+            # Extract content after frontmatter
+            if content.startswith("---"):
+                parts = content.split("---", 2)
+                if len(parts) >= 3:
+                    agent_instructions = parts[2].strip()
+                    print("\\nAgent Instructions:")
+                    print(agent_instructions)
+            
+            return True
+        except Exception as e:
+            print(f"Error activating agent: {e}")
+            return False
+    
+    def sync_with_ruru(self):
+        """Sync BMAD data with .ruru configuration."""
+        print("Syncing with .ruru configuration...")
+        
+        # Create .ruru directory if it doesn't exist
+        self.ruru_path.mkdir(exist_ok=True)
+        
+        # Sync workflows
+        workflows = self.list_workflows()
+        workflow_config = {
+            "workflows": {
+                workflow["name"]: {
+                    "file": workflow["file"],
+                    "description": workflow["description"],
+                    "type": workflow["type"]
+                }
+                for workflow in workflows
+            }
+        }
+        
+        with open(self.ruru_path / "workflows.json", 'w') as f:
+            json.dump(workflow_config, f, indent=2)
+        
+        # Sync agents
+        agents = self.list_agents()
+        agent_config = {
+            "agents": {
+                agent["name"]: {
+                    "file": agent["file"],
+                    "description": agent["description"],
+                    "role": agent["role"],
+                    "tags": agent["tags"]
+                }
+                for agent in agents
+            }
+        }
+        
+        with open(self.ruru_path / "agents.json", 'w') as f:
+            json.dump(agent_config, f, indent=2)
+        
+        print("Sync complete!")
+    
+    def status(self):
+        """Show BMAD system status."""
+        print("BMAD Integration Status")
+        print("=" * 50)
+        
+        # Check directories
+        directories = [
+            (".bmad-core", self.bmad_core_path),
+            (".windsurf", self.windsurf_path),
+            (".roo", self.roo_path),
+            (".ruru", self.ruru_path)
+        ]
+        
+        for name, path in directories:
+            status = "✓" if path.exists() else "✗"
+            print(f"{name:<15} {status}")
+        
+        print()
+        
+        # Count workflows and agents
+        workflows = self.list_workflows()
+        agents = self.list_agents()
+        
+        print(f"Workflows: {len(workflows)}")
+        print(f"Agents: {len(agents)}")
+        
+        # Show recent activity
+        print("\\nRecent Workflows:")
+        for workflow in workflows[:5]:
+            print(f"  - {workflow['name']}")
+        
+        print("\\nRecent Agents:")
+        for agent in agents[:5]:
+            print(f"  - {agent['name']} ({agent['role']})")
+
+
+def main():
+    """Main entry point for the roo command."""
+    parser = argparse.ArgumentParser(description="Roo Command - BMAD Integration Tool")
+    parser.add_argument("--base-path", default=".", help="Base path for BMAD system")
+    
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+    
+    # List commands
+    list_parser = subparsers.add_parser("list", help="List workflows or agents")
+    list_parser.add_argument("type", choices=["workflows", "agents"], help="Type to list")
+    
+    # Execute workflow
+    exec_parser = subparsers.add_parser("exec", help="Execute a workflow")
+    exec_parser.add_argument("workflow", help="Workflow name to execute")
+    exec_parser.add_argument("--params", help="Parameters as JSON string")
+    
+    # Activate agent
+    agent_parser = subparsers.add_parser("agent", help="Activate an agent")
+    agent_parser.add_argument("name", help="Agent name to activate")
+    
+    # Sync with ruru
+    subparsers.add_parser("sync", help="Sync with .ruru configuration")
+    
+    # Status
+    subparsers.add_parser("status", help="Show BMAD system status")
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        return
+    
+    bmad = BMADIntegration(args.base_path)
+    
+    if args.command == "list":
+        if args.type == "workflows":
+            workflows = bmad.list_workflows()
+            print(f"Found {len(workflows)} workflows:")
+            for workflow in workflows:
+                print(f"  - {workflow['name']}: {workflow['description']}")
+        
+        elif args.type == "agents":
+            agents = bmad.list_agents()
+            print(f"Found {len(agents)} agents:")
+            for agent in agents:
+                print(f"  - {agent['name']} ({agent['role']}): {agent['description']}")
+    
+    elif args.command == "exec":
+        params = {}
+        if args.params:
+            try:
+                params = json.loads(args.params)
+            except json.JSONDecodeError:
+                print("Invalid JSON in --params")
+                return
+        
+        bmad.execute_workflow(args.workflow, params)
+    
+    elif args.command == "agent":
+        bmad.activate_agent(args.name)
+    
+    elif args.command == "sync":
+        bmad.sync_with_ruru()
+    
+    elif args.command == "status":
+        bmad.status()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,94 @@
+{
+  "workflows": {
+    "test-windsurf-integration": {
+      "file": ".bmad-core/workflows/test-windsurf-integration.yaml",
+      "description": "No description",
+      "type": "yaml"
+    },
+    "greenfield-ui": {
+      "file": ".bmad-core/workflows/greenfield-ui.yaml",
+      "description": "No description",
+      "type": "yaml"
+    },
+    "brownfield-fullstack": {
+      "file": ".bmad-core/workflows/brownfield-fullstack.yaml",
+      "description": "No description",
+      "type": "yaml"
+    },
+    "windsurf-cascade": {
+      "file": ".bmad-core/workflows/windsurf-cascade.yaml",
+      "description": "No description",
+      "type": "yaml"
+    },
+    "brownfield-ui": {
+      "file": ".bmad-core/workflows/brownfield-ui.yaml",
+      "description": "No description",
+      "type": "yaml"
+    },
+    "brownfield-service": {
+      "file": ".bmad-core/workflows/brownfield-service.yaml",
+      "description": "No description",
+      "type": "yaml"
+    },
+    "greenfield-fullstack": {
+      "file": ".bmad-core/workflows/greenfield-fullstack.yaml",
+      "description": "No description",
+      "type": "yaml"
+    },
+    "greenfield-service": {
+      "file": ".bmad-core/workflows/greenfield-service.yaml",
+      "description": "No description",
+      "type": "yaml"
+    },
+    "aigency_brownfield_fullstack": {
+      "file": ".bmad-core/workflows/aigency_brownfield_fullstack.md",
+      "description": "Agent workflow for enhancing existing full-stack applications with new features, modernization, or significant changes. Handles existing system analysis and safe integration.",
+      "type": "markdown"
+    },
+    "a-a-orchestrator": {
+      "file": ".bmad-core/workflows/a-a-orchestrator.md",
+      "description": "Aigency Agile Orchestrator",
+      "type": "markdown"
+    },
+    "Brownfield Full-Stack Enhancement": {
+      "file": ".windsurf/workflows/brownfield-fullstack.md",
+      "description": "Agent workflow for enhancing existing full-stack applications with new features, modernization, or significant changes. Handles existing system analysis and safe integration.",
+      "type": "markdown"
+    },
+    "Brownfield UI/Frontend Enhancement": {
+      "file": ".windsurf/workflows/brownfield-ui.md",
+      "description": "Agent workflow for enhancing existing frontend applications with new features, modernization, or design improvements. Handles existing UI analysis and safe integration.",
+      "type": "markdown"
+    },
+    "Windsurf Cascade Integration": {
+      "file": ".windsurf/workflows/windsurf-cascade.md",
+      "description": "Specialized workflow for developing and enhancing applications within the Windsurf Cascade environment. Includes specific steps for AI-assisted development and Cascade-specific tooling.",
+      "type": "markdown"
+    },
+    "Test Windsurf Cascade Integration": {
+      "file": ".windsurf/workflows/test-windsurf-integration.md",
+      "description": "A test workflow to verify the BMAD integration with Windsurf Cascade. This workflow performs basic operations to ensure the environment is properly configured.",
+      "type": "markdown"
+    },
+    "Greenfield Full-Stack Application Development": {
+      "file": ".windsurf/workflows/greenfield-fullstack.md",
+      "description": "Agent workflow for building full-stack applications from concept to development. Supports both comprehensive planning for complex projects and rapid prototyping for simple ones.",
+      "type": "markdown"
+    },
+    "Brownfield Service/API Enhancement": {
+      "file": ".windsurf/workflows/brownfield-service.md",
+      "description": "Agent workflow for enhancing existing backend services and APIs with new features, modernization, or performance improvements. Handles existing system analysis and safe integration.",
+      "type": "markdown"
+    },
+    "Greenfield UI/Frontend Development": {
+      "file": ".windsurf/workflows/greenfield-ui.md",
+      "description": "Agent workflow for building frontend applications from concept to development. Supports both comprehensive planning for complex UIs and rapid prototyping for simple interfaces.",
+      "type": "markdown"
+    },
+    "Greenfield Service/API Development": {
+      "file": ".windsurf/workflows/greenfield-service.md",
+      "description": "Agent workflow for building backend services from concept to development. Supports both comprehensive planning for complex services and rapid prototyping for simple APIs.",
+      "type": "markdown"
+    }
+  }
+}
