@@ -13,7 +13,7 @@ import { Footer } from './sections/Footer.tsx';
 
 export function LandingPage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-red-500">
       <HeroSection />
       <ProblemSolutionSection />
       <HowItWorksSection />
