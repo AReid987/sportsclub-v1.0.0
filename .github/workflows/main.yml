@@ -48,6 +48,9 @@ jobs:
       - name: Install PDM
         run: pip install pdm
 
+      - name: Install Lefthook
+        run: npm install -g lefthook
+
       - name: Install dependencies (JS/TS)
         run: npx pnpm install
 
