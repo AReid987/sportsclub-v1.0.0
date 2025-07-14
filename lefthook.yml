@@ -4,5 +4,4 @@ pre-commit:
     run: pnpm dlx lint-staged
 prepare-commit-msg:
   cz-git:
-    interactive: true
-    run: exec < /dev/tty && npx cz --hook || true
+    run: CZIG_FORCE_NONINTERACTIVE=1 pnpm dlx czg --hook
