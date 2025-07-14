@@ -9,8 +9,8 @@ module.exports = {
     },
   },
   content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    '../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}',
+    './apps/web/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './apps/web/src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
 };
