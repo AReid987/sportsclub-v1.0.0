@@ -1,1 +1,0 @@
-../../../../00_AGILE_DOCS/Sportsclub/Pages/Agile-PM/Sportsclub Final PRD - FULL.md

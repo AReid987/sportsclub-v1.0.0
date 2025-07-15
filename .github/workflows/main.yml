@@ -14,7 +14,6 @@ jobs:
       content: read
       pull-requests: write
     runs-on: ubuntu-latest
-    timeout-minutes: 15
 
     services:
       postgres:
@@ -34,8 +33,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -49,34 +46,32 @@ jobs:
           python-version: 3.10
 
       - name: Install PNPM
-        run: npm install -g pnpm@10.11.1
+        run: npm install -g pnpm@10.13.1
 
-      - name: Install PDM with uv
-        run: pip install pdm uv
+      - name: Install PDM
+        run: pip install pdm
 
-      - name: Install JS/TS dependencies
-        run: pnpm install
-        env:
-          TURBO_CACHE_KEY: ${{ github.sha }}
+      - name: Install Lefthook
+        run: npm install -g lefthook
 
-      - name: Install Python dependencies
+      - name: Install dependencies (JS/TS)
+        run: npx pnpm install
+
+      - name: Install dependencies (Python)
         run: pdm install
-        env:
-          PDM_USE_VENV: 1
 
-      - name: Run Turborepo build and lint
-        run: pnpm turbo run build lint
-        env:
-          TURBO_FORCE: true
+      - name: Run Turborepo build
+        run: npx pnpm turbo run build
 
-      - name: Cache Turborepo artifacts
-        uses: actions/cache@v3
-        with:
-          path: |
-            .turbo
-            node_modules
-            **/node_modules
-            **/.pdm-python
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
+      - name: Run Turborepo lint
+        run: npx pnpm turbo run lint
+
+      - name: Run ESLint and Prettier checks
+        run: |
+          npx pnpm exec eslint . --ext .js,.jsx,.ts,.tsx
+          npx pnpm exec prettier --check .
+
+      - name: Run Black and Flake8 checks
+        run: |
+          pdm run black --check .
+          pdm run flake8 .
