@@ -10,6 +10,9 @@ on:
 
 jobs:
   build:
+    permissions:
+      content: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
     services:
@@ -43,27 +46,30 @@ jobs:
           python-version: 3.10
 
       - name: Install PNPM
-        run: npm install -g pnpm
+        run: npm install -g pnpm@10.13.1
 
       - name: Install PDM
         run: pip install pdm
 
+      - name: Install Lefthook
+        run: npm install -g lefthook
+
       - name: Install dependencies (JS/TS)
-        run: pnpm install
+        run: npx pnpm install
 
       - name: Install dependencies (Python)
         run: pdm install
 
       - name: Run Turborepo build
-        run: pnpm turbo run build
+        run: npx pnpm turbo run build
 
       - name: Run Turborepo lint
-        run: pnpm turbo run lint
+        run: npx pnpm turbo run lint
 
       - name: Run ESLint and Prettier checks
         run: |
-          pnpm exec eslint . --ext .js,.jsx,.ts,.tsx
-          pnpm exec prettier --check .
+          npx pnpm exec eslint . --ext .js,.jsx,.ts,.tsx
+          npx pnpm exec prettier --check .
 
       - name: Run Black and Flake8 checks
         run: |
