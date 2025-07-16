@@ -43,30 +43,29 @@ jobs:
           python-version: 3.10
 
       - name: Install PNPM
-        run: npm install -g pnpm@10.13.1
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.0.0
 
       - name: Install PDM
         run: pip install pdm
 
-      - name: Install Lefthook
-        run: npm install -g lefthook
-
       - name: Install dependencies (JS/TS)
-        run: npx pnpm install
+        run: pnpm install
 
       - name: Install dependencies (Python)
         run: pdm install
 
       - name: Run Turborepo build
-        run: npx pnpm turbo run build
+        run: pnpm turbo run build
 
       - name: Run Turborepo lint
-        run: npx pnpm turbo run lint
+        run: pnpm turbo run lint
 
       - name: Run ESLint and Prettier checks
         run: |
-          npx pnpm exec eslint . --ext .js,.jsx,.ts,.tsx
-          npx pnpm exec prettier --check .
+          pnpm exec eslint . --ext .js,.jsx,.ts,.tsx
+          pnpm exec prettier --check .
 
       - name: Run Black and Flake8 checks
         run: |
