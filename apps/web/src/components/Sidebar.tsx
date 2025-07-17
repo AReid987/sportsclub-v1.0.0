@@ -5,6 +5,12 @@ import { useState } from 'react';
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  // 8px grid-based widths
+  // Collapsed: 16px (left margin) + 16px (icon) + 16px (right margin) = 48px
+  // Expanded: 16px (left margin) + 16px (icon) + 8px (gap) + 104px (text) + 16px (right margin) = 160px
+  const collapsedWidth = 48; // 6 * 8px
+  const expandedWidth = 160; // 20 * 8px
+
   const toggleSidebar = () => {
     const newCollapsedState = !isCollapsed;
     setIsCollapsed(newCollapsedState);
@@ -12,72 +18,41 @@ export default function Sidebar() {
     // Update main content margin
     const mainContent = document.getElementById('main-content') as HTMLElement;
     if (mainContent) {
-      mainContent.style.marginLeft = newCollapsedState ? '64px' : '240px';
+      mainContent.style.marginLeft = newCollapsedState ? `${collapsedWidth}px` : `${expandedWidth}px`;
     }
   };
 
   return (
     <div
+      className={`
+        fixed h-screen z-[1000] overflow-y-auto
+        bg-slate-900 border-r border-slate-600
+        transition-all duration-300 ease-in-out
+        flex flex-col
+      `}
       style={{
-        width: isCollapsed ? '64px' : '240px',
-        background: '#0f172a',
-        borderRight: '1px solid #334155',
-        transition: 'width 0.3s ease',
-        position: 'fixed',
-        height: '100vh',
-        zIndex: 1000,
-        overflowY: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
+        width: isCollapsed ? `${collapsedWidth}px` : `${expandedWidth}px`,
       }}
     >
-      <div
-        style={{
-          padding: '20px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: isCollapsed ? 'center' : 'flex-start',
-          alignItems: isCollapsed ? 'center' : 'flex-start',
-        }}
-      >
-        {/* Logo */}
-        <div
-          style={{
-            marginBottom: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-          }}
-        >
-          <div
-            style={{
-              width: '32px',
-              height: '32px',
-              background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '16px',
-            }}
-          >
+      {/* Main Content Container */}
+      <div className="flex flex-col h-full">
+        {/* Logo Section */}
+        <div className={`
+          flex items-center mb-8 mt-6
+          ${isCollapsed ? 'justify-center px-4' : 'px-4'}
+        `}>
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-500 rounded-lg flex items-center justify-center text-sm">
             🏆
           </div>
           {!isCollapsed && (
-            <span
-              style={{
-                color: '#f1f5f9',
-                fontSize: '18px',
-                fontWeight: '700',
-              }}
-            >
+            <span className="ml-2 text-slate-100 text-sm font-bold whitespace-nowrap">
               Sportsclub
             </span>
           )}
         </div>
 
         {/* Navigation Links */}
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <nav className="flex flex-col gap-1 px-4">
           {[
             { icon: '📊', label: 'Dashboard', active: true },
             { icon: '🏆', label: 'Leaderboard', active: false },
@@ -89,67 +64,43 @@ export default function Sidebar() {
             <a
               key={index}
               href="#"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '12px 16px',
-                borderRadius: '8px',
-                color: item.active ? '#f1f5f9' : '#94a3b8',
-                background: item.active ? '#1e40af' : 'transparent',
-                textDecoration: 'none',
-                fontSize: '14px',
-                fontWeight: item.active ? '600' : '400',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                if (!item.active) {
-                  e.currentTarget.style.background = '#1e293b';
-                  e.currentTarget.style.color = '#f1f5f9';
+              className={`
+                flex items-center rounded-lg transition-all duration-200
+                text-sm font-medium no-underline
+                ${isCollapsed ? 'justify-center w-4 h-8' : 'h-10 px-4'}
+                ${item.active 
+                  ? 'bg-blue-700 text-slate-100' 
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
                 }
-              }}
-              onMouseLeave={(e) => {
-                if (!item.active) {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#94a3b8';
-                }
-              }}
+              `}
             >
-              <span style={{ fontSize: '16px' }}>{item.icon}</span>
-              {!isCollapsed && <span>{item.label}</span>}
+              <span className="text-sm leading-none w-4 h-4 flex items-center justify-center">{item.icon}</span>
+              {!isCollapsed && (
+                <span className="ml-2 whitespace-nowrap">{item.label}</span>
+              )}
             </a>
           ))}
         </nav>
 
+        {/* Spacer to push toggle button to bottom */}
+        <div className="flex-1" />
+
         {/* Collapse Toggle */}
-        <button
-          onClick={toggleSidebar}
-          style={{
-            position: 'absolute',
-            bottom: '20px',
-            left: '20px',
-            right: isCollapsed ? 'auto' : '20px',
-            width: isCollapsed ? '24px' : 'auto',
-            background: '#1e293b',
-            border: '1px solid #475569',
-            borderRadius: '8px',
-            padding: '8px',
-            color: '#94a3b8',
-            cursor: 'pointer',
-            fontSize: '18px',
-            transition: 'all 0.2s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#334155';
-            e.currentTarget.style.color = '#f1f5f9';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = '#1e293b';
-            e.currentTarget.style.color = '#94a3b8';
-          }}
-        >
-          {isCollapsed ? '→' : '←'}
-        </button>
+        <div className="p-4">
+          <button
+            onClick={toggleSidebar}
+            className={`
+              bg-slate-800 border border-slate-600 rounded-lg
+              text-slate-400 cursor-pointer transition-all duration-200
+              hover:bg-slate-700 hover:text-slate-100
+              ${isCollapsed ? 'w-8 h-8 flex items-center justify-center' : 'w-full py-2 px-3'}
+            `}
+          >
+            <span className="text-base leading-none">
+              {isCollapsed ? '→' : '←'}
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   );

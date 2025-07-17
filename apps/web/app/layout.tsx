@@ -38,7 +38,7 @@ export default function RootLayout({
           <div
             id="main-content"
             style={{
-              marginLeft: '240px',
+              marginLeft: '160px', // Updated to match expanded width (20 * 8px)
               flex: 1,
               transition: 'margin-left 0.3s ease',
             }}
