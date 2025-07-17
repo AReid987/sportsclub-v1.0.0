@@ -158,8 +158,6 @@ importers:
         specifier: 5.8.2
         version: 5.8.2
 
-  packages/auth-service: {}
-
   packages/backlog-generator: {}
 
   packages/eslint-config:
