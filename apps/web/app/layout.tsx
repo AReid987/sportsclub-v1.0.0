@@ -1,6 +1,11 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import localFont from 'next/font/local';
 import './globals.css';
 import Sidebar from '../src/components/Sidebar.tsx';
+import BottomAppBar from '../src/components/BottomAppBar.tsx';
+import useWindowSize from '../hooks/useWindowSize.js';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -11,40 +16,36 @@ const geistMono = localFont({
   variable: '--font-geist-mono',
 });
 
-export const metadata = {
-  title: 'Sportsclub - Play Smart. Win Big.',
-  description:
-    'Transform your sports predictions with AI-powered insights. Join 50,000+ players in skill-based sports gaming with real prizes. Start your free trial today!',
-  keywords:
-    'sports predictions, AI insights, sports betting, fantasy sports, data-driven betting, sports analytics',
-  openGraph: {
-    title: 'Sportsclub - Play Smart. Win Big.',
-    description:
-      'Transform your sports predictions with AI-powered insights. Join 50,000+ players in skill-based sports gaming with real prizes.',
-    type: 'website',
-  },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const size = useWindowSize();
+  const isMobile = size.width < 640;
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <div style={{ display: 'flex', minHeight: '100vh' }}>
-          <Sidebar />
+          {isClient && !isMobile && <Sidebar />}
           <div
             id="main-content"
             style={{
-              marginLeft: '240px',
+              marginLeft: isClient && !isMobile ? '240px' : '0',
               flex: 1,
               transition: 'margin-left 0.3s ease',
+              paddingBottom: isClient && isMobile ? '80px' : '0',
             }}
           >
             {children}
           </div>
+          {isClient && isMobile && <BottomAppBar />}
         </div>
       </body>
     </html>
