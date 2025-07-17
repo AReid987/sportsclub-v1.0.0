@@ -1,122 +1,75 @@
 'use client';
 
-import { useState } from 'react';
+type SidebarProps = {
+  isCollapsed: boolean;
+  toggleSidebar: () => void;
+};
 
-export default function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  const toggleSidebar = () => {
-    const newCollapsedState = !isCollapsed;
-    setIsCollapsed(newCollapsedState);
-
-    // Update main content margin
-    const mainContent = document.getElementById('main-content') as HTMLElement;
-    if (mainContent) {
-      mainContent.style.marginLeft = newCollapsedState ? '64px' : '240px';
-    }
-  };
+export default function Sidebar({
+  isCollapsed,
+  toggleSidebar,
+}: SidebarProps) {
+  const navItems = [
+    { icon: '📊', label: 'Dashboard', active: true },
+    { icon: '🏆', label: 'Leaderboard', active: false },
+    { icon: '🎯', label: 'Predictions', active: false },
+    { icon: '📈', label: 'Analytics', active: false },
+    { icon: '👥', label: 'Community', active: false },
+    { icon: '⚙️', label: 'Settings', active: false },
+  ];
 
   return (
     <div
-      style={{
-        width: isCollapsed ? '64px' : '240px',
-        background: '#0f172a',
-        borderRight: '1px solid #334155',
-        transition: 'width 0.3s ease',
-        position: 'fixed',
-        height: '100vh',
-        zIndex: 1000,
-        overflowY: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
+      className={`
+        bg-gray-900 border-r border-gray-700 transition-all duration-300 ease-in-out
+        fixed h-full z-50 overflow-y-auto flex flex-col
+        ${isCollapsed ? 'w-16' : 'w-60'}
+      `}
     >
       <div
-        style={{
-          padding: '20px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: isCollapsed ? 'center' : 'flex-start',
-          alignItems: isCollapsed ? 'center' : 'flex-start',
-        }}
+        className={`
+          p-4 flex flex-col
+          ${isCollapsed ? 'items-center' : 'items-start'}
+        `}
       >
         {/* Logo */}
         <div
-          style={{
-            marginBottom: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-          }}
+          className={`
+            flex items-center mb-8 mt-6
+            ${isCollapsed ? 'justify-center' : 'px-4'}
+          `}
         >
-          <div
-            style={{
-              width: '32px',
-              height: '32px',
-              background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '16px',
-            }}
-          >
+          <div className="bg-blue-600 rounded-lg w-8 h-8 flex items-center justify-center text-lg">
             🏆
           </div>
           {!isCollapsed && (
-            <span
-              style={{
-                color: '#f1f5f9',
-                fontSize: '18px',
-                fontWeight: '700',
-              }}
-            >
+            <span className="text-white text-lg font-bold ml-3">
               Sportsclub
             </span>
           )}
         </div>
 
         {/* Navigation Links */}
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {[
-            { icon: '📊', label: 'Dashboard', active: true },
-            { icon: '🏆', label: 'Leaderboard', active: false },
-            { icon: '🎯', label: 'Predictions', active: false },
-            { icon: '📈', label: 'Analytics', active: false },
-            { icon: '👥', label: 'Community', active: false },
-            { icon: '⚙️', label: 'Settings', active: false },
-          ].map((item, index) => (
+        <nav className="flex flex-col gap-2 w-full">
+          {navItems.map((item) => (
             <a
-              key={index}
+              key={item.label}
               href="#"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '12px 16px',
-                borderRadius: '8px',
-                color: item.active ? '#f1f5f9' : '#94a3b8',
-                background: item.active ? '#1e40af' : 'transparent',
-                textDecoration: 'none',
-                fontSize: '14px',
-                fontWeight: item.active ? '600' : '400',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                if (!item.active) {
-                  e.currentTarget.style.background = '#1e293b';
-                  e.currentTarget.style.color = '#f1f5f9';
+              className={`
+                flex items-center rounded-lg transition-all duration-200
+                text-sm font-medium no-underline h-10
+                ${
+                  isCollapsed ? 'justify-center w-12' : 'px-4'
                 }
-              }}
-              onMouseLeave={(e) => {
-                if (!item.active) {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#94a3b8';
+                ${
+                  item.active
+                    ? 'bg-blue-800 text-white'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white'
                 }
-              }}
+              `}
             >
-              <span style={{ fontSize: '16px' }}>{item.icon}</span>
-              {!isCollapsed && <span>{item.label}</span>}
+              <span className="text-lg">{item.icon}</span>
+              {!isCollapsed && <span className="ml-3">{item.label}</span>}
             </a>
           ))}
         </nav>
@@ -124,29 +77,13 @@ export default function Sidebar() {
         {/* Collapse Toggle */}
         <button
           onClick={toggleSidebar}
-          style={{
-            position: 'absolute',
-            bottom: '20px',
-            left: '20px',
-            right: isCollapsed ? 'auto' : '20px',
-            width: isCollapsed ? '24px' : 'auto',
-            background: '#1e293b',
-            border: '1px solid #475569',
-            borderRadius: '8px',
-            padding: '8px',
-            color: '#94a3b8',
-            cursor: 'pointer',
-            fontSize: '18px',
-            transition: 'all 0.2s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#334155';
-            e.currentTarget.style.color = '#f1f5f9';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = '#1e293b';
-            e.currentTarget.style.color = '#94a3b8';
-          }}
+          className={`
+            absolute bottom-4 left-4 right-auto
+            bg-gray-800 border border-gray-600 rounded-lg p-2
+            text-gray-400 cursor-pointer text-lg
+            hover:bg-gray-700 hover:text-white transition-all duration-200
+            ${isCollapsed ? 'w-8' : ''}
+          `}
         >
           {isCollapsed ? '→' : '←'}
         </button>

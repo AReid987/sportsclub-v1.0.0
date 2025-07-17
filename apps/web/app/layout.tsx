@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import localFont from 'next/font/local';
 import './globals.css';
 import Sidebar from '../src/components/Sidebar.tsx';
@@ -11,34 +14,26 @@ const geistMono = localFont({
   variable: '--font-geist-mono',
 });
 
-export const metadata = {
-  title: 'Sportsclub - Play Smart. Win Big.',
-  description:
-    'Transform your sports predictions with AI-powered insights. Join 50,000+ players in skill-based sports gaming with real prizes. Start your free trial today!',
-  keywords:
-    'sports predictions, AI insights, sports betting, fantasy sports, data-driven betting, sports analytics',
-  openGraph: {
-    title: 'Sportsclub - Play Smart. Win Big.',
-    description:
-      'Transform your sports predictions with AI-powered insights. Join 50,000+ players in skill-based sports gaming with real prizes.',
-    type: 'website',
-  },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <div style={{ display: 'flex', minHeight: '100vh' }}>
-          <Sidebar />
+          <Sidebar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
           <div
             id="main-content"
             style={{
-              marginLeft: '240px',
+              marginLeft: isCollapsed ? '64px' : '240px',
               flex: 1,
               transition: 'margin-left 0.3s ease',
             }}
