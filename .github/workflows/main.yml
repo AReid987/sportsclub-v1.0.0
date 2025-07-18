@@ -46,7 +46,7 @@ jobs:
           python-version: 3.10
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4
         with:
           version: 9.0.0
 
