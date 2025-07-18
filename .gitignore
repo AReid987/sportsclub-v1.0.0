@@ -1,3 +1,6 @@
+.pnpm-store
+.browser_screenshots
+.downloads
 .vercel
 node_modules
 .env
