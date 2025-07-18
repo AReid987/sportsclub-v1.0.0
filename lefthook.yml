@@ -5,4 +5,4 @@ pre-commit:
 prepare-commit-msg:
   cz-git:
     interactive: true
-    run: exec < /dev/tty && npx cz --hook || true
+    run: exec < /dev/tty && npx cz --hook {1} {2} || true

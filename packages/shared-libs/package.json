@@ -1,0 +1,30 @@
+{
+  "name": "@sportsclub/shared-libs",
+  "version": "0.1.0",
+  "description": "Shared types, constants, and utilities for Sportsclub platform",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types/index.ts",
+    "./constants": "./src/constants/index.ts",
+    "./utils": "./src/utils/index.ts",
+    "./config": "./src/config/index.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "zod": "^3.22.0",
+    "date-fns": "^3.0.0"
+  },
+  "devDependencies": {
+    "@sportsclub/eslint-config": "workspace:*",
+    "@sportsclub/typescript-config": "workspace:*",
+    "typescript": "^5.8.2"
+  }
+}
