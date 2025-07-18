@@ -1,0 +1,312 @@
+name: 🚀 Deploy to Production
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - hotfix
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+jobs:
+  pre-deploy:
+    name: 🔍 Pre-deployment Validation
+    runs-on: ubuntu-latest
+    outputs:
+      should-deploy: ${{ steps.validation.outputs.should-deploy }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Validate deployment conditions
+        id: validation
+        run: |
+          # Check if this is a tag or main branch
+          if [[ "${{ github.ref }}" == refs/tags/* ]] || [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+            echo "✅ Production deployment authorized"
+          else
+            echo "should-deploy=false" >> $GITHUB_OUTPUT
+            echo "❌ Production deployment not authorized for this ref"
+          fi
+
+      - name: 📋 Extract version
+        id: version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          else
+            VERSION="main-$(git rev-parse --short HEAD)"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📋 Version: $VERSION"
+
+  security-scan:
+    name: 🔒 Security Validation
+    runs-on: ubuntu-latest
+    needs: pre-deploy
+    if: needs.pre-deploy.outputs.should-deploy == 'true'
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔒 Run comprehensive security scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+
+      - name: 🔍 Audit dependencies
+        run: |
+          cd sportsclub-v1.0.0
+          pnpm audit --audit-level high
+
+  deploy-frontend:
+    name: 🌐 Deploy Frontend to Production
+    runs-on: ubuntu-latest
+    needs: [pre-deploy, security-scan]
+    if: needs.pre-deploy.outputs.should-deploy == 'true'
+    environment:
+      name: production
+      url: https://sportsclub.app
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build frontend for production
+        run: pnpm turbo run build --filter=@sportsclub/web
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_API_URL: ${{ secrets.PRODUCTION_API_URL }}
+          NEXT_PUBLIC_ENVIRONMENT: production
+          NEXT_PUBLIC_ANALYTICS_ID: ${{ secrets.ANALYTICS_ID }}
+
+      - name: 🚀 Deploy to Vercel Production
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: apps/web
+          vercel-args: '--prod'
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+
+      - name: 🔍 Verify deployment
+        run: |
+          echo "🔍 Verifying production deployment..."
+          sleep 30  # Wait for deployment to propagate
+          curl -f https://sportsclub.app/api/health || exit 1
+          echo "✅ Production frontend is healthy"
+
+  deploy-backend:
+    name: 🔧 Deploy Backend to Production
+    runs-on: ubuntu-latest
+    needs: [pre-deploy, security-scan]
+    if: needs.pre-deploy.outputs.should-deploy == 'true'
+    environment:
+      name: production
+    strategy:
+      matrix:
+        service: [auth-service, prediction-service, data-ingestion-service, ai-assistant-service]
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Setup PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version: '3.11'
+
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔑 Login to Production Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.PRODUCTION_REGISTRY }}
+          username: ${{ secrets.PRODUCTION_REGISTRY_USERNAME }}
+          password: ${{ secrets.PRODUCTION_REGISTRY_PASSWORD }}
+
+      - name: 📦 Install dependencies
+        working-directory: packages/${{ matrix.service }}
+        run: pdm install --prod
+
+      - name: 🏗️ Build and push production image
+        uses: docker/build-push-action@v5
+        with:
+          context: packages/${{ matrix.service }}
+          file: packages/${{ matrix.service }}/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.PRODUCTION_REGISTRY }}/sportsclub-${{ matrix.service }}:latest
+            ${{ secrets.PRODUCTION_REGISTRY }}/sportsclub-${{ matrix.service }}:${{ needs.pre-deploy.outputs.version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            VERSION=${{ needs.pre-deploy.outputs.version }}
+            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+
+      - name: 🚀 Deploy to production cluster
+        run: |
+          echo "🚀 Deploying ${{ matrix.service }} to production"
+          # Add your production deployment commands here
+          # This could be kubectl, helm, terraform, etc.
+
+  database-migration:
+    name: 🗄️ Database Migration
+    runs-on: ubuntu-latest
+    needs: [pre-deploy, security-scan]
+    if: needs.pre-deploy.outputs.should-deploy == 'true'
+    environment:
+      name: production
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Setup PDM
+        uses: pdm-project/setup-pdm@v4
+
+      - name: 🗄️ Run database migrations
+        run: |
+          echo "🗄️ Running database migrations..."
+          # Add database migration commands here
+          # This could be Alembic, Django migrations, etc.
+
+  health-check:
+    name: 🏥 Production Health Check
+    runs-on: ubuntu-latest
+    needs: [deploy-frontend, deploy-backend, database-migration]
+    if: always() && needs.pre-deploy.outputs.should-deploy == 'true'
+    steps:
+      - name: 🏥 Comprehensive health check
+        run: |
+          echo "🔍 Running comprehensive production health checks..."
+          
+          # Frontend health check
+          curl -f https://sportsclub.app/api/health || exit 1
+          
+          # Backend services health check
+          for service in auth prediction data-ingestion ai-assistant; do
+            echo "Checking $service service..."
+            curl -f ${{ secrets.PRODUCTION_API_URL }}/$service/health || exit 1
+          done
+          
+          echo "✅ All services are healthy"
+
+      - name: 🧪 Run production smoke tests
+        run: |
+          echo "🧪 Running production smoke tests..."
+          # Add comprehensive smoke tests here
+
+  rollback:
+    name: 🔄 Rollback on Failure
+    runs-on: ubuntu-latest
+    needs: [deploy-frontend, deploy-backend, health-check]
+    if: failure() && needs.pre-deploy.outputs.should-deploy == 'true'
+    environment:
+      name: production
+    steps:
+      - name: 🔄 Initiate rollback
+        run: |
+          echo "🔄 Initiating rollback due to deployment failure..."
+          # Add rollback logic here
+
+  notify:
+    name: 📢 Deployment Notification
+    runs-on: ubuntu-latest
+    needs: [deploy-frontend, deploy-backend, health-check, rollback]
+    if: always() && needs.pre-deploy.outputs.should-deploy == 'true'
+    steps:
+      - name: 📢 Notify success
+        if: needs.health-check.result == 'success'
+        run: |
+          echo "🎉 Production deployment successful!"
+          echo "Version: ${{ needs.pre-deploy.outputs.version }}"
+          # Add success notification logic
+
+      - name: 📢 Notify failure
+        if: needs.health-check.result == 'failure' || needs.rollback.result == 'success'
+        run: |
+          echo "❌ Production deployment failed!"
+          # Add failure notification logic
+
+  create-release:
+    name: 📦 Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [health-check, pre-deploy]
+    if: needs.health-check.result == 'success' && startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.pre-deploy.outputs.version }}
+          release_name: Release ${{ needs.pre-deploy.outputs.version }}
+          body: |
+            ## 🚀 Sportsclub Release ${{ needs.pre-deploy.outputs.version }}
+            
+            ### 🎯 What's New
+            - Automated deployment to production
+            - Full CI/CD pipeline implementation
+            - Comprehensive health checks
+            
+            ### 🔗 Links
+            - **Frontend**: https://sportsclub.app
+            - **API Documentation**: ${{ secrets.PRODUCTION_API_URL }}/docs
+            
+            ### 📊 Deployment Info
+            - **Commit**: ${{ github.sha }}
+            - **Deployed**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          draft: false
+          prerelease: false

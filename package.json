@@ -8,12 +8,16 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
+    "test:coverage": "turbo run test:coverage",
     "check-types": "turbo run check-types",
     "clean": "turbo run clean",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "commit": "cz",
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "ci": "pnpm run lint && pnpm run check-types && pnpm run test && pnpm run build",
+    "precommit": "pnpm run format:check && pnpm run lint && pnpm run check-types"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
