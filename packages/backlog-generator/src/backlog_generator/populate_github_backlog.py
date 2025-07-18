@@ -23,6 +23,8 @@ HEADERS = {
 
 # --- HELPERS ---
 def parse_backlog_items(filepath):
+    if '../' in filepath or '..\\' in filepath:
+        raise Exception('Invalid file path')
     with open(filepath, 'r') as f:
         lines = f.readlines()
     # Match lines like '- [ ] Story' or '- Story'
