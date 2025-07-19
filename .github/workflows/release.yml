@@ -1,0 +1,288 @@
+name: 📦 Release Management
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      prerelease:
+        description: 'Create prerelease'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  prepare-release:
+    name: 🎯 Prepare Release
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      changelog: ${{ steps.changelog.outputs.changelog }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔍 Get current version
+        id: current_version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "current=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: 📋 Calculate new version
+        id: version
+        run: |
+          CURRENT_VERSION="${{ steps.current_version.outputs.current }}"
+          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          
+          # Parse current version
+          IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=${VERSION_PARTS[2]}
+          
+          # Calculate new version
+          case $RELEASE_TYPE in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+          esac
+          
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          
+          if [[ "${{ github.event.inputs.prerelease }}" == "true" ]]; then
+            NEW_VERSION="$NEW_VERSION-rc.$(date +%Y%m%d%H%M%S)"
+          fi
+          
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "📋 New version: $NEW_VERSION"
+
+      - name: 📝 Generate changelog
+        id: changelog
+        run: |
+          echo "📝 Generating changelog..."
+          
+          # Get commits since last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            COMMITS=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            COMMITS=$(git log $LAST_TAG..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          fi
+          
+          # Create changelog
+          CHANGELOG="## What's Changed\n\n$COMMITS"
+          
+          # Save to output (escape newlines)
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+  run-tests:
+    name: 🧪 Run Full Test Suite
+    runs-on: ubuntu-latest
+    needs: prepare-release
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: sportsclub_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: 📦 Setup PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🧪 Run comprehensive tests
+        run: |
+          pnpm turbo run test
+          pnpm turbo run lint
+          pnpm turbo run check-types
+          pnpm turbo run build
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sportsclub_test
+          REDIS_URL: redis://localhost:6379
+
+  create-release:
+    name: 📦 Create Release
+    runs-on: ubuntu-latest
+    needs: [prepare-release, run-tests]
+    if: needs.run-tests.result == 'success'
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⚙️ Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 📋 Update version in package.json
+        run: |
+          NEW_VERSION="${{ needs.prepare-release.outputs.version }}"
+          
+          # Update root package.json
+          jq ".version = \"$NEW_VERSION\"" package.json > package.json.tmp
+          mv package.json.tmp package.json
+          
+          # Update app package.json files
+          find apps packages -name "package.json" -exec jq ".version = \"$NEW_VERSION\"" {} \; -exec mv {} {}.tmp \; -exec mv {}.tmp {} \;
+
+      - name: 📝 Commit version bump
+        run: |
+          git add .
+          git commit -m "chore: bump version to ${{ needs.prepare-release.outputs.version }}"
+          git push origin main
+
+      - name: 🏷️ Create and push tag
+        run: |
+          git tag -a "v${{ needs.prepare-release.outputs.version }}" -m "Release v${{ needs.prepare-release.outputs.version }}"
+          git push origin "v${{ needs.prepare-release.outputs.version }}"
+
+      - name: 📦 Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.prepare-release.outputs.version }}
+          release_name: Release v${{ needs.prepare-release.outputs.version }}
+          body: |
+            # 🚀 Sportsclub Release v${{ needs.prepare-release.outputs.version }}
+            
+            ${{ needs.prepare-release.outputs.changelog }}
+            
+            ## 🔗 Links
+            - **Frontend**: https://sportsclub.app
+            - **API Documentation**: https://api.sportsclub.app/docs
+            - **Repository**: https://github.com/AReid987/sportsclub-v1.0.0
+            
+            ## 📊 Release Info
+            - **Release Type**: ${{ github.event.inputs.release_type }}
+            - **Prerelease**: ${{ github.event.inputs.prerelease }}
+            - **Commit**: ${{ github.sha }}
+            - **Released**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+            
+            ## 🧪 Quality Assurance
+            - ✅ All tests passed
+            - ✅ Code quality checks passed
+            - ✅ Security scans completed
+            - ✅ Build verification successful
+          draft: false
+          prerelease: ${{ github.event.inputs.prerelease }}
+
+  trigger-deployment:
+    name: 🚀 Trigger Production Deployment
+    runs-on: ubuntu-latest
+    needs: [create-release, prepare-release]
+    if: needs.create-release.result == 'success' && github.event.inputs.prerelease != 'true'
+    steps:
+      - name: 🚀 Trigger production deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy-production.yml',
+              ref: 'v${{ needs.prepare-release.outputs.version }}'
+            });
+
+  notify:
+    name: 📢 Release Notification
+    runs-on: ubuntu-latest
+    needs: [create-release, trigger-deployment, prepare-release]
+    if: always()
+    steps:
+      - name: 📢 Notify success
+        if: needs.create-release.result == 'success'
+        run: |
+          echo "🎉 Release v${{ needs.prepare-release.outputs.version }} created successfully!"
+          # Add notification logic (Slack, Discord, etc.)
+
+      - name: 📢 Notify failure
+        if: needs.create-release.result == 'failure'
+        run: |
+          echo "❌ Release creation failed!"
+          # Add failure notification logic

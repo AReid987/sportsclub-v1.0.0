@@ -20,7 +20,16 @@
     },
     "test": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "src/**/*.test.*", "tests/**/*", "test/**/*"]
+      "inputs": ["$TURBO_DEFAULT$", "src/**/*.test.*", "tests/**/*", "test/**/*", "__tests__/**/*"]
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
+    },
+    "test:coverage": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "src/**/*.test.*", "tests/**/*", "test/**/*", "__tests__/**/*"],
+      "outputs": ["coverage/**"]
     },
     "check-types": {
       "dependsOn": ["^check-types"],
