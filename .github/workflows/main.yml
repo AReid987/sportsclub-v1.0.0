@@ -1,76 +1,290 @@
-name: CI
+name: 🚀 Enhanced CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, develop]
   pull_request:
-    branches:
-      - main
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  APPMAP_API_KEY: ${{ secrets.APPMAP_API_KEY }}
 
 jobs:
-  build:
-    permissions:
-      content: read
-      pull-requests: write
+  changes:
+    name: 🔍 Detect Changes
     runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.changes.outputs.frontend }}
+      backend: ${{ steps.changes.outputs.backend }}
+      docs: ${{ steps.changes.outputs.docs }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+      - name: 🔍 Detect Changes
+        uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            frontend:
+              - 'apps/web/**'
+              - 'packages/ui/**'
+              - 'packages/shared-libs/**'
+            backend:
+              - 'packages/*-service/**'
+              - 'infra/**'
+            docs:
+              - 'docs/**'
+              - '*.md'
+
+  super-linter:
+    name: 🧿 Super Linter
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true' || needs.changes.outputs.backend == 'true'
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🧿 Run Super-Linter
+        uses: super-linter/super-linter@v5
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_TYPESCRIPT_ES: true
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_PYTHON_BLACK: true
+          VALIDATE_PYTHON_FLAKE8: true
+          VALIDATE_DOCKERFILE_HADOLINT: true
+          VALIDATE_YAML: true
+          VALIDATE_JSON: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_BASH: true
+          TYPESCRIPT_ES_CONFIG_FILE: .eslintrc.js
+          PYTHON_BLACK_CONFIG_FILE: pyproject.toml
+          PYTHON_FLAKE8_CONFIG_FILE: .flake8
+
+  biome-lint:
+    name: 🌱 Biome Linting
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+
+      - name: 🌱 Run Biome
+        run: biome ci .
+
+  test-coverage:
+    name: 🧪 Test & Coverage
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true' || needs.changes.outputs.backend == 'true'
+    permissions:
+      contents: read
+      pull-requests: write
     services:
       postgres:
-        image: postgres:13
-        ports:
-          - 5432:5432
+        image: postgres:15-alpine
         env:
-          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: sportsclub
+          POSTGRES_DB: sportsclub_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
         with:
-          node-version: 24.2.0
-          cache: 'pnpm'
+          fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: 🟬 Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: 3.10
+          node-version: 18
+          cache: 'npm'
 
-      - name: Install PNPM
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.0.0
+          version: 9
+          run_install: false
 
-      - name: Install PDM
-        run: pip install pdm
+      - name: 📦 Setup PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version: '3.11'
 
-      - name: Install dependencies (JS/TS)
-        run: pnpm install
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Install dependencies (Python)
-        run: pdm install
+      - name: 🧪 Run tests with coverage
+        run: pnpm turbo run test:coverage
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sportsclub_test
+          REDIS_URL: redis://localhost:6379
 
-      - name: Run Turborepo build
+      - name: 📊 Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info,./coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: 🚨 Check coverage threshold
+        run: |
+          COVERAGE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+          THRESHOLD=80
+          echo "Current coverage: $COVERAGE%"
+          echo "Required threshold: $THRESHOLD%"
+          if (( $(echo "$COVERAGE < $THRESHOLD" | bc -l) )); then
+            echo "::error::Coverage $COVERAGE% is below threshold $THRESHOLD%"
+            echo "COVERAGE_INSUFFICIENT=true" >> $GITHUB_ENV
+            exit 1
+          fi
+
+      - name: 🤖 Trigger test generation for insufficient coverage
+        if: env.COVERAGE_INSUFFICIENT == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚨 **Coverage Alert**: Test coverage is below 80%. Triggating automated test generation...\n\n@dagger-agents please generate additional tests to improve coverage.'
+            })
+
+  appmap-analysis:
+    name: 🗺️ AppMap Analysis
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Setup PDM
+        uses: pdm-project/setup-pdm@v4
+
+      - name: 📦 Install AppMap
+        run: |
+          pip install appmap
+          pdm add appmap
+
+      - name: 🗺️ Generate AppMaps
+        run: |
+          for service in packages/*-service; do
+            if [ -d "$service" ]; then
+              echo "Generating AppMap for $service"
+              cd "$service"
+              appmap record -- pdm run python -m pytest tests/ || true
+              cd ../..
+            fi
+          done
+
+      - name: 📊 Generate Architecture Diagrams
+        run: |
+          appmap index
+          appmap diagram
+
+      - name: 🚀 Performance Analysis
+        run: |
+          appmap stats
+          appmap compare
+
+      - name: 📎 Upload AppMap artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: appmap-diagrams
+          path: |
+            **/*.appmap.json
+            **/*-diagram.svg
+            **/appmap-stats.json
+
+  build:
+    name: 🛠️ Build & Test
+    runs-on: ubuntu-latest
+    needs: [changes, super-linter, test-coverage]
+    if: always() && (needs.super-linter.result == 'success' || needs.super-linter.result == 'skipped')
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟬 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🛠️ Build packages
         run: pnpm turbo run build
 
-      - name: Run Turborepo lint
-        run: pnpm turbo run lint
-
-      - name: Run ESLint and Prettier checks
-        run: |
-          pnpm exec eslint . --ext .js,.jsx,.ts,.tsx
-          pnpm exec prettier --check .
-
-      - name: Run Black and Flake8 checks
-        run: |
-          pdm run black --check .
-          pdm run flake8 .
+      - name: 📎 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            apps/web/.next/
+            packages/*/dist/
+          retention-days: 1

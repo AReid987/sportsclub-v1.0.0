@@ -1,0 +1,372 @@
+name: 🤖 Automated Test Generation
+
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      coverage_threshold:
+        description: 'Coverage threshold to trigger test generation'
+        required: false
+        default: '80'
+        type: string
+      target_files:
+        description: 'Specific files to generate tests for (comma-separated)'
+        required: false
+        type: string
+
+concurrency:
+  group: auto-test-generation-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+env:
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+jobs:
+  trigger-test-generation:
+    name: 🎯 Trigger Test Generation
+    runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'issue_comment' && 
+       (contains(github.event.comment.body, '@dagger-agents') || 
+        contains(github.event.comment.body, 'generate tests') ||
+        contains(github.event.comment.body, 'improve coverage'))) ||
+      github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    outputs:
+      should_generate: ${{ steps.analysis.outputs.should_generate }}
+      target_files: ${{ steps.analysis.outputs.target_files }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: 🔍 Analyze Coverage Needs
+        id: analysis
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            let shouldGenerate = false;
+            let targetFiles = [];
+            
+            // Check if coverage reports exist
+            const coveragePaths = [
+              'coverage/coverage-summary.json',
+              'apps/web/coverage/coverage-summary.json',
+              'packages/shared-libs/coverage/coverage-summary.json'
+            ];
+            
+            for (const coveragePath of coveragePaths) {
+              if (fs.existsSync(coveragePath)) {
+                const coverage = JSON.parse(fs.readFileSync(coveragePath, 'utf8'));
+                const threshold = parseInt('${{ github.event.inputs.coverage_threshold || "80" }}');
+                
+                if (coverage.total && coverage.total.lines.pct < threshold) {
+                  shouldGenerate = true;
+                  
+                  // Find files with low coverage
+                  Object.entries(coverage).forEach(([file, data]) => {
+                    if (file !== 'total' && data.lines && data.lines.pct < threshold) {
+                      targetFiles.push(file);
+                    }
+                  });
+                }
+              }
+            }
+            
+            // Manual trigger from workflow dispatch
+            if (context.eventName === 'workflow_dispatch') {
+              shouldGenerate = true;
+              if (context.payload.inputs.target_files) {
+                targetFiles = context.payload.inputs.target_files.split(',').map(f => f.trim());
+              }
+            }
+            
+            core.setOutput('should_generate', shouldGenerate);
+            core.setOutput('target_files', JSON.stringify(targetFiles));
+            
+            console.log(`Should generate tests: ${shouldGenerate}`);
+            console.log(`Target files: ${JSON.stringify(targetFiles)}`);
+
+  generate-tests:
+    name: 🧪 Generate Tests
+    runs-on: ubuntu-latest
+    needs: trigger-test-generation
+    if: needs.trigger-test-generation.outputs.should_generate == 'true'
+    permissions:
+      contents: write
+      pull-requests: write
+    strategy:
+      matrix:
+        ai_provider: [openai, anthropic, gemini]
+      fail-fast: false
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 📦 Install dependencies
+        run: |
+          pnpm install --frozen-lockfile
+          pip install openai anthropic google-generativeai
+
+      - name: 🤖 Generate Tests with ${{ matrix.ai_provider }}
+        id: generate
+        run: |
+          cat > generate_tests.py << 'EOF'
+          import os
+          import json
+          import sys
+          from pathlib import Path
+          
+          def generate_with_openai(file_content, file_path):
+              try:
+                  import openai
+                  client = openai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+                  
+                  prompt = f"""
+                  Generate comprehensive unit tests for the following TypeScript/JavaScript file.
+                  Focus on:
+                  1. All exported functions and classes
+                  2. Edge cases and error handling
+                  3. Mocking external dependencies
+                  4. Achieving high code coverage
+                  
+                  File: {file_path}
+                  Content:
+                  {file_content}
+                  
+                  Generate Jest tests with proper imports and mocking.
+                  """
+                  
+                  response = client.chat.completions.create(
+                      model="gpt-4",
+                      messages=[{"role": "user", "content": prompt}],
+                      max_tokens=2000
+                  )
+                  
+                  return response.choices[0].message.content
+              except Exception as e:
+                  print(f"OpenAI generation failed: {e}")
+                  return None
+          
+          def generate_with_anthropic(file_content, file_path):
+              try:
+                  import anthropic
+                  client = anthropic.Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
+                  
+                  prompt = f"""
+                  Generate comprehensive unit tests for this TypeScript/JavaScript file.
+                  
+                  File: {file_path}
+                  Content:
+                  {file_content}
+                  
+                  Create Jest tests with:
+                  - Complete function coverage
+                  - Edge case testing
+                  - Proper mocking
+                  - Clear test descriptions
+                  """
+                  
+                  response = client.messages.create(
+                      model="claude-3-sonnet-20240229",
+                      max_tokens=2000,
+                      messages=[{"role": "user", "content": prompt}]
+                  )
+                  
+                  return response.content[0].text
+              except Exception as e:
+                  print(f"Anthropic generation failed: {e}")
+                  return None
+          
+          def generate_with_gemini(file_content, file_path):
+              try:
+                  import google.generativeai as genai
+                  genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+                  model = genai.GenerativeModel('gemini-pro')
+                  
+                  prompt = f"""
+                  Generate comprehensive Jest unit tests for this file.
+                  
+                  File: {file_path}
+                  Content:
+                  {file_content}
+                  
+                  Include tests for all functions, edge cases, and error scenarios.
+                  """
+                  
+                  response = model.generate_content(prompt)
+                  return response.text
+              except Exception as e:
+                  print(f"Gemini generation failed: {e}")
+                  return None
+          
+          # Main execution
+          provider = sys.argv[1] if len(sys.argv) > 1 else 'openai'
+          target_files = json.loads(os.getenv('TARGET_FILES', '[]'))
+          
+          if not target_files:
+              # Find files that need tests
+              for root, dirs, files in os.walk('.'):
+                  dirs[:] = [d for d in dirs if d not in ['node_modules', '.git', '.next', 'dist', 'build']]
+                  for file in files:
+                      if file.endswith(('.ts', '.tsx', '.js', '.jsx')) and not file.endswith(('.test.', '.spec.')):
+                          file_path = os.path.join(root, file)
+                          test_path = file_path.replace('.ts', '.test.ts').replace('.tsx', '.test.tsx').replace('.js', '.test.js').replace('.jsx', '.test.jsx')
+                          if not os.path.exists(test_path):
+                              target_files.append(file_path)
+          
+          generated_count = 0
+          for file_path in target_files[:5]:  # Limit to 5 files per run
+              if os.path.exists(file_path):
+                  with open(file_path, 'r') as f:
+                      content = f.read()
+                  
+                  if provider == 'openai':
+                      test_content = generate_with_openai(content, file_path)
+                  elif provider == 'anthropic':
+                      test_content = generate_with_anthropic(content, file_path)
+                  elif provider == 'gemini':
+                      test_content = generate_with_gemini(content, file_path)
+                  
+                  if test_content:
+                      # Determine test file path
+                      if file_path.endswith('.ts'):
+                          test_file = file_path.replace('.ts', '.test.ts')
+                      elif file_path.endswith('.tsx'):
+                          test_file = file_path.replace('.tsx', '.test.tsx')
+                      elif file_path.endswith('.js'):
+                          test_file = file_path.replace('.js', '.test.js')
+                      elif file_path.endswith('.jsx'):
+                          test_file = file_path.replace('.jsx', '.test.jsx')
+                      
+                      # Create test directory if needed
+                      os.makedirs(os.path.dirname(test_file), exist_ok=True)
+                      
+                      # Write test file
+                      with open(test_file, 'w') as f:
+                          f.write(test_content)
+                      
+                      generated_count += 1
+                      print(f"Generated test for {file_path} -> {test_file}")
+          
+          print(f"Generated {generated_count} test files using {provider}")
+          EOF
+          
+          python generate_tests.py ${{ matrix.ai_provider }}
+        env:
+          TARGET_FILES: ${{ needs.trigger-test-generation.outputs.target_files }}
+
+      - name: 🧪 Run Generated Tests
+        run: |
+          pnpm turbo run test || true
+
+      - name: 📊 Check New Coverage
+        run: |
+          pnpm turbo run test:coverage || true
+          if [ -f "coverage/coverage-summary.json" ]; then
+            NEW_COVERAGE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+            echo "NEW_COVERAGE=$NEW_COVERAGE" >> $GITHUB_ENV
+          fi
+
+      - name: 💾 Commit Generated Tests
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          if git diff --staged --quiet; then
+            echo "No tests generated"
+          else
+            git commit -m "🤖 Auto-generate tests using ${{ matrix.ai_provider }}
+            
+            - Generated tests for files with insufficient coverage
+            - Target coverage threshold: ${{ github.event.inputs.coverage_threshold || '80' }}%
+            - AI Provider: ${{ matrix.ai_provider }}
+            - Generated by: GitHub Actions"
+            git push
+          fi
+
+  consolidate-results:
+    name: 📊 Consolidate Results
+    runs-on: ubuntu-latest
+    needs: [trigger-test-generation, generate-tests]
+    if: always() && needs.trigger-test-generation.outputs.should_generate == 'true'
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📊 Final Coverage Report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let comment = '## 🤖 Automated Test Generation Results\n\n';
+            
+            // Check if coverage improved
+            if (fs.existsSync('coverage/coverage-summary.json')) {
+              const coverage = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+              const currentCoverage = coverage.total.lines.pct;
+              
+              comment += `📊 **Current Coverage**: ${currentCoverage}%\n`;
+              comment += `🎯 **Target Threshold**: ${{ github.event.inputs.coverage_threshold || '80' }}%\n\n`;
+              
+              if (currentCoverage >= parseInt('${{ github.event.inputs.coverage_threshold || "80" }}')) {
+                comment += '✅ **Coverage threshold met!** No further action needed.\n\n';
+              } else {
+                comment += '⚠️ **Coverage still below threshold.** Consider manual test review.\n\n';
+              }
+            }
+            
+            comment += '### 🤖 AI Providers Used\n';
+            comment += '- 🧠 OpenAI GPT-4\n';
+            comment += '- 🤖 Anthropic Claude\n';
+            comment += '- 💎 Google Gemini\n\n';
+            
+            comment += '### 📝 Next Steps\n';
+            comment += '1. Review generated tests for accuracy\n';
+            comment += '2. Run tests locally to ensure they pass\n';
+            comment += '3. Refine tests as needed\n';
+            comment += '4. Consider edge cases not covered by AI\n\n';
+            
+            comment += '---\n*Automated test generation powered by AI*';
+            
+            if (context.issue && context.issue.number) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }

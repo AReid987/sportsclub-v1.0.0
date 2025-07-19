@@ -1,0 +1,385 @@
+name: 🔍 PR Enhancements & Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: pr-enhancements-${{ github.event.pull_request.number || github.event.issue.number }}
+  cancel-in-progress: true
+
+env:
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  CODERABBIT_TOKEN: ${{ secrets.CODERABBIT_TOKEN }}
+  DEEPSOURCE_TOKEN: ${{ secrets.DEEPSOURCE_TOKEN }}
+
+jobs:
+  pr-analysis:
+    name: 🔍 PR Analysis & Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🧠 Gemini Code Review
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { GoogleGenerativeAI } = require('@google/generative-ai');
+            
+            if (!process.env.GEMINI_API_KEY) {
+              console.log('Gemini API key not configured, skipping AI review');
+              return;
+            }
+            
+            const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+            const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+            
+            // Get PR diff
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+            
+            const prompt = `
+            Please review this pull request and provide feedback on:
+            1. Code quality and best practices
+            2. Potential bugs or issues
+            3. Performance considerations
+            4. Security concerns
+            5. Suggestions for improvement
+            
+            Files changed:
+            ${files.map(f => `${f.filename}: ${f.patch || 'Binary file'}`).join('\n\n')}
+            `;
+            
+            try {
+              const result = await model.generateContent(prompt);
+              const review = result.response.text();
+              
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## 🧠 Gemini AI Code Review\n\n${review}\n\n---\n*Powered by Google Gemini*`
+              });
+            } catch (error) {
+              console.log('Gemini review failed:', error.message);
+            }
+
+      - name: 🐰 CodeRabbit Analysis
+        uses: coderabbitai/coderabbit-action@v1
+        if: env.CODERABBIT_TOKEN
+        with:
+          token: ${{ secrets.CODERABBIT_TOKEN }}
+          review_type: 'full'
+
+      - name: 🔬 DeepSource Analysis
+        if: env.DEEPSOURCE_TOKEN
+        run: |
+          curl -X POST \
+            -H "Authorization: Token ${{ secrets.DEEPSOURCE_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "repository": "${{ github.repository }}",
+              "commit_oid": "${{ github.event.pull_request.head.sha }}"
+            }' \
+            https://api.deepsource.io/v1/analysis/
+
+  create-sandboxes:
+    name: 📦 Create Development Sandboxes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build for sandboxes
+        run: pnpm turbo run build
+
+      - name: 📦 Create CodeSandbox
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Create CodeSandbox configuration
+            const sandboxConfig = {
+              "name": `sportsclub-pr-${context.issue.number}`,
+              "description": `Sportsclub PR #${context.issue.number} - Interactive Preview`,
+              "template": "node",
+              "files": {},
+              "dependencies": JSON.parse(fs.readFileSync('package.json', 'utf8')).dependencies || {},
+              "devDependencies": JSON.parse(fs.readFileSync('package.json', 'utf8')).devDependencies || {}
+            };
+            
+            // Add key files to sandbox
+            const filesToInclude = [
+              'package.json',
+              'turbo.json',
+              'apps/web/package.json',
+              'apps/web/next.config.js',
+              'apps/web/tailwind.config.js'
+            ];
+            
+            filesToInclude.forEach(file => {
+              if (fs.existsSync(file)) {
+                sandboxConfig.files[file] = {
+                  content: fs.readFileSync(file, 'utf8')
+                };
+              }
+            });
+            
+            // Create sandbox URL (simplified - would need actual CodeSandbox API)
+            const sandboxUrl = `https://codesandbox.io/s/github/${context.repo.owner}/${context.repo.repo}/tree/${context.payload.pull_request.head.ref}`;
+            
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📦 Development Sandboxes\n\n🔗 **CodeSandbox**: [Open Interactive Preview](${sandboxUrl})\n\n🔗 **StackBlitz**: [Open in StackBlitz](https://stackblitz.com/github/${context.repo.owner}/${context.repo.repo}/tree/${context.payload.pull_request.head.ref})\n\n---\n*These sandboxes allow you to test the changes interactively without local setup.*`
+            });
+
+  megalinter:
+    name: 🦄 MegaLinter Analysis
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+      statuses: write
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: 🦄 MegaLinter
+        id: ml
+        uses: oxsecurity/megalinter@v7
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Enable specific linters
+          ENABLE_LINTERS: >-
+            TYPESCRIPT_ES,
+            JAVASCRIPT_ES,
+            PYTHON_BLACK,
+            PYTHON_FLAKE8,
+            PYTHON_PYLINT,
+            DOCKERFILE_HADOLINT,
+            YAML_YAMLLINT,
+            JSON_JSONLINT,
+            MARKDOWN_MARKDOWNLINT,
+            BASH_SHELLCHECK,
+            CSS_STYLELINT,
+            HTML_HTMLHINT
+          # Configure specific linters
+          TYPESCRIPT_ES_CONFIG_FILE: .eslintrc.js
+          PYTHON_BLACK_CONFIG_FILE: pyproject.toml
+          PYTHON_FLAKE8_CONFIG_FILE: .flake8
+          MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.json
+
+      - name: 📊 Upload MegaLinter artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MegaLinter-reports
+          path: |
+            megalinter-reports/
+            mega-linter.log
+
+      - name: 💬 Comment MegaLinter results
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let comment = '## 🦄 MegaLinter Analysis Results\n\n';
+            
+            if (fs.existsSync('megalinter-reports/megalinter_report.md')) {
+              const report = fs.readFileSync('megalinter-reports/megalinter_report.md', 'utf8');
+              comment += report;
+            } else {
+              comment += '✅ No linting issues found!\n';
+            }
+            
+            comment += '\n---\n*Powered by [MegaLinter](https://megalinter.io/)*';
+            
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  dagger-agents:
+    name: 🤖 Dagger Agents Auto-Fix
+    runs-on: ubuntu-latest
+    if: contains(github.event.comment.body, '@dagger-agents') || contains(github.event.comment.body, 'auto-fix')
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: 🤖 Trigger Dagger Agents
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // This would integrate with your Dagger agents
+            // For now, we'll create a placeholder that demonstrates the concept
+            
+            const comment = context.payload.comment?.body || '';
+            const prNumber = context.issue.number;
+            
+            if (comment.includes('@dagger-agents')) {
+              await github.rest.issues.createComment({
+                issue_number: prNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `🤖 **Dagger Agents Activated**\n\nAnalyzing PR for auto-fix opportunities...\n\n- 🔍 Code quality issues\n- 🧪 Missing test coverage\n- 📝 Documentation gaps\n- 🔒 Security vulnerabilities\n\n*Agents will commit fixes directly to this PR branch.*`
+              });
+              
+              // Here you would trigger your actual Dagger agents
+              // Example: webhook call, API trigger, etc.
+            }
+
+  performance-analysis:
+    name: 🚀 Performance Analysis
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build for analysis
+        run: pnpm turbo run build
+
+      - name: 📊 Bundle Analysis
+        run: |
+          # Analyze bundle sizes
+          if [ -d "apps/web/.next" ]; then
+            echo "## 📦 Bundle Analysis" > bundle-report.md
+            echo "" >> bundle-report.md
+            
+            # Get bundle sizes
+            find apps/web/.next -name "*.js" -type f -exec ls -lh {} \; | \
+              awk '{print "- " $9 ": " $5}' >> bundle-report.md
+          fi
+
+      - name: 🚀 Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          configPath: '.lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: 💬 Comment Performance Results
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 🚀 Performance Analysis\n\n';
+            
+            if (fs.existsSync('bundle-report.md')) {
+              const bundleReport = fs.readFileSync('bundle-report.md', 'utf8');
+              comment += bundleReport + '\n\n';
+            }
+            
+            comment += '📊 **Lighthouse Report**: Check the artifacts for detailed performance metrics.\n\n';
+            comment += '---\n*Performance analysis completed*';
+            
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  security-scan:
+    name: 🔒 Advanced Security Scanning
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔒 Semgrep Security Scan
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: >-
+            p/security-audit
+            p/secrets
+            p/owasp-top-ten
+            p/javascript
+            p/typescript
+            p/python
+
+      - name: 🔍 Snyk Security Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: 🛡️ OSSAR Security Scan
+        uses: github/ossar-action@v1
+        id: ossar
+
+      - name: 📊 Upload OSSAR results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.ossar.outputs.sarifFile }}

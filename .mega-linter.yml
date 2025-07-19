@@ -1,0 +1,65 @@
+# MegaLinter Configuration
+# See all available variables at https://megalinter.io/configuration/
+
+# Apply linters only on diff files
+APPLY_FIXES: all
+DEFAULT_BRANCH: main
+VALIDATE_ALL_CODEBASE: false
+
+# Enable/Disable linters
+ENABLE_LINTERS:
+  - TYPESCRIPT_ES
+  - JAVASCRIPT_ES
+  - PYTHON_BLACK
+  - PYTHON_FLAKE8
+  - PYTHON_PYLINT
+  - PYTHON_MYPY
+  - DOCKERFILE_HADOLINT
+  - YAML_YAMLLINT
+  - JSON_JSONLINT
+  - MARKDOWN_MARKDOWNLINT
+  - BASH_SHELLCHECK
+  - CSS_STYLELINT
+  - HTML_HTMLHINT
+  - SPELL_CSPELL
+
+# Disable specific linters
+DISABLE_LINTERS:
+  - COPYPASTE_JSCPD  # Can be noisy in monorepos
+
+# Linter-specific configurations
+TYPESCRIPT_ES_CONFIG_FILE: .eslintrc.js
+PYTHON_BLACK_CONFIG_FILE: pyproject.toml
+PYTHON_FLAKE8_CONFIG_FILE: .flake8
+PYTHON_PYLINT_CONFIG_FILE: .pylintrc
+MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.json
+YAML_YAMLLINT_CONFIG_FILE: .yamllint.yml
+CSS_STYLELINT_CONFIG_FILE: .stylelintrc.json
+
+# File filters
+FILTER_REGEX_EXCLUDE: |
+  (\.git/|node_modules/|\.next/|dist/|build/|coverage/|\.venv/|__pycache__/|\.mypy_cache/|\.pytest_cache/)
+
+# Reporting
+REPORT_OUTPUT_FOLDER: megalinter-reports
+FILEIO_REPORTER: true
+GITHUB_STATUS_REPORTER: true
+GITHUB_COMMENT_REPORTER: true
+UPDATED_SOURCES_REPORTER: true
+
+# Performance
+PARALLEL: true
+LOG_LEVEL: INFO
+
+# Fix mode
+APPLY_FIXES_EVENT: pull_request
+APPLY_FIXES_MODE: commit
+
+# Custom commands
+PRE_COMMANDS:
+  - command: echo "Starting MegaLinter analysis for Sportsclub"
+    cwd: "workspace"
+
+POST_COMMANDS:
+  - command: echo "MegaLinter analysis completed"
+    cwd: "workspace"
